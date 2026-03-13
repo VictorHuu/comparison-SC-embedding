@@ -1,0 +1,94 @@
+[2026-03-08 12:07:07] ============================================================
+[2026-03-08 12:07:07] scGREAT GRN Benchmark Setup
+[2026-03-08 12:07:07] ============================================================
+[2026-03-08 12:07:07] scGREAT already exists at /root/autodl-tmp/scGREAT
+[2026-03-08 12:07:07] Patching scGREAT source code...
+[2026-03-08 12:07:07]   Patched model.py (nn.Linear(2*embed_size, 1024))
+[2026-03-08 12:07:07]   Patched main.py (biovect{embed_size}.npy, best metric tracking)
+[2026-03-08 12:07:07]   Patched demo.py (--data_dir, --n_runs, mean+std reporting)
+[2026-03-08 12:07:07] All patches applied.
+[2026-03-08 12:07:07]   Dataset hESC500: 910 genes
+[2026-03-08 12:07:07]   Dataset hHEP500: NOT FOUND
+[2026-03-08 12:07:07]   Dataset mESC500: 1120 genes
+[2026-03-08 12:07:07]   Dataset mHSC-E500: NOT FOUND
+[2026-03-08 12:07:07]   Dataset mHSC-GM500: NOT FOUND
+[2026-03-08 12:07:07]   Dataset mHSC-L500: NOT FOUND
+[2026-03-08 12:07:07] 
+Human datasets: ['hESC500']
+[2026-03-08 12:07:07] Mouse datasets: ['mESC500']
+[2026-03-08 12:07:07] Note: Mouse datasets may have low gene coverage with human embeddings
+
+[2026-03-08 12:07:07] Loading vocab...
+[2026-03-08 12:07:07]   Vocab size: 60697
+[2026-03-08 12:07:07] 
+Loading embeddings...
+[2026-03-08 12:07:07]   Loading difference_v3 from /root/autodl-tmp/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt...
+[2026-03-08 12:07:07]     Shape: (60697, 256)
+[2026-03-08 12:07:07]   Loading baseline from /root/autodl-tmp/scbenchmark/save_pretrain/baseline/best_model.pt...
+[2026-03-08 12:07:07]     Shape: (60697, 256)
+[2026-03-08 12:07:07]   Loading scGPT_human from /root/autodl-tmp/scGPT_human/best_model.pt...
+[2026-03-08 12:07:08]     Shape: (60697, 512)
+[2026-03-08 12:07:08]   Loading GF-12L95M from /root/autodl-tmp/gene_embeddings/intersect/GF-12L95M...
+[2026-03-08 12:07:10]     Shape: (11355, 512), genes: 11355
+[2026-03-08 12:07:10] Loading cached gene symbol -> Entrez mapping...
+[2026-03-08 12:07:10] 
+============================================================
+[2026-03-08 12:07:10] Generating embedding files for scGREAT...
+[2026-03-08 12:07:10] ============================================================
+[2026-03-08 12:07:10] 
+Dataset: hESC500 (910 genes)
+[2026-03-08 12:07:10]   difference_v3 x hESC500: 848/910 genes mapped (93.2%)
+[2026-03-08 12:07:10]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-03-08 12:07:10]     Saved /root/autodl-tmp/grn_benchmark/difference_v3/hESC500/biovect256.npy shape=(911, 256)
+[2026-03-08 12:07:10]   baseline x hESC500: 848/910 genes mapped (93.2%)
+[2026-03-08 12:07:10]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-03-08 12:07:10]     Saved /root/autodl-tmp/grn_benchmark/baseline/hESC500/biovect256.npy shape=(911, 256)
+[2026-03-08 12:07:10]   scGPT_human x hESC500: 848/910 genes mapped (93.2%)
+[2026-03-08 12:07:10]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-03-08 12:07:10]     Saved /root/autodl-tmp/grn_benchmark/scGPT_human/hESC500/biovect512.npy shape=(911, 512)
+[2026-03-08 12:07:10]   GF-12L95M x hESC500: 637/910 genes mapped (70.0%)
+[2026-03-08 12:07:10]     Missing (273): ['SMARCD1', 'POU2AF1', 'FREM1', 'CYP1B1', 'WWTR1', 'ZNF219', 'JMJD1C', 'DRAM2', 'PARN', 'TMEM64']...
+[2026-03-08 12:07:10]     Saved /root/autodl-tmp/grn_benchmark/GF-12L95M/hESC500/biovect512.npy shape=(911, 512)
+[2026-03-08 12:07:10] 
+Dataset: mESC500 (1120 genes)
+[2026-03-08 12:07:10]   difference_v3 x mESC500: 937/1120 genes mapped (83.7%)
+[2026-03-08 12:07:10]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-03-08 12:07:10]     Saved /root/autodl-tmp/grn_benchmark/difference_v3/mESC500/biovect256.npy shape=(1121, 256)
+[2026-03-08 12:07:10]   baseline x mESC500: 937/1120 genes mapped (83.7%)
+[2026-03-08 12:07:10]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-03-08 12:07:10]     Saved /root/autodl-tmp/grn_benchmark/baseline/mESC500/biovect256.npy shape=(1121, 256)
+[2026-03-08 12:07:10]   scGPT_human x mESC500: 937/1120 genes mapped (83.7%)
+[2026-03-08 12:07:10]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-03-08 12:07:10]     Saved /root/autodl-tmp/grn_benchmark/scGPT_human/mESC500/biovect512.npy shape=(1121, 512)
+[2026-03-08 12:07:11]   GF-12L95M x mESC500: 642/1120 genes mapped (57.3%)
+[2026-03-08 12:07:11]     Missing (478): ['MED4', 'NFATC2IP', 'GM13597', 'TXNDC12', 'ODC1', 'GM24044', 'YAF2', 'SLC25A4', 'GM14303', 'KRBA1']...
+[2026-03-08 12:07:11]     Saved /root/autodl-tmp/grn_benchmark/GF-12L95M/mESC500/biovect512.npy shape=(1121, 512)
+[2026-03-08 12:07:11] 
+Setting up BioBERT original baseline...
+[2026-03-08 12:07:11]   BioBERT_original x hESC500: using original biovect768.npy
+[2026-03-08 12:07:11]   BioBERT_original x mESC500: using original biovect768.npy
+[2026-03-08 12:07:11] 
+============================================================
+[2026-03-08 12:07:11] Gene Coverage Summary
+[2026-03-08 12:07:11] ============================================================
+[2026-03-08 12:07:11] Embedding            Dataset           Mapped    Total   Coverage   Dim
+[2026-03-08 12:07:11] ----------------------------------------------------------------------
+[2026-03-08 12:07:11] difference_v3        hESC500              848      910      93.2%   256
+[2026-03-08 12:07:11] baseline             hESC500              848      910      93.2%   256
+[2026-03-08 12:07:11] scGPT_human          hESC500              848      910      93.2%   512
+[2026-03-08 12:07:11] GF-12L95M            hESC500              637      910      70.0%   512
+[2026-03-08 12:07:11] difference_v3        mESC500              937     1120      83.7%   256
+[2026-03-08 12:07:11] baseline             mESC500              937     1120      83.7%   256
+[2026-03-08 12:07:11] scGPT_human          mESC500              937     1120      83.7%   512
+[2026-03-08 12:07:11] GF-12L95M            mESC500              642     1120      57.3%   512
+[2026-03-08 12:07:11] 
+============================================================
+[2026-03-08 12:07:11] Generating run script...
+[2026-03-08 12:07:11] ============================================================
+[2026-03-08 12:07:11] Generated run script: /root/autodl-tmp/grn_benchmark/run_all.sh
+[2026-03-08 12:07:11] 
+============================================================
+[2026-03-08 12:07:11] Setup complete!
+[2026-03-08 12:07:11] Experiment dirs: /root/autodl-tmp/grn_benchmark/<embedding>/<dataset>/
+[2026-03-08 12:07:11] Run all experiments: bash /root/autodl-tmp/grn_benchmark/run_all.sh
+[2026-03-08 12:07:11] ============================================================

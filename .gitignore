@@ -1,0 +1,35 @@
+# Large directories - do not push
+scbenchmark/
+gene_embeddings/
+BEELINE/
+scGREAT/
+scGPT_human/
+gene-embedding-fusion/
+scbenchmark.tar.gz
+.autodl/
+.cache/
+__pycache__/
+*.pyc
+
+# Large data files
+*.pt
+*.bin
+*.h5
+*.hdf5
+*.tar.gz
+*.gz
+!embedding_benchmark/*.csv
+!embedding_benchmark/*.log
+!grn_benchmark/*.csv
+!grn_benchmark/*.log
+!grn_benchmark/*.sh
+!perturbation_benchmark/*.csv
+!perturbation_benchmark/*.log
+!perturbation_scbench/*.log
+
+# Exclude model weights and large json in result dirs
+grn_benchmark/gene_symbol_to_entrez.json
+perturbation_benchmark/gene_symbol_to_entrez.json
+grn_benchmark/*/
+embedding_benchmark/gene_symbol_to_entrez.json
+embedding_benchmark/Homo_sapiens.gene_info.gz

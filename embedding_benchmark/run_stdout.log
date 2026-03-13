@@ -1,0 +1,209 @@
+nohup: ignoring input
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+[2026-03-08 11:14:17] ======================================================================
+[2026-03-08 11:14:17] Gene Embedding Benchmark
+[2026-03-08 11:14:17] Started: 2026-03-08 11:14:17.853319
+[2026-03-08 11:14:17] ======================================================================
+[2026-03-08 11:14:17] Vocab: 60697 genes
+[2026-03-08 11:14:17] Vocab overlap with scGPT_human: 60697/60697
+[2026-03-08 11:14:17] Loading difference_v3...
+[2026-03-08 11:14:17]   Shape: (60697, 256)
+[2026-03-08 11:14:17] Loading baseline...
+[2026-03-08 11:14:18]   Shape: (60697, 256)
+[2026-03-08 11:14:18] Loading scGPT_human...
+[2026-03-08 11:14:18]   Shape: (60697, 512)
+[2026-03-08 11:14:19] Loaded GF-12L95M: emb=(11355, 512), genelist=11355
+[2026-03-08 11:14:19] Loading cached gene symbol -> Entrez mapping...
+[2026-03-08 11:14:19]   Vocab->GF mapping: 11365 genes mapped
+[2026-03-08 11:14:19] 
+======================================================================
+[2026-03-08 11:14:19] Task: annotation
+[2026-03-08 11:14:19] ======================================================================
+[2026-03-08 11:14:20] 
+--- Myeloid: 13178 cells, 21 classes ---
+[2026-03-08 11:14:22]   difference_v3 repr built: (13178, 256) (2.4s)
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+[2026-03-08 11:15:03]   difference_v3        | lr  | acc=0.6877+-0.0088 | f1m=0.5503+-0.0158 | f1w=0.6838+-0.0089 | 40.9s
+[2026-03-08 11:16:11]   difference_v3        | mlp | acc=0.7020+-0.0042 | f1m=0.5518+-0.0077 | f1w=0.6927+-0.0051 | 68.4s
+[2026-03-08 11:16:13]   baseline repr built: (13178, 256) (1.8s)
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+[2026-03-08 11:16:58]   baseline             | lr  | acc=0.7009+-0.0131 | f1m=0.5764+-0.0197 | f1w=0.6982+-0.0132 | 45.4s
+[2026-03-08 11:17:56]   baseline             | mlp | acc=0.7450+-0.0130 | f1m=0.6103+-0.0132 | f1w=0.7378+-0.0127 | 57.8s
+[2026-03-08 11:18:01]   scGPT_human repr built: (13178, 512) (4.6s)
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+[2026-03-08 11:19:04]   scGPT_human          | lr  | acc=0.6728+-0.0103 | f1m=0.5588+-0.0194 | f1w=0.6719+-0.0104 | 63.4s
+[2026-03-08 11:19:58]   scGPT_human          | mlp | acc=0.7398+-0.0063 | f1m=0.6069+-0.0073 | f1w=0.7338+-0.0041 | 54.0s
+[2026-03-08 11:20:11]   GF-12L95M repr built: (13178, 512), coverage=13178/13178 (12.8s)
+[2026-03-08 11:20:56]   GF-12L95M            | lr  | acc=0.6715+-0.0085 | f1m=0.5493+-0.0098 | f1w=0.6715+-0.0081 | 44.6s
+[2026-03-08 11:21:42]   GF-12L95M            | mlp | acc=0.7303+-0.0160 | f1m=0.5683+-0.0145 | f1w=0.7183+-0.0166 | 45.8s
+[2026-03-08 11:21:42] 
+--- Multiple_Sclerosis: 21312 cells, 18 classes ---
+[2026-03-08 11:21:44]   difference_v3 repr built: (21312, 256) (1.4s)
+[2026-03-08 11:22:42]   difference_v3        | lr  | acc=0.8021+-0.0060 | f1m=0.7550+-0.0122 | f1w=0.7992+-0.0064 | 58.6s
+[2026-03-08 11:24:48]   difference_v3        | mlp | acc=0.7892+-0.0022 | f1m=0.7571+-0.0100 | f1w=0.7868+-0.0026 | 125.9s
+[2026-03-08 11:24:50]   baseline repr built: (21312, 256) (1.6s)
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+[2026-03-08 11:25:29]   baseline             | lr  | acc=0.8668+-0.0060 | f1m=0.8059+-0.0083 | f1w=0.8648+-0.0061 | 38.6s
+[2026-03-08 11:26:56]   baseline             | mlp | acc=0.8816+-0.0028 | f1m=0.8260+-0.0092 | f1w=0.8785+-0.0028 | 87.1s
+[2026-03-08 11:27:00]   scGPT_human repr built: (21312, 512) (4.2s)
+[2026-03-08 11:28:04]   scGPT_human          | lr  | acc=0.8656+-0.0018 | f1m=0.8028+-0.0058 | f1w=0.8645+-0.0017 | 63.7s
+[2026-03-08 11:29:42]   scGPT_human          | mlp | acc=0.8868+-0.0041 | f1m=0.8236+-0.0072 | f1w=0.8836+-0.0040 | 98.2s
+[2026-03-08 11:29:54]   GF-12L95M repr built: (21312, 512), coverage=21312/21312 (11.9s)
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+[2026-03-08 11:31:03]   GF-12L95M            | lr  | acc=0.8449+-0.0023 | f1m=0.7740+-0.0134 | f1w=0.8440+-0.0023 | 69.7s
+[2026-03-08 11:33:02]   GF-12L95M            | mlp | acc=0.8495+-0.0043 | f1m=0.7825+-0.0119 | f1w=0.8464+-0.0043 | 118.6s
+[2026-03-08 11:33:02] 
+--- pancread: 14818 cells, 14 classes ---
+[2026-03-08 11:33:04]   difference_v3 repr built: (14818, 256) (1.3s)
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+[2026-03-08 11:33:19]   difference_v3        | lr  | acc=0.9811+-0.0016 | f1m=0.8844+-0.0516 | f1w=0.9809+-0.0016 | 15.6s
+[2026-03-08 11:34:40]   difference_v3        | mlp | acc=0.9808+-0.0016 | f1m=0.8645+-0.0571 | f1w=0.9805+-0.0018 | 81.2s
+[2026-03-08 11:34:43]   baseline repr built: (14818, 256) (2.1s)
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+[2026-03-08 11:35:02]   baseline             | lr  | acc=0.9810+-0.0017 | f1m=0.8819+-0.0498 | f1w=0.9808+-0.0018 | 19.5s
+[2026-03-08 11:36:00]   baseline             | mlp | acc=0.9836+-0.0026 | f1m=0.9026+-0.0623 | f1w=0.9834+-0.0027 | 58.0s
+[2026-03-08 11:36:03]   scGPT_human repr built: (14818, 512) (2.7s)
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+[2026-03-08 11:36:25]   scGPT_human          | lr  | acc=0.9843+-0.0023 | f1m=0.9015+-0.0434 | f1w=0.9841+-0.0023 | 21.8s
+[2026-03-08 11:37:37]   scGPT_human          | mlp | acc=0.9864+-0.0013 | f1m=0.9100+-0.0414 | f1w=0.9863+-0.0013 | 72.5s
+[2026-03-08 11:37:47]   GF-12L95M repr built: (14818, 512), coverage=14818/14818 (10.3s)
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+
+libgomp: Invalid value for environment variable OMP_NUM_THREADS
+[2026-03-08 11:38:09]   GF-12L95M            | lr  | acc=0.9810+-0.0018 | f1m=0.9026+-0.0441 | f1w=0.9809+-0.0018 | 21.4s
+[2026-03-08 11:39:16]   GF-12L95M            | mlp | acc=0.9839+-0.0012 | f1m=0.9186+-0.0367 | f1w=0.9838+-0.0012 | 67.1s
+[2026-03-08 11:39:16] 
+--- lupus: 50000 cells, 14 classes ---
+[2026-03-08 11:39:18]   difference_v3 repr built: (50000, 256) (1.8s)
