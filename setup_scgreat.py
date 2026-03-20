@@ -21,9 +21,9 @@ from datetime import datetime
 # =============================================================
 # Config
 # =============================================================
-BASE_DIR = '/root/autodl-tmp/scbenchmark'
-SCGREAT_DIR = '/root/autodl-tmp/scGREAT'
-OUTPUT_DIR = '/root/autodl-tmp/grn_benchmark'
+BASE_DIR = '/bigdata2/hyt/projects/scbenchmark'
+SCGREAT_DIR = '/bigdata2/hyt/projects/scGREAT'
+OUTPUT_DIR = '/bigdata2/hyt/projects/grn_benchmark'
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 LOG_FILE = os.path.join(OUTPUT_DIR, 'setup.log')
@@ -43,14 +43,14 @@ EMBEDDINGS = {
         'type': 'checkpoint',
     },
     'scGPT_human': {
-        'path': '/root/autodl-tmp/scGPT_human/best_model.pt',
+        'path': f'{BASE_DIR}/save_pretrain/scGPT_human/best_model.pt',
         'key': 'encoder.embedding.weight',
         'type': 'checkpoint',
     },
-    'GF-12L95M': {
-        'dir': '/root/autodl-tmp/gene_embeddings/intersect/GF-12L95M',
-        'type': 'geneformer',
-    },
+    # 'GF-12L95M': {
+    #     'dir': '/root/autodl-tmp/gene_embeddings/intersect/GF-12L95M',
+    #     'type': 'geneformer',
+    # },
 }
 
 # scGREAT datasets

@@ -32,15 +32,15 @@ from sklearn.linear_model import LogisticRegression, Ridge
 from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.model_selection import StratifiedKFold
-from sklearn.metrics import accuracy_score, f1_score
+from sklearn.metrics import accuracy_score, f1_score, r2_score
 
 warnings.filterwarnings("ignore")
 
 # =============================================================
 # Config
 # =============================================================
-BASE_DIR = '/root/autodl-tmp/scbenchmark'
-OUTPUT_DIR = '/root/autodl-tmp/perturbation_benchmark'
+BASE_DIR = '/bigdata2/hyt/projects/scbenchmark'
+OUTPUT_DIR = '/bigdata2/hyt/projects/grn_benchmark'
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 LOG_FILE = os.path.join(OUTPUT_DIR, 'perturbation.log')
@@ -61,14 +61,14 @@ EMBEDDINGS = {
         'type': 'checkpoint',
     },
     'scGPT_human': {
-        'path': '/root/autodl-tmp/scGPT_human/best_model.pt',
+        'path': f'{BASE_DIR}/save_pretrain/scGPT_human/best_model.pt',
         'key': 'encoder.embedding.weight',
         'type': 'checkpoint',
     },
-    'GF-12L95M': {
-        'dir': '/root/autodl-tmp/gene_embeddings/intersect/GF-12L95M',
-        'type': 'geneformer',
-    },
+    # 'GF-12L95M': {
+    #     'dir': '/root/autodl-tmp/gene_embeddings/intersect/GF-12L95M',
+    #     'type': 'geneformer',
+    # },
 }
 
 
@@ -107,13 +107,13 @@ def build_symbol_to_entrez():
     if os.path.exists(mapping_file):
         with open(mapping_file) as f:
             return json.load(f)
-    alt_path = '/root/autodl-tmp/embedding_benchmark/gene_symbol_to_entrez.json'
+    alt_path = '/bigdata2/hyt/projects/embedding_benchmark/gene_symbol_to_entrez.json'
     if os.path.exists(alt_path):
         import shutil
         shutil.copy2(alt_path, mapping_file)
         with open(mapping_file) as f:
             return json.load(f)
-    alt2 = '/root/autodl-tmp/grn_benchmark/gene_symbol_to_entrez.json'
+    alt2 = '/bigdata2/hyt/projects/grn_benchmark/gene_symbol_to_entrez.json'
     if os.path.exists(alt2):
         import shutil
         shutil.copy2(alt2, mapping_file)
@@ -131,6 +131,13 @@ def load_perturb_data(ds_name):
     expr_list = d['expressions']  # list of arrays (expression values per cell)
     base_idx = d['base_idx']      # list of ints (1=control, 0=perturbed)
     single_ctrl = d['single_ctrl']  # list of ints (-1=control, else=perturbed gene vocab idx)
+
+    # Optional cell type annotation (for Task D)
+    cell_types = None
+    for k in ['cell_type', 'cell_types', 'celltype', 'condition']:
+        if k in d and len(d[k]) == len(genes_list):
+            cell_types = d[k]
+            break
 
     n_cells = len(genes_list)
 
@@ -153,8 +160,72 @@ def load_perturb_data(ds_name):
         'ctrl_indices': ctrl_indices,
         'pert_indices': pert_indices,
         'pert_gene_ids': sorted(pert_gene_ids),
+        'cell_types': cell_types,
         'n_cells': n_cells,
     }
+
+
+def _to_dense_expr(genes_arr, expr_arr, vocab_size):
+    """Convert sparse (gene_idx, expr) to dense expression vector."""
+    x = np.zeros(vocab_size, dtype=np.float32)
+    genes = np.asarray(genes_arr, dtype=np.int64)
+    expr = np.asarray(expr_arr, dtype=np.float32)
+    valid = (genes >= 0) & (genes < vocab_size)
+    if valid.any():
+        np.add.at(x, genes[valid], expr[valid])
+    return x
+
+
+def build_pseudobulk_delta_by_celltype(data, vocab_size):
+    """Build pseudobulk expression deltas per (cell_type, perturbation_gene)."""
+    cell_types = data.get('cell_types')
+    if cell_types is None:
+        return None
+
+    genes_list = data['genes_list']
+    expr_list = data['expr_list']
+    single_ctrl = data['single_ctrl']
+    ctrl_indices = data['ctrl_indices']
+    pert_indices = data['pert_indices']
+
+    # Normalize cell type labels to strings for stable grouping
+    cell_types = [str(ct) for ct in cell_types]
+
+    from collections import defaultdict
+    ctrl_by_ct = defaultdict(list)
+    pert_by_ct_gene = defaultdict(list)
+
+    for i in ctrl_indices:
+        ctrl_by_ct[cell_types[i]].append(i)
+    for i in pert_indices:
+        pg = int(single_ctrl[i])
+        if pg >= 0:
+            pert_by_ct_gene[(cell_types[i], pg)].append(i)
+
+    samples = []
+    for (ct, pg), pidxs in pert_by_ct_gene.items():
+        cidxs = ctrl_by_ct.get(ct, [])
+        if len(pidxs) < 5 or len(cidxs) < 5:
+            continue
+
+        ctrl_dense = np.stack([_to_dense_expr(genes_list[i], expr_list[i], vocab_size)
+                               for i in cidxs], axis=0)
+        pert_dense = np.stack([_to_dense_expr(genes_list[i], expr_list[i], vocab_size)
+                               for i in pidxs], axis=0)
+
+        mean_ctrl = np.log1p(ctrl_dense.mean(axis=0))
+        mean_pert = np.log1p(pert_dense.mean(axis=0))
+        delta_expr = (mean_pert - mean_ctrl).astype(np.float32)
+
+        samples.append({
+            'cell_type': ct,
+            'pert_gene': pg,
+            'n_ctrl': len(cidxs),
+            'n_pert': len(pidxs),
+            'delta_expr': delta_expr,
+        })
+
+    return samples if len(samples) > 0 else None
 
 
 # =============================================================
@@ -525,6 +596,100 @@ def run_perturbation_direction(data, emb_matrix, vocab, emb_name,
 
 
 # =============================================================
+# Task D: Cell-type-specific Expression Delta Regression
+# =============================================================
+def run_expression_delta_regression(data, emb_matrix, vocab, emb_name,
+                                    gf_emb=None, gf_genelist=None, s2e=None):
+    """Predict expression delta (pert vs control) from perturb gene embedding.
+
+    For each (cell_type, pert_gene), target is a dense delta-expression vector:
+      delta = log1p(mean_expr_pert) - log1p(mean_expr_ctrl)
+    """
+    vocab_size = len(vocab)
+    samples = build_pseudobulk_delta_by_celltype(data, vocab_size)
+    if not samples:
+        return None
+
+    is_gf = (emb_matrix is None)
+    idx2gene = {v: k for k, v in vocab.items()} if vocab else {}
+    e2gf = {eid: i for i, eid in enumerate(gf_genelist)} if gf_genelist else {}
+
+    def get_emb(gene_vocab_idx):
+        if is_gf:
+            gene_name = idx2gene.get(int(gene_vocab_idx))
+            if gene_name and s2e and gene_name in s2e:
+                eid = s2e[gene_name]
+                if eid in e2gf:
+                    return gf_emb[e2gf[eid]]
+            return None
+        if 0 <= gene_vocab_idx < emb_matrix.shape[0]:
+            return emb_matrix[gene_vocab_idx]
+        return None
+
+    # Build model inputs: [pert_gene_embedding ; onehot(cell_type)]
+    all_cell_types = sorted({s['cell_type'] for s in samples})
+    ct2idx = {ct: i for i, ct in enumerate(all_cell_types)}
+    n_ct = len(all_cell_types)
+
+    X, Y, groups = [], [], []
+    for s in samples:
+        g_emb = get_emb(s['pert_gene'])
+        if g_emb is None:
+            continue
+        ct_oh = np.zeros(n_ct, dtype=np.float32)
+        ct_oh[ct2idx[s['cell_type']]] = 1.0
+        feat = np.concatenate([g_emb.astype(np.float32), ct_oh], axis=0)
+        X.append(feat)
+        Y.append(s['delta_expr'])
+        groups.append(s['pert_gene'])
+
+    if len(X) < 20:
+        return None
+
+    X = np.asarray(X, dtype=np.float32)
+    Y = np.asarray(Y, dtype=np.float32)
+    groups = np.asarray(groups)
+
+    # Group-aware CV: split by perturbation genes to reduce leakage
+    from sklearn.model_selection import GroupKFold
+    unique_genes = np.unique(groups)
+    if len(unique_genes) < 5:
+        return None
+    gkf = GroupKFold(n_splits=min(5, len(unique_genes)))
+
+    pearson_rs, mses, r2s = [], [], []
+    for tr, te in gkf.split(X, Y, groups):
+        sx = StandardScaler()
+        sy = StandardScaler()
+        X_tr = sx.fit_transform(X[tr])
+        X_te = sx.transform(X[te])
+        Y_tr = sy.fit_transform(Y[tr])
+        Y_te = sy.transform(Y[te])
+
+        reg = Ridge(alpha=1.0)
+        reg.fit(X_tr, Y_tr)
+        Y_pred = reg.predict(X_te)
+
+        mses.append(float(np.mean((Y_pred - Y_te) ** 2)))
+        r2s.append(float(r2_score(Y_te, Y_pred, multioutput='uniform_average')))
+
+        # Per-sample Pearson correlation in gene-expression space
+        for i in range(len(Y_te)):
+            if np.std(Y_te[i]) > 1e-8 and np.std(Y_pred[i]) > 1e-8:
+                pearson_rs.append(float(pearsonr(Y_te[i], Y_pred[i])[0]))
+
+    return {
+        'n_samples': int(len(X)),
+        'n_pert_genes': int(len(unique_genes)),
+        'n_cell_types': int(n_ct),
+        'pearson_r': float(np.mean(pearson_rs)) if pearson_rs else 0.0,
+        'pearson_r_std': float(np.std(pearson_rs)) if pearson_rs else 0.0,
+        'mse': float(np.mean(mses)),
+        'r2': float(np.mean(r2s)),
+    }
+
+
+# =============================================================
 # Main
 # =============================================================
 def main():
@@ -635,6 +800,29 @@ def main():
             else:
                 log(f"      Skipped (not enough data)")
 
+            # Task D: Cell-type-specific Expression Delta Regression
+            log(f"    Task D: Cell-type-specific Delta Regression...")
+            res_dreg = run_expression_delta_regression(
+                data, emb_matrix, vocab, emb_name, **gf_args)
+            if res_dreg:
+                log(f"      Pearson r={res_dreg['pearson_r']:.4f}±{res_dreg['pearson_r_std']:.4f}, "
+                    f"R2={res_dreg['r2']:.4f}, MSE={res_dreg['mse']:.4f} "
+                    f"({res_dreg['n_samples']} samples, "
+                    f"{res_dreg['n_pert_genes']} pert genes, {res_dreg['n_cell_types']} cell types)")
+                all_results.append({
+                    'dataset': ds_name, 'task': 'expr_delta_regression',
+                    'embedding': emb_name,
+                    'pearson_r': res_dreg['pearson_r'],
+                    'pearson_r_std': res_dreg['pearson_r_std'],
+                    'mse': res_dreg['mse'],
+                    'r2': res_dreg['r2'],
+                    'n_samples': res_dreg['n_samples'],
+                    'n_pert_genes': res_dreg['n_pert_genes'],
+                    'n_cell_types': res_dreg['n_cell_types'],
+                })
+            else:
+                log(f"      Skipped (missing cell types or not enough data)")
+
     # Summary
     log(f"\n{'='*70}")
     log("SUMMARY")
@@ -691,6 +879,22 @@ def main():
                         row += f"r={m.iloc[0]['pearson_r']:.4f}            "
                     else:
                         row += f"{'N/A':<20} "
+                log(row)
+
+        # Task D summary
+        dreg_df = df[df['task'] == 'expr_delta_regression']
+        if len(dreg_df) > 0:
+            log("\n--- Task D: Cell-type-specific Expression Delta Regression ---")
+            log(f"{'Dataset':<15} " + " ".join(f"{n:<24}" for n in emb_names))
+            log("-" * (15 + 25 * len(emb_names)))
+            for ds in DATASETS:
+                row = f"{ds:<15} "
+                for emb in emb_names:
+                    m = dreg_df[(dreg_df['dataset'] == ds) & (dreg_df['embedding'] == emb)]
+                    if len(m) > 0:
+                        row += f"r={m.iloc[0]['pearson_r']:.4f} R2={m.iloc[0]['r2']:.4f}  "
+                    else:
+                        row += f"{'N/A':<24} "
                 log(row)
 
         csv_path = os.path.join(OUTPUT_DIR, 'perturbation_results.csv')

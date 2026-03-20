@@ -29,9 +29,9 @@ warnings.filterwarnings("ignore")
 # =============================================================
 # Config
 # =============================================================
-BASE_DIR = '/root/autodl-tmp/scbenchmark'
-SCGREAT_DIR = '/root/autodl-tmp/scGREAT'
-OUTPUT_DIR = '/root/autodl-tmp/grn_benchmark'
+BASE_DIR = '/bigdata2/hyt/projects/scbenchmark'
+SCGREAT_DIR = '/bigdata2/hyt/projects/scGREAT'
+OUTPUT_DIR = '/bigdata2/hyt/projects/grn_benchmark'
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 LOG_FILE = os.path.join(OUTPUT_DIR, 'grn_emb_only.log')
@@ -49,14 +49,14 @@ EMBEDDINGS = {
         'type': 'checkpoint',
     },
     'scGPT_human': {
-        'path': '/root/autodl-tmp/scGPT_human/best_model.pt',
+        'path': f'{BASE_DIR}/save_pretrain/scGPT_human/best_model.pt',
         'key': 'encoder.embedding.weight',
         'type': 'checkpoint',
     },
-    'GF-12L95M': {
-        'dir': '/root/autodl-tmp/gene_embeddings/intersect/GF-12L95M',
-        'type': 'geneformer',
-    },
+    # 'GF-12L95M': {
+    #     'dir': '/root/autodl-tmp/gene_embeddings/intersect/GF-12L95M',
+    #     'type': 'geneformer',
+    # },
 }
 
 DATASETS = ['hESC500', 'mESC500']
@@ -97,7 +97,7 @@ def build_symbol_to_entrez():
     if os.path.exists(mapping_file):
         with open(mapping_file) as f:
             return json.load(f)
-    alt_path = '/root/autodl-tmp/embedding_benchmark/gene_symbol_to_entrez.json'
+    alt_path = '/bigdata2/hyt/projects/embedding_benchmark/gene_symbol_to_entrez.json'
     if os.path.exists(alt_path):
         import shutil
         shutil.copy2(alt_path, mapping_file)
@@ -260,6 +260,7 @@ def main():
     # Results storage
     all_results = []
 
+    dataset_cache = {}
     for ds_name in DATASETS:
         ds_path = os.path.join(SCGREAT_DIR, ds_name)
         if not os.path.exists(ds_path):
@@ -284,6 +285,15 @@ def main():
         all_train_tf = np.concatenate([train_tf, val_tf])
         all_train_tgt = np.concatenate([train_tgt, val_tgt])
         all_train_y = np.concatenate([train_y, val_y])
+        dataset_cache[ds_name] = {
+            'dataset_genes': dataset_genes,
+            'train_tf': all_train_tf,
+            'train_tgt': all_train_tgt,
+            'train_y': all_train_y,
+            'test_tf': test_tf,
+            'test_tgt': test_tgt,
+            'test_y': test_y,
+        }
 
         log(f"\n{'Embedding':<20} {'Clf':<5} {'Coverage':>10} {'AUROC':>12} {'AUPRC':>12}")
         log("-" * 65)
@@ -312,6 +322,9 @@ def main():
                     log(f"{emb_name:<20} {clf_name:<5} {coverage:>10} {auroc:>11.4f} {auprc:>11.4f}")
                     all_results.append({
                         'dataset': ds_name, 'embedding': emb_name,
+                        'setting': 'in_domain',
+                        'train_dataset': ds_name,
+                        'test_dataset': ds_name,
                         'clf': clf_name, 'coverage': coverage,
                         'auroc': auroc, 'auprc': auprc,
                     })
@@ -329,11 +342,75 @@ def main():
                 log(f"{'random_256':<20} {clf_name:<5} {'910/910':>10} {auroc:>11.4f} {auprc:>11.4f}")
                 all_results.append({
                     'dataset': ds_name, 'embedding': 'random_256',
+                    'setting': 'in_domain',
+                    'train_dataset': ds_name,
+                    'test_dataset': ds_name,
                     'clf': clf_name, 'coverage': f"{len(dataset_genes)}/{len(dataset_genes)}",
                     'auroc': auroc, 'auprc': auprc,
                 })
             except Exception as e:
                 log(f"{'random_256':<20} {clf_name:<5} ERROR: {e}")
+
+    # =========================================================
+    # Cross-dataset transfer: train on source, test on target
+    # =========================================================
+    if len(dataset_cache) >= 2:
+        log(f"\n{'='*70}")
+        log("CROSS-DATASET TRANSFER")
+        log(f"{'='*70}")
+        for src_ds in DATASETS:
+            for tgt_ds in DATASETS:
+                if src_ds == tgt_ds:
+                    continue
+                if src_ds not in dataset_cache or tgt_ds not in dataset_cache:
+                    continue
+
+                src = dataset_cache[src_ds]
+                tgt = dataset_cache[tgt_ds]
+                log(f"\nTransfer: train={src_ds} -> test={tgt_ds}")
+                log(f"{'Embedding':<20} {'Clf':<5} {'Coverage':>16} {'AUROC':>12} {'AUPRC':>12}")
+                log("-" * 75)
+
+                for emb_name, emb_data in loaded_embs.items():
+                    # source lookup
+                    if emb_data['type'] == 'checkpoint':
+                        lookup_src, mapped_src = build_gene_emb_lookup(
+                            emb_data['matrix'], vocab, src['dataset_genes']
+                        )
+                        lookup_tgt, mapped_tgt = build_gene_emb_lookup(
+                            emb_data['matrix'], vocab, tgt['dataset_genes']
+                        )
+                    else:
+                        lookup_src, mapped_src = build_gene_emb_lookup_gf(
+                            emb_data['matrix'], emb_data['genelist'],
+                            symbol_to_entrez, src['dataset_genes']
+                        )
+                        lookup_tgt, mapped_tgt = build_gene_emb_lookup_gf(
+                            emb_data['matrix'], emb_data['genelist'],
+                            symbol_to_entrez, tgt['dataset_genes']
+                        )
+
+                    coverage = f"{mapped_src}/{len(src['dataset_genes'])}->{mapped_tgt}/{len(tgt['dataset_genes'])}"
+                    train_X = build_pair_features(lookup_src, src['train_tf'], src['train_tgt'])
+                    test_X = build_pair_features(lookup_tgt, tgt['test_tf'], tgt['test_tgt'])
+
+                    for clf_name in ['lr', 'mlp']:
+                        try:
+                            auroc, auprc = evaluate(train_X, src['train_y'], test_X, tgt['test_y'], clf_name)
+                            log(f"{emb_name:<20} {clf_name:<5} {coverage:>16} {auroc:>11.4f} {auprc:>11.4f}")
+                            all_results.append({
+                                'dataset': f'{src_ds}->{tgt_ds}',
+                                'embedding': emb_name,
+                                'setting': 'transfer',
+                                'train_dataset': src_ds,
+                                'test_dataset': tgt_ds,
+                                'clf': clf_name,
+                                'coverage': coverage,
+                                'auroc': auroc,
+                                'auprc': auprc,
+                            })
+                        except Exception as e:
+                            log(f"{emb_name:<20} {clf_name:<5} {coverage:>16} ERROR: {e}")
 
     # Summary
     log(f"\n{'='*70}")

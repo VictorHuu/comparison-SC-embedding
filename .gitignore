@@ -33,3 +33,7 @@ perturbation_benchmark/gene_symbol_to_entrez.json
 grn_benchmark/*/
 embedding_benchmark/gene_symbol_to_entrez.json
 embedding_benchmark/Homo_sapiens.gene_info.gz
+
+# Loggings
+nohup.out
+*.patch
