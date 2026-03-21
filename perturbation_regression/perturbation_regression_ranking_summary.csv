@@ -1,0 +1,12 @@
+summary_type,dataset,method,embedding,pearson_r,rank,note
+best_embedding_per_dataset,adamson,frozen_linear,scGPT_human,0.1703249851365884,1.0,descriptive_only
+best_embedding_per_dataset,dixit,frozen_linear,baseline,0.4898338278657512,1.0,descriptive_only
+best_embedding_per_dataset,norman,frozen_linear,baseline,0.0989112563058734,1.0,descriptive_only
+average_rank_across_datasets,ALL,frozen_linear,baseline,,1.6666666666666667,descriptive_only
+average_rank_across_datasets,ALL,frozen_linear,minus,,2.3333333333333335,descriptive_only
+average_rank_across_datasets,ALL,frozen_linear,scGPT_human,,2.0,descriptive_only
+best_embedding_per_dataset,adamson,frozen_backbone_trainable_head,minus,0.17692806184291837,1.0,descriptive_only
+best_embedding_per_dataset,norman,frozen_backbone_trainable_head,baseline,0.12294658806174992,1.0,descriptive_only
+average_rank_across_datasets,ALL,frozen_backbone_trainable_head,baseline,,1.5,descriptive_only
+average_rank_across_datasets,ALL,frozen_backbone_trainable_head,minus,,2.0,descriptive_only
+average_rank_across_datasets,ALL,frozen_backbone_trainable_head,scGPT_human,,2.5,descriptive_only

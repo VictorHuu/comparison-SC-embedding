@@ -1,0 +1,25 @@
+[2026-03-21 13:04:50] ============================================================================================
+[2026-03-21 13:04:50] Perturbation Regression Benchmark (Conservative + Leak-Free)
+[2026-03-21 13:04:50] PRIMARY: frozen_linear (probe-based comparison)
+[2026-03-21 13:04:50] SECONDARY: frozen_backbone_trainable_head (adaptation benchmark)
+[2026-03-21 13:04:50] EXPLORATORY: full_finetune_embedding_head (disabled by default)
+[2026-03-21 13:04:50] NOTE: Mixed evidence across datasets is expected; implementation is embedding-agnostic.
+[2026-03-21 13:04:50] ============================================================================================
+[2026-03-21 13:04:50] 
+[Dataset] adamson
+[2026-03-21 13:06:13] 
+[Dataset] dixit
+[2026-03-21 13:06:57]   - dixit/dataset::all/minus: skip frozen_mlp (n_pert_genes=19 < 25)
+[2026-03-21 13:06:57]   - dixit/dataset::all/minus: skip frozen_backbone_trainable_head (min train < 20)
+[2026-03-21 13:06:57]   - dixit/dataset::all/baseline: skip frozen_mlp (n_pert_genes=19 < 25)
+[2026-03-21 13:06:57]   - dixit/dataset::all/baseline: skip frozen_backbone_trainable_head (min train < 20)
+[2026-03-21 13:06:58]   - dixit/dataset::all/scGPT_human: skip frozen_mlp (n_pert_genes=19 < 25)
+[2026-03-21 13:06:58]   - dixit/dataset::all/scGPT_human: skip frozen_backbone_trainable_head (min train < 20)
+[2026-03-21 13:06:58] 
+[Dataset] norman
+[2026-03-21 13:07:45] Saved summary CSV: /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/perturbation_regression/perturbation_regression_results.csv
+[2026-03-21 13:07:45] Saved fold-level CSV: /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/perturbation_regression/perturbation_regression_fold_results.csv
+[2026-03-21 13:07:45] Saved ranking CSV: /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/perturbation_regression/perturbation_regression_ranking_summary.csv
+[2026-03-21 13:07:45] Interpretation note: frozen_linear is the primary probe-based comparison.
+[2026-03-21 13:07:45] Interpretation note: frozen_backbone_trainable_head is a secondary adaptation benchmark.
+[2026-03-21 13:07:45] Interpretation note: full_finetune_embedding_head is exploratory and disabled by default.

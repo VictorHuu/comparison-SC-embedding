@@ -5,7 +5,7 @@ from statistics import mean, pstdev
 
 BASE_DIR = '/bigdata2/hyt/projects/scbenchmark'
 SCGREAT_DIR = '/bigdata2/hyt/projects/scGREAT'
-OUT_DIR = 'grn_benchmark'
+OUT_DIR = 'transfer'
 os.makedirs(OUT_DIR, exist_ok=True)
 
 STRICT_CSV = os.path.join(OUT_DIR, 'strict_common_gene_seed_results.csv')
@@ -16,7 +16,7 @@ SCORE_SHIFT_CSV = os.path.join(OUT_DIR, 'score_shift_summary.csv')
 REPORT_MD = os.path.join(OUT_DIR, 'report_transfer_control.md')
 
 EMBEDDINGS = {
-    'difference_v3': {'path': f'{BASE_DIR}/save_pretrain/difference_aligned_v3/best_model.pt', 'key': 'module.embedding.weight'},
+    'minus': {'path': f'{BASE_DIR}/save_pretrain/minus/best_model.pt', 'key': 'module.embedding.weight'},
     'baseline': {'path': f'{BASE_DIR}/save_pretrain/baseline/best_model.pt', 'key': 'module.embedding.weight'},
     'scGPT_human': {'path': f'{BASE_DIR}/save_pretrain/scGPT_human/best_model.pt', 'key': 'encoder.embedding.weight'},
 }
@@ -60,7 +60,7 @@ def write_fallback(reason):
               [])
     with open(REPORT_MD, 'w') as f:
         f.write('# report_transfer_control\n\n')
-        f.write('## 实验目的\n围绕 coverage confound 验证 difference_v3 transfer gain 的来源。\n\n')
+        f.write('## 实验目的\n围绕 coverage confound 验证 minus transfer gain 的来源。\n\n')
         f.write('## 实验设置\nstrict common repeated seeds + coverage-matched native + gap decomposition。\n\n')
         f.write('## 主表1：strict common-gene repeated results\n见 strict_common_gene_seed_results.csv\n\n')
         f.write('## 主表2：coverage-matched native results\n见 coverage_matched_native_results.csv\n\n')
@@ -188,7 +188,7 @@ def main():
     for trd,ted in TRANSFER_DIRS:
         key=(trd,ted)
         strict_genes=sorted(
-            set(native_available[key]['difference_v3']['train']) & set(native_available[key]['difference_v3']['test']) &
+            set(native_available[key]['minus']['train']) & set(native_available[key]['minus']['test']) &
             set(native_available[key]['baseline']['train']) & set(native_available[key]['baseline']['test']) &
             set(native_available[key]['scGPT_human']['train']) & set(native_available[key]['scGPT_human']['test'])
         )
@@ -250,10 +250,10 @@ def main():
                                        'abs_shift_margin':abs((pos_t-neg_t)-(pos_s-neg_s))})
 
         # coverage matched native (20 subsamples, train/test matched separately)
-        min_n_tr=min(len(native_available[key]['difference_v3']['train']),
+        min_n_tr=min(len(native_available[key]['minus']['train']),
                      len(native_available[key]['baseline']['train']),
                      len(native_available[key]['scGPT_human']['train']))
-        min_n_te=min(len(native_available[key]['difference_v3']['test']),
+        min_n_te=min(len(native_available[key]['minus']['test']),
                      len(native_available[key]['baseline']['test']),
                      len(native_available[key]['scGPT_human']['test']))
         if min_n_tr>0 and min_n_te>0:
@@ -287,7 +287,7 @@ def main():
     group_summary=[]
     for trd,ted in TRANSFER_DIRS:
         key=(trd,ted)
-        dset=set(native_available[key]['difference_v3']['train']) | set(native_available[key]['difference_v3']['test'])
+        dset=set(native_available[key]['minus']['train']) | set(native_available[key]['minus']['test'])
         bset=set(native_available[key]['baseline']['train']) | set(native_available[key]['baseline']['test'])
         sset=set(native_available[key]['scGPT_human']['train']) | set(native_available[key]['scGPT_human']['test'])
         common=dset & bset & sset
@@ -296,7 +296,7 @@ def main():
         only_s=sset - (dset | bset)
 
         # graph stats from train+test edges
-        for group, genes in [('common', common), ('difference_v3_only', only_d), ('baseline_only', only_b), ('scGPT_only', only_s)]:
+        for group, genes in [('common', common), ('minus_only', only_d), ('baseline_only', only_b), ('scGPT_only', only_s)]:
             g2deg={g:0 for g in genes}; g2pos={g:0 for g in genes}; g2tot={g:0 for g in genes}
             g2tr={g:0 for g in genes}; g2te={g:0 for g in genes}
             tf_proxy=set()
@@ -358,7 +358,7 @@ def main():
             bp_nat=native_p.get((trd,ted,'baseline',clf),(float('nan'),0))[0]
             bp_str=strict_p.get((trd,ted,'baseline',clf),(float('nan'),0))[0]
             bp_cov=cov_p.get((trd,ted,'baseline',clf),(float('nan'),0))[0]
-            for emb in ['difference_v3','baseline','scGPT_human']:
+            for emb in ['minus','baseline','scGPT_human']:
                 na=native_m.get((trd,ted,emb,clf),(float('nan'),0))[0]
                 np_=native_p.get((trd,ted,emb,clf),(float('nan'),0))[0]
                 sa=strict_m.get((trd,ted,emb,clf),(float('nan'),0))[0]
@@ -405,7 +405,7 @@ def main():
     # concise report
     with open(REPORT_MD,'w') as f:
         f.write('# report_transfer_control\n\n')
-        f.write('## 实验目的\n验证 difference_v3 native transfer gain 是否主要由 coverage confound 导致。\n\n')
+        f.write('## 实验目的\n验证 minus native transfer gain 是否主要由 coverage confound 导致。\n\n')
         f.write('## 实验设置\nstrict common repeated(5 seeds, LR/MLP, LR含bootstrap重采样)、coverage-matched native(20 subsamples)、gap decomposition。\n\n')
         f.write('## 主表1：strict common-gene repeated results\n见 `strict_common_gene_seed_results.csv`。\n\n')
         f.write('## 主表2：coverage-matched native results\n见 `coverage_matched_native_results.csv`。\n\n')

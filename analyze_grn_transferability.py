@@ -18,7 +18,7 @@ from statistics import mean, pstdev
 
 BASE_DIR = '/bigdata2/hyt/projects/scbenchmark'
 SCGREAT_DIR = '/bigdata2/hyt/projects/scGREAT'
-OUT_DIR = 'grn_benchmark'
+OUT_DIR = 'transfer'
 os.makedirs(OUT_DIR, exist_ok=True)
 
 RAW_CSV = os.path.join(OUT_DIR, 'transfer_seed_results.csv')

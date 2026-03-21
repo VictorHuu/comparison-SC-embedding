@@ -3,7 +3,7 @@
 import os, csv, math
 from statistics import mean, pstdev
 
-OUT_DIR = 'grn_benchmark'
+OUT_DIR = 'transfer/summary'
 STRICT = os.path.join(OUT_DIR, 'strict_common_gene_seed_results.csv')
 COV = os.path.join(OUT_DIR, 'coverage_matched_native_results.csv')
 GAP = os.path.join(OUT_DIR, 'transfer_gap_summary.csv')
