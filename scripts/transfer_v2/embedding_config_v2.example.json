@@ -1,0 +1,18 @@
+{
+  "difference_v3": {
+    "path": "/bigdata2/hyt/projects/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt",
+    "key": "module.embedding.weight"
+  },
+  "minus": {
+    "path": "/bigdata2/hyt/projects/scbenchmark/save_pretrain/minus/best_model.pt",
+    "key": "module.embedding.weight"
+  },
+  "baseline": {
+    "path": "/bigdata2/hyt/projects/scbenchmark/save_pretrain/baseline/best_model.pt",
+    "key": "module.embedding.weight"
+  },
+  "scGPT_human": {
+    "path": "/bigdata2/hyt/projects/scbenchmark/save_pretrain/scGPT_human/best_model.pt",
+    "key": "encoder.embedding.weight"
+  }
+}

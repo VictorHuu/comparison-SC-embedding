@@ -28,6 +28,7 @@ __pycache__/
 !perturbation_scbench/*.log
 scRNA-Seq
 transfer_v2
+!scripts/transfer_v2
 processed
 
 # Exclude model weights and large json in result dirs
