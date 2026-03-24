@@ -26,6 +26,9 @@ __pycache__/
 !perturbation_benchmark/*.csv
 !perturbation_benchmark/*.log
 !perturbation_scbench/*.log
+scRNA-Seq
+transfer_v2
+processed
 
 # Exclude model weights and large json in result dirs
 grn_benchmark/gene_symbol_to_entrez.json
