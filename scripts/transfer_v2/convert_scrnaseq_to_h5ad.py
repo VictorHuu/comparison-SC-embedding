@@ -161,11 +161,28 @@ def normalize_log1p(x: np.ndarray) -> np.ndarray:
     return np.log1p(x_norm)
 
 
+def read_edge_split_csv(path: Path) -> np.ndarray:
+    """Read split csv into Nx3 array [tf_idx, tg_idx, label]."""
+    df = pd.read_csv(path)
+    if df.shape[1] < 4:
+        raise ValueError(f"Edge split file needs >=4 columns: {path}")
+    # Compatible with historical format: [id, tf, tg, y]
+    arr = df.iloc[:, [1, 2, 3]].to_numpy()
+    out = np.zeros((arr.shape[0], 3), dtype=np.int64)
+    out[:, 0] = pd.to_numeric(arr[:, 0], errors="raise").astype(np.int64)
+    out[:, 1] = pd.to_numeric(arr[:, 1], errors="raise").astype(np.int64)
+    out[:, 2] = pd.to_numeric(arr[:, 2], errors="raise").astype(np.int64)
+    return out
+
+
 def convert_one_dataset(dataset_dir: Path, out_dir: Path) -> tuple[Path, dict[str, object]]:
     name = dataset_dir.name
     expr_path = dataset_dir / "ExpressionData.csv"
     gene_path = dataset_dir / "GeneOrdering.csv"
     pt_path = dataset_dir / "PseudoTime.csv"
+    train_split_path = dataset_dir / "Train_set.csv"
+    val_split_path = dataset_dir / "Validation_set.csv"
+    test_split_path = dataset_dir / "Test_set.csv"
 
     for p in [expr_path, gene_path, pt_path]:
         if not p.exists():
@@ -209,6 +226,14 @@ def convert_one_dataset(dataset_dir: Path, out_dir: Path) -> tuple[Path, dict[st
         "n_genes": int(adata.n_vars),
         "normalization": "library_size_1e4_then_log1p",
     }
+    # If available, carry edge splits into h5ad for edge-level transfer benchmark.
+    if train_split_path.exists() and val_split_path.exists() and test_split_path.exists():
+        adata.uns["Train_set"] = read_edge_split_csv(train_split_path)
+        adata.uns["Validation_set"] = read_edge_split_csv(val_split_path)
+        adata.uns["Test_set"] = read_edge_split_csv(test_split_path)
+        adata.uns["conversion"]["edge_splits_embedded"] = True
+    else:
+        adata.uns["conversion"]["edge_splits_embedded"] = False
 
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / f"{name}.h5ad"
