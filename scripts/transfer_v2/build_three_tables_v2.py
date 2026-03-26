@@ -182,6 +182,56 @@ def build_vs_baseline_counts(full: pd.DataFrame, emb_list: list[str], group_fiel
     return out.sort_values([*group_fields, "wins_vs_baseline", "win_rate_vs_baseline"], ascending=[*(True for _ in group_fields), False, False])
 
 
+def build_native_lr_aggregate(full: pd.DataFrame) -> pd.DataFrame:
+    """Compact aggregate over dataset pairs for protocol=native, clf=lr."""
+    sub = full[(full["protocol"] == "native") & (full["clf"] == "lr")].copy()
+    if sub.empty:
+        return pd.DataFrame(columns=["embedding", "n_pairs", "agg_mean_auroc", "agg_mean_auprc", "agg_mean_score"])
+
+    sub["pair_key"] = sub["train_dataset"].astype(str) + "->" + sub["test_dataset"].astype(str)
+    out = (
+        sub.groupby("embedding", as_index=False)
+        .agg(
+            n_pairs=("pair_key", "nunique"),
+            agg_mean_auroc=("mean_auroc", "mean"),
+            agg_mean_auprc=("mean_auprc", "mean"),
+        )
+    )
+    out["agg_mean_score"] = (out["agg_mean_auroc"] + out["agg_mean_auprc"]) / 2.0
+    return out.sort_values("embedding").reset_index(drop=True)
+
+
+def write_native_lr_markdown(out_path: str, agg: pd.DataFrame) -> None:
+    with open(out_path, "w") as f:
+        f.write("# Native + LR aggregated summary (30 pairs)\n\n")
+        f.write("| embedding | n_pairs | agg_mean_auroc | agg_mean_auprc | agg_mean_score |\n")
+        f.write("|---|---:|---:|---:|---:|\n")
+        if agg.empty:
+            f.write("| _No data_ |  |  |  |  |\n")
+            return
+
+        best_auroc = agg["agg_mean_auroc"].max(skipna=True)
+        best_auprc = agg["agg_mean_auprc"].max(skipna=True)
+        best_score = agg["agg_mean_score"].max(skipna=True)
+
+        for _, r in agg.iterrows():
+            emb = str(r["embedding"])
+            n_pairs = int(r["n_pairs"])
+            auroc = f"{r['agg_mean_auroc']:.6f}"
+            auprc = f"{r['agg_mean_auprc']:.6f}"
+            score = f"{r['agg_mean_score']:.6f}"
+
+            if np.isclose(r["agg_mean_auroc"], best_auroc):
+                auroc = f"**{auroc}**"
+            if np.isclose(r["agg_mean_auprc"], best_auprc):
+                auprc = f"**{auprc}**"
+            if np.isclose(r["agg_mean_score"], best_score):
+                emb = f"**{emb}**"
+                score = f"**{score}**"
+
+            f.write(f"| {emb} | {n_pairs} | {auroc} | {auprc} | {score} |\n")
+
+
 def main():
     args = parse_args()
     os.makedirs(args.out_dir, exist_ok=True)
@@ -245,6 +295,15 @@ def main():
 
     print(f"[OK] wrote {desc_path}")
     print(f"[OK] wrote {win_path}")
+
+    # compact native+LR aggregate (conference-style compact table)
+    native_lr = build_native_lr_aggregate(full)
+    native_lr_csv = os.path.join(args.out_dir, "native_lr_pair30_aggregated_summary.csv")
+    native_lr_md = os.path.join(args.out_dir, "native_lr_pair30_aggregated_summary.md")
+    native_lr.to_csv(native_lr_csv, index=False, float_format="%.6f")
+    write_native_lr_markdown(native_lr_md, native_lr)
+    print(f"[OK] wrote {native_lr_csv}")
+    print(f"[OK] wrote {native_lr_md}")
 
     # Extra series: per-embedding counts against baseline
     vb_dir = os.path.join(args.out_dir, "vs_baseline")

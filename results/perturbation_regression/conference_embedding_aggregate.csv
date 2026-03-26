@@ -1,0 +1,13 @@
+table,embedding,rank_frozen_linear,rank_frozen_backbone_trainable_head,rank_overall,embedding_advantage,effect_vs_baseline,baseline_win_rate,n_pairs
+A_rank,baseline,2.6666666666666665,2.5,2.583333333333333,,,,
+A_rank,scGPT_human,3.333333333333333,5.0,4.166666666666666,,,,
+A_rank,minus,4.0,4.0,4.0,,,,
+A_rank,v4_bias_rec_best,2.0,1.5,1.75,,,,
+A_rank,v4_plain_best,4.0,4.5,4.25,,,,
+A_rank,v4_type_pe_best,5.0,3.5,4.25,,,,
+B_effect,baseline,,,,0.0,0.0,0.5,39.0
+B_effect,scGPT_human,,,,-0.02673452826769075,0.02673452826769075,0.48717948717948717,39.0
+B_effect,minus,,,,-0.04900742945924662,0.04900742945924662,0.5897435897435898,39.0
+B_effect,v4_bias_rec_best,,,,0.049589584387577414,-0.049589584387577414,0.41025641025641024,39.0
+B_effect,v4_plain_best,,,,-0.0210655903717699,0.0210655903717699,0.48717948717948717,39.0
+B_effect,v4_type_pe_best,,,,-0.04586670221512514,0.04586670221512514,0.5897435897435898,39.0
