@@ -7,12 +7,12 @@ Key fix for cross-species runs:
 - Emits pair-level diagnostics so you can audit how much canonicalization changes overlap.
 
 Outputs:
-- transfer_v2/dataset_stats.csv
-- transfer_v2/pair_manifest.csv
-- transfer_v2/pair_diagnostics.csv
-- transfer_v2/gene_sets/strict_global.txt (if non-empty or strict-mode=global)
-- transfer_v2/gene_sets/strict_pairwise/{train}__to__{test}.txt (when strict is pairwise)
-- transfer_v2/gene_sets/coverage_matched/{train}__to__{test}.txt
+- results/transfer_v2/dataset_stats.csv
+- results/transfer_v2/pair_manifest.csv
+- results/transfer_v2/pair_diagnostics.csv
+- results/transfer_v2/gene_sets/strict_global.txt (if non-empty or strict-mode=global)
+- results/transfer_v2/gene_sets/strict_pairwise/{train}__to__{test}.txt (when strict is pairwise)
+- results/transfer_v2/gene_sets/coverage_matched/{train}__to__{test}.txt
 """
 
 from __future__ import annotations
@@ -60,7 +60,7 @@ def read_h5ad_dir(root: Path) -> dict[str, ad.AnnData]:
 def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="Prepare transfer-v2 protocol gene sets from h5ad files.")
     ap.add_argument("--h5ad-root", type=Path, required=True, help="Folder with per-dataset .h5ad files.")
-    ap.add_argument("--out-dir", type=Path, default=Path("transfer_v2"), help="Output folder.")
+    ap.add_argument("--out-dir", type=Path, default=Path("results/transfer_v2"), help="Output folder.")
     ap.add_argument(
         "--coverage-k",
         type=int,

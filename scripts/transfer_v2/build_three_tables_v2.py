@@ -18,9 +18,9 @@ import pandas as pd
 
 def parse_args():
     p = argparse.ArgumentParser()
-    p.add_argument("--seed-results", default="transfer/embedding_transfer_seed_results_v2.csv")
-    p.add_argument("--quality", default="transfer_v2/pair_diagnostics.csv")
-    p.add_argument("--out-dir", default="transfer")
+    p.add_argument("--seed-results", default="results/transfer_v2/embedding_transfer_seed_results_v2.csv")
+    p.add_argument("--quality", default="results/transfer_v2/pair_diagnostics.csv")
+    p.add_argument("--out-dir", default="results/transfer_v2")
     p.add_argument("--close-margin-ratio", type=float, default=0.20)
     p.add_argument(
         "--no-controlled-subtables",
