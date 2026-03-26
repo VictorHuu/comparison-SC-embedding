@@ -10,7 +10,7 @@ from typing import Dict, List, Tuple
 import numpy as np
 import pandas as pd
 
-TARGET_EMB = ["baseline", "minus", "scgpt_human"]
+TARGET_EMB = ["baseline", "minus", "scgpt_human","v4_bias_rec_best","v4_plain_best","v4_type_pe_best"]
 THRESHOLDS = [0.00, 0.05, 0.10, 0.15, 0.20]
 
 

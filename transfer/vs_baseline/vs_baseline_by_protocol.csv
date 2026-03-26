@@ -1,0 +1,13 @@
+protocol,embedding,n_slots_compared,wins_vs_baseline,losses_vs_baseline,ties_vs_baseline,win_rate_vs_baseline
+coverage_matched,v4_bias_rec_best,120,53,67,0,0.44166666666666665
+coverage_matched,scgpt_human,120,50,70,0,0.4166666666666667
+coverage_matched,v4_plain_best,120,49,71,0,0.4083333333333333
+coverage_matched,minus,120,45,75,0,0.375
+native,scgpt_human,120,66,54,0,0.55
+native,minus,120,48,72,0,0.4
+native,v4_plain_best,120,38,82,0,0.31666666666666665
+native,v4_bias_rec_best,120,37,83,0,0.30833333333333335
+strict,scgpt_human,120,66,54,0,0.55
+strict,v4_plain_best,120,61,58,1,0.5083333333333333
+strict,minus,120,47,73,0,0.39166666666666666
+strict,v4_bias_rec_best,120,37,83,0,0.30833333333333335

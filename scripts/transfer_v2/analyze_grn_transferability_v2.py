@@ -83,6 +83,9 @@ def default_embeddings_config(base_dir: str) -> dict[str, dict[str, str]]:
         "minus": {"path": f"{base_dir}/save_pretrain/minus/best_model.pt", "key": "module.embedding.weight"},
         "baseline": {"path": f"{base_dir}/save_pretrain/baseline/best_model.pt", "key": "module.embedding.weight"},
         "scGPT_human": {"path": f"{base_dir}/save_pretrain/scGPT_human/best_model.pt", "key": "encoder.embedding.weight"},
+        "v4_bias_rec_best": {"path": f"{base_dir}/save_pretrain/v4_bias_rec_best/best_model.pt", "key": "embedding.weight"},
+        "v4_plain_best": {"path": f"{base_dir}/save_pretrain/v4_plain_best/best_model.pt", "key": "embedding.weight"},
+        "v4_type_pe_best": {"path": f"{base_dir}/save_pretrain/v4_type_pe_best/best_model.pt", "key": "embedding.weight"},
     }
 
 
@@ -367,7 +370,7 @@ def main() -> None:
     if not emb_cfg:
         raise FileNotFoundError(
             "No embedding checkpoints found. Provide --embeddings-config or place defaults under "
-            "--base-dir/save_pretrain/{minus,baseline,scGPT_human}/best_model.pt."
+            "--base-dir/save_pretrain/{minus,baseline,scGPT_human,v4_bias_rec_best,v4_plain_best,v4_type_pe_best}/best_model.pt."
         )
 
     emb_map = {name: load_embedding(cfg["path"], cfg["key"]) for name, cfg in emb_cfg.items()}

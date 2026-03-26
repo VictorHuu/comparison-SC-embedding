@@ -1,0 +1,9 @@
+clf,embedding,n_slots_compared,wins_vs_baseline,losses_vs_baseline,ties_vs_baseline,win_rate_vs_baseline
+lr,scgpt_human,180,96,84,0,0.5333333333333333
+lr,v4_plain_best,180,74,105,1,0.4111111111111111
+lr,minus,180,73,107,0,0.40555555555555556
+lr,v4_bias_rec_best,180,53,127,0,0.29444444444444445
+mlp,scgpt_human,180,86,94,0,0.4777777777777778
+mlp,v4_bias_rec_best,180,74,106,0,0.4111111111111111
+mlp,v4_plain_best,180,74,106,0,0.4111111111111111
+mlp,minus,180,67,113,0,0.37222222222222223
