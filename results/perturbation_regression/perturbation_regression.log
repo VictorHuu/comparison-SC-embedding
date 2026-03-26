@@ -23,3 +23,34 @@
 [2026-03-21 13:07:45] Interpretation note: frozen_linear is the primary probe-based comparison.
 [2026-03-21 13:07:45] Interpretation note: frozen_backbone_trainable_head is a secondary adaptation benchmark.
 [2026-03-21 13:07:45] Interpretation note: full_finetune_embedding_head is exploratory and disabled by default.
+[2026-03-26 12:52:40] ============================================================================================
+[2026-03-26 12:52:40] Perturbation Regression Benchmark (Conservative + Leak-Free)
+[2026-03-26 12:52:40] PRIMARY: frozen_linear (probe-based comparison)
+[2026-03-26 12:52:40] SECONDARY: frozen_backbone_trainable_head (adaptation benchmark)
+[2026-03-26 12:52:40] EXPLORATORY: full_finetune_embedding_head (disabled by default)
+[2026-03-26 12:52:40] NOTE: Mixed evidence across datasets is expected; implementation is embedding-agnostic.
+[2026-03-26 12:52:40] ============================================================================================
+[2026-03-26 12:52:40] 
+[Dataset] adamson
+[2026-03-26 12:55:08] 
+[Dataset] dixit
+[2026-03-26 12:56:28]   - dixit/dataset::all/minus: skip frozen_mlp (n_pert_genes=19 < 25)
+[2026-03-26 12:56:28]   - dixit/dataset::all/minus: skip frozen_backbone_trainable_head (min train < 20)
+[2026-03-26 12:56:28]   - dixit/dataset::all/baseline: skip frozen_mlp (n_pert_genes=19 < 25)
+[2026-03-26 12:56:28]   - dixit/dataset::all/baseline: skip frozen_backbone_trainable_head (min train < 20)
+[2026-03-26 12:56:28]   - dixit/dataset::all/scGPT_human: skip frozen_mlp (n_pert_genes=19 < 25)
+[2026-03-26 12:56:28]   - dixit/dataset::all/scGPT_human: skip frozen_backbone_trainable_head (min train < 20)
+[2026-03-26 12:56:29]   - dixit/dataset::all/v4_bias_rec_best: skip frozen_mlp (n_pert_genes=19 < 25)
+[2026-03-26 12:56:29]   - dixit/dataset::all/v4_bias_rec_best: skip frozen_backbone_trainable_head (min train < 20)
+[2026-03-26 12:56:29]   - dixit/dataset::all/v4_plain_best: skip frozen_mlp (n_pert_genes=19 < 25)
+[2026-03-26 12:56:29]   - dixit/dataset::all/v4_plain_best: skip frozen_backbone_trainable_head (min train < 20)
+[2026-03-26 12:56:29]   - dixit/dataset::all/v4_type_pe_best: skip frozen_mlp (n_pert_genes=19 < 25)
+[2026-03-26 12:56:29]   - dixit/dataset::all/v4_type_pe_best: skip frozen_backbone_trainable_head (min train < 20)
+[2026-03-26 12:56:29] 
+[Dataset] norman
+[2026-03-26 12:57:40] Saved summary CSV: /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/results/perturbation_regression/perturbation_regression_results.csv
+[2026-03-26 12:57:40] Saved fold-level CSV: /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/results/perturbation_regression/perturbation_regression_fold_results.csv
+[2026-03-26 12:57:40] Saved ranking CSV: /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/results/perturbation_regression/perturbation_regression_ranking_summary.csv
+[2026-03-26 12:57:40] Interpretation note: frozen_linear is the primary probe-based comparison.
+[2026-03-26 12:57:40] Interpretation note: frozen_backbone_trainable_head is a secondary adaptation benchmark.
+[2026-03-26 12:57:40] Interpretation note: full_finetune_embedding_head is exploratory and disabled by default.

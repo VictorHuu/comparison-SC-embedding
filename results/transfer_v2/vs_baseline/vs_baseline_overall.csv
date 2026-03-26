@@ -1,5 +1,6 @@
 embedding,n_slots_compared,wins_vs_baseline,losses_vs_baseline,ties_vs_baseline,win_rate_vs_baseline
 scgpt_human,360,182,178,0,0.5055555555555555
+v4_type_pe_best,360,169,191,0,0.46944444444444444
 v4_plain_best,360,148,211,1,0.4111111111111111
 minus,360,140,220,0,0.3888888888888889
 v4_bias_rec_best,360,127,233,0,0.3527777777777778

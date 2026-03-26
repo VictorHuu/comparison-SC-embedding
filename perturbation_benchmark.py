@@ -40,7 +40,7 @@ warnings.filterwarnings("ignore")
 # Config
 # =============================================================
 BASE_DIR = '/bigdata2/hyt/projects/scbenchmark'
-OUTPUT_DIR = '/bigdata2/hyt/projects/grn_benchmark'
+OUTPUT_DIR = '/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/perturbation_benchmark'
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 LOG_FILE = os.path.join(OUTPUT_DIR, 'perturbation.log')
@@ -50,8 +50,8 @@ PERTURB_DATA_DIR = f'{BASE_DIR}/data/downstreams/perturbation/processed_data'
 DATASETS = ['adamson', 'dixit', 'norman']
 
 EMBEDDINGS = {
-    'difference_v3': {
-        'path': f'{BASE_DIR}/save_pretrain/difference_aligned_v3/best_model.pt',
+    'minus': {
+        'path': f'{BASE_DIR}/save_pretrain/minus/best_model.pt',
         'key': 'module.embedding.weight',
         'type': 'checkpoint',
     },
@@ -63,6 +63,21 @@ EMBEDDINGS = {
     'scGPT_human': {
         'path': f'{BASE_DIR}/save_pretrain/scGPT_human/best_model.pt',
         'key': 'encoder.embedding.weight',
+        'type': 'checkpoint',
+    },
+    'v4_bias_rec_best': {
+        'path': f'{BASE_DIR}/save_pretrain/v4_bias_rec_best/best_model.pt',
+        'key': 'embedding.weight',
+        'type': 'checkpoint',
+    },
+    'v4_plain_best': {
+        'path': f'{BASE_DIR}/save_pretrain/v4_plain_best/best_model.pt',
+        'key': 'embedding.weight',
+        'type': 'checkpoint',
+    },
+    'v4_type_pe_best': {
+        'path': f'{BASE_DIR}/save_pretrain/v4_type_pe_best/best_model.pt',
+        'key': 'embedding.weight',
         'type': 'checkpoint',
     },
     # 'GF-12L95M': {
@@ -113,7 +128,7 @@ def build_symbol_to_entrez():
         shutil.copy2(alt_path, mapping_file)
         with open(mapping_file) as f:
             return json.load(f)
-    alt2 = '/bigdata2/hyt/projects/grn_benchmark/gene_symbol_to_entrez.json'
+    alt2 = '/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/gene_symbol_to_entrez.json'
     if os.path.exists(alt2):
         import shutil
         shutil.copy2(alt2, mapping_file)

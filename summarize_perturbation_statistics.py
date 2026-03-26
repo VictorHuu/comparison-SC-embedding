@@ -22,7 +22,7 @@ PRIMARY_METHOD = "frozen_linear"
 SECONDARY_METHOD = "frozen_backbone_trainable_head"
 TARGET_METHODS = [PRIMARY_METHOD, SECONDARY_METHOD]
 TARGET_EMBEDDING = "difference_v3"
-COMPARATORS = ["baseline", "scGPT_human"]
+COMPARATORS = ["baseline", "scGPT_human","minus","v4_bias_rec_best", "v4_plain_best", "v4_type_pe_best"]
 METRICS = ["pearson_r", "mse", "sign_acc"]
 
 

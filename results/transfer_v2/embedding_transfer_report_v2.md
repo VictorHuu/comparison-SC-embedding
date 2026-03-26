@@ -4,7 +4,7 @@
 
 - h5ad_root: processed/native
 - pair_manifest: transfer_v2/pair_manifest.csv
-- embeddings: ['minus', 'baseline', 'scGPT_human', 'v4_bias_rec_best', 'v4_plain_best']
+- embeddings: ['minus', 'baseline', 'scGPT_human', 'v4_bias_rec_best', 'v4_plain_best', 'v4_type_pe_best']
 - classifiers: ['lr', 'mlp']
 - seeds: [0, 1, 2, 3, 4]
 - resample_lr: True

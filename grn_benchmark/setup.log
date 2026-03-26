@@ -1,94 +1,255 @@
-[2026-03-08 12:07:07] ============================================================
-[2026-03-08 12:07:07] scGREAT GRN Benchmark Setup
-[2026-03-08 12:07:07] ============================================================
-[2026-03-08 12:07:07] scGREAT already exists at /root/autodl-tmp/scGREAT
-[2026-03-08 12:07:07] Patching scGREAT source code...
-[2026-03-08 12:07:07]   Patched model.py (nn.Linear(2*embed_size, 1024))
-[2026-03-08 12:07:07]   Patched main.py (biovect{embed_size}.npy, best metric tracking)
-[2026-03-08 12:07:07]   Patched demo.py (--data_dir, --n_runs, mean+std reporting)
-[2026-03-08 12:07:07] All patches applied.
-[2026-03-08 12:07:07]   Dataset hESC500: 910 genes
-[2026-03-08 12:07:07]   Dataset hHEP500: NOT FOUND
-[2026-03-08 12:07:07]   Dataset mESC500: 1120 genes
-[2026-03-08 12:07:07]   Dataset mHSC-E500: NOT FOUND
-[2026-03-08 12:07:07]   Dataset mHSC-GM500: NOT FOUND
-[2026-03-08 12:07:07]   Dataset mHSC-L500: NOT FOUND
-[2026-03-08 12:07:07] 
+[2026-03-18 19:02:10] ============================================================
+[2026-03-18 19:02:10] scGREAT GRN Benchmark Setup
+[2026-03-18 19:02:10] ============================================================
+[2026-03-18 19:02:10] scGREAT already exists at /bigdata2/hyt/projects/scGREAT
+[2026-03-18 19:02:10] Patching scGREAT source code...
+[2026-03-18 19:02:10]   Patched model.py (nn.Linear(2*embed_size, 1024))
+[2026-03-18 19:02:10]   Patched main.py (biovect{embed_size}.npy, best metric tracking)
+[2026-03-18 19:02:10]   Patched demo.py (--data_dir, --n_runs, mean+std reporting)
+[2026-03-18 19:02:10] All patches applied.
+[2026-03-18 19:02:10]   Dataset hESC500: 910 genes
+[2026-03-18 19:02:10]   Dataset hHEP500: NOT FOUND
+[2026-03-18 19:02:10]   Dataset mESC500: 1120 genes
+[2026-03-18 19:02:10]   Dataset mHSC-E500: NOT FOUND
+[2026-03-18 19:02:10]   Dataset mHSC-GM500: NOT FOUND
+[2026-03-18 19:02:10]   Dataset mHSC-L500: NOT FOUND
+[2026-03-18 19:02:10] 
 Human datasets: ['hESC500']
-[2026-03-08 12:07:07] Mouse datasets: ['mESC500']
-[2026-03-08 12:07:07] Note: Mouse datasets may have low gene coverage with human embeddings
+[2026-03-18 19:02:10] Mouse datasets: ['mESC500']
+[2026-03-18 19:02:10] Note: Mouse datasets may have low gene coverage with human embeddings
 
-[2026-03-08 12:07:07] Loading vocab...
-[2026-03-08 12:07:07]   Vocab size: 60697
-[2026-03-08 12:07:07] 
+[2026-03-18 19:02:10] Loading vocab...
+[2026-03-18 19:02:10]   Vocab size: 60697
+[2026-03-18 19:02:10] 
 Loading embeddings...
-[2026-03-08 12:07:07]   Loading difference_v3 from /root/autodl-tmp/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt...
-[2026-03-08 12:07:07]     Shape: (60697, 256)
-[2026-03-08 12:07:07]   Loading baseline from /root/autodl-tmp/scbenchmark/save_pretrain/baseline/best_model.pt...
-[2026-03-08 12:07:07]     Shape: (60697, 256)
-[2026-03-08 12:07:07]   Loading scGPT_human from /root/autodl-tmp/scGPT_human/best_model.pt...
-[2026-03-08 12:07:08]     Shape: (60697, 512)
-[2026-03-08 12:07:08]   Loading GF-12L95M from /root/autodl-tmp/gene_embeddings/intersect/GF-12L95M...
-[2026-03-08 12:07:10]     Shape: (11355, 512), genes: 11355
-[2026-03-08 12:07:10] Loading cached gene symbol -> Entrez mapping...
-[2026-03-08 12:07:10] 
+[2026-03-18 19:02:10]   Loading difference_v3 from /bigdata2/hyt/projects/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt...
+[2026-03-18 19:46:12] ============================================================
+[2026-03-18 19:46:12] scGREAT GRN Benchmark Setup
+[2026-03-18 19:46:12] ============================================================
+[2026-03-18 19:46:12] scGREAT already exists at /bigdata2/hyt/projects/scGREAT
+[2026-03-18 19:46:12] Patching scGREAT source code...
+[2026-03-18 19:46:12]   Patched model.py (nn.Linear(2*embed_size, 1024))
+[2026-03-18 19:46:12]   Patched main.py (biovect{embed_size}.npy, best metric tracking)
+[2026-03-18 19:46:12]   Patched demo.py (--data_dir, --n_runs, mean+std reporting)
+[2026-03-18 19:46:12] All patches applied.
+[2026-03-18 19:46:12]   Dataset hESC500: 910 genes
+[2026-03-18 19:46:12]   Dataset hHEP500: NOT FOUND
+[2026-03-18 19:46:12]   Dataset mESC500: 1120 genes
+[2026-03-18 19:46:12]   Dataset mHSC-E500: NOT FOUND
+[2026-03-18 19:46:12]   Dataset mHSC-GM500: NOT FOUND
+[2026-03-18 19:46:12]   Dataset mHSC-L500: NOT FOUND
+[2026-03-18 19:46:12] 
+Human datasets: ['hESC500']
+[2026-03-18 19:46:12] Mouse datasets: ['mESC500']
+[2026-03-18 19:46:12] Note: Mouse datasets may have low gene coverage with human embeddings
+
+[2026-03-18 19:46:12] Loading vocab...
+[2026-03-18 19:46:12]   Vocab size: 60697
+[2026-03-18 19:46:12] 
+Loading embeddings...
+[2026-03-18 19:46:12]   Loading difference_v3 from /bigdata2/hyt/projects/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt...
+[2026-03-18 19:46:13]     Shape: (60697, 256)
+[2026-03-18 19:46:13]   Loading baseline from /bigdata2/hyt/projects/scbenchmark/save_pretrain/baseline/best_model.pt...
+[2026-03-18 19:48:19] ============================================================
+[2026-03-18 19:48:19] scGREAT GRN Benchmark Setup
+[2026-03-18 19:48:19] ============================================================
+[2026-03-18 19:48:19] scGREAT already exists at /bigdata2/hyt/projects/scGREAT
+[2026-03-18 19:48:19] Patching scGREAT source code...
+[2026-03-18 19:48:19]   Patched model.py (nn.Linear(2*embed_size, 1024))
+[2026-03-18 19:48:19]   Patched main.py (biovect{embed_size}.npy, best metric tracking)
+[2026-03-18 19:48:19]   Patched demo.py (--data_dir, --n_runs, mean+std reporting)
+[2026-03-18 19:48:19] All patches applied.
+[2026-03-18 19:48:19]   Dataset hESC500: 910 genes
+[2026-03-18 19:48:19]   Dataset hHEP500: NOT FOUND
+[2026-03-18 19:48:19]   Dataset mESC500: 1120 genes
+[2026-03-18 19:48:19]   Dataset mHSC-E500: NOT FOUND
+[2026-03-18 19:48:19]   Dataset mHSC-GM500: NOT FOUND
+[2026-03-18 19:48:19]   Dataset mHSC-L500: NOT FOUND
+[2026-03-18 19:48:19] 
+Human datasets: ['hESC500']
+[2026-03-18 19:48:19] Mouse datasets: ['mESC500']
+[2026-03-18 19:48:19] Note: Mouse datasets may have low gene coverage with human embeddings
+
+[2026-03-18 19:48:19] Loading vocab...
+[2026-03-18 19:48:20]   Vocab size: 60697
+[2026-03-18 19:48:20] 
+Loading embeddings...
+[2026-03-18 19:48:20]   Loading difference_v3 from /bigdata2/hyt/projects/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt...
+[2026-03-18 19:48:20]     Shape: (60697, 256)
+[2026-03-18 19:48:20] Downloading NCBI Homo_sapiens.gene_info.gz ...
+[2026-03-18 19:49:54] ============================================================
+[2026-03-18 19:49:54] scGREAT GRN Benchmark Setup
+[2026-03-18 19:49:54] ============================================================
+[2026-03-18 19:49:54] scGREAT already exists at /bigdata2/hyt/projects/scGREAT
+[2026-03-18 19:49:54] Patching scGREAT source code...
+[2026-03-18 19:49:54]   Patched model.py (nn.Linear(2*embed_size, 1024))
+[2026-03-18 19:49:54]   Patched main.py (biovect{embed_size}.npy, best metric tracking)
+[2026-03-18 19:49:54]   Patched demo.py (--data_dir, --n_runs, mean+std reporting)
+[2026-03-18 19:49:54] All patches applied.
+[2026-03-18 19:49:54]   Dataset hESC500: 910 genes
+[2026-03-18 19:49:54]   Dataset hHEP500: NOT FOUND
+[2026-03-18 19:49:54]   Dataset mESC500: 1120 genes
+[2026-03-18 19:49:54]   Dataset mHSC-E500: NOT FOUND
+[2026-03-18 19:49:54]   Dataset mHSC-GM500: NOT FOUND
+[2026-03-18 19:49:54]   Dataset mHSC-L500: NOT FOUND
+[2026-03-18 19:49:54] 
+Human datasets: ['hESC500']
+[2026-03-18 19:49:54] Mouse datasets: ['mESC500']
+[2026-03-18 19:49:54] Note: Mouse datasets may have low gene coverage with human embeddings
+
+[2026-03-18 19:49:54] Loading vocab...
+[2026-03-18 19:49:54]   Vocab size: 60697
+[2026-03-18 19:49:54] 
+Loading embeddings...
+[2026-03-18 19:49:54]   Loading difference_v3 from /bigdata2/hyt/projects/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt...
+[2026-03-18 19:49:54]     Shape: (60697, 256)
+[2026-03-18 19:49:54] Downloading NCBI Homo_sapiens.gene_info.gz ...
+[2026-03-18 19:50:26]   Built mapping: 262206 entries
+[2026-03-18 19:50:26] 
 ============================================================
-[2026-03-08 12:07:10] Generating embedding files for scGREAT...
-[2026-03-08 12:07:10] ============================================================
-[2026-03-08 12:07:10] 
+[2026-03-18 19:50:26] Generating embedding files for scGREAT...
+[2026-03-18 19:50:26] ============================================================
+[2026-03-18 19:50:26] 
 Dataset: hESC500 (910 genes)
-[2026-03-08 12:07:10]   difference_v3 x hESC500: 848/910 genes mapped (93.2%)
-[2026-03-08 12:07:10]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
-[2026-03-08 12:07:10]     Saved /root/autodl-tmp/grn_benchmark/difference_v3/hESC500/biovect256.npy shape=(911, 256)
-[2026-03-08 12:07:10]   baseline x hESC500: 848/910 genes mapped (93.2%)
-[2026-03-08 12:07:10]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
-[2026-03-08 12:07:10]     Saved /root/autodl-tmp/grn_benchmark/baseline/hESC500/biovect256.npy shape=(911, 256)
-[2026-03-08 12:07:10]   scGPT_human x hESC500: 848/910 genes mapped (93.2%)
-[2026-03-08 12:07:10]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
-[2026-03-08 12:07:10]     Saved /root/autodl-tmp/grn_benchmark/scGPT_human/hESC500/biovect512.npy shape=(911, 512)
-[2026-03-08 12:07:10]   GF-12L95M x hESC500: 637/910 genes mapped (70.0%)
-[2026-03-08 12:07:10]     Missing (273): ['SMARCD1', 'POU2AF1', 'FREM1', 'CYP1B1', 'WWTR1', 'ZNF219', 'JMJD1C', 'DRAM2', 'PARN', 'TMEM64']...
-[2026-03-08 12:07:10]     Saved /root/autodl-tmp/grn_benchmark/GF-12L95M/hESC500/biovect512.npy shape=(911, 512)
-[2026-03-08 12:07:10] 
+[2026-03-18 19:50:26]   difference_v3 x hESC500: 848/910 genes mapped (93.2%)
+[2026-03-18 19:50:26]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-03-18 19:50:26]     Saved /bigdata2/hyt/projects/grn_benchmark/difference_v3/hESC500/biovect256.npy shape=(911, 256)
+[2026-03-18 19:50:26] 
 Dataset: mESC500 (1120 genes)
-[2026-03-08 12:07:10]   difference_v3 x mESC500: 937/1120 genes mapped (83.7%)
-[2026-03-08 12:07:10]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
-[2026-03-08 12:07:10]     Saved /root/autodl-tmp/grn_benchmark/difference_v3/mESC500/biovect256.npy shape=(1121, 256)
-[2026-03-08 12:07:10]   baseline x mESC500: 937/1120 genes mapped (83.7%)
-[2026-03-08 12:07:10]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
-[2026-03-08 12:07:10]     Saved /root/autodl-tmp/grn_benchmark/baseline/mESC500/biovect256.npy shape=(1121, 256)
-[2026-03-08 12:07:10]   scGPT_human x mESC500: 937/1120 genes mapped (83.7%)
-[2026-03-08 12:07:10]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
-[2026-03-08 12:07:10]     Saved /root/autodl-tmp/grn_benchmark/scGPT_human/mESC500/biovect512.npy shape=(1121, 512)
-[2026-03-08 12:07:11]   GF-12L95M x mESC500: 642/1120 genes mapped (57.3%)
-[2026-03-08 12:07:11]     Missing (478): ['MED4', 'NFATC2IP', 'GM13597', 'TXNDC12', 'ODC1', 'GM24044', 'YAF2', 'SLC25A4', 'GM14303', 'KRBA1']...
-[2026-03-08 12:07:11]     Saved /root/autodl-tmp/grn_benchmark/GF-12L95M/mESC500/biovect512.npy shape=(1121, 512)
-[2026-03-08 12:07:11] 
+[2026-03-18 19:50:26]   difference_v3 x mESC500: 937/1120 genes mapped (83.7%)
+[2026-03-18 19:50:26]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-03-18 19:50:26]     Saved /bigdata2/hyt/projects/grn_benchmark/difference_v3/mESC500/biovect256.npy shape=(1121, 256)
+[2026-03-18 19:50:26] 
 Setting up BioBERT original baseline...
-[2026-03-08 12:07:11]   BioBERT_original x hESC500: using original biovect768.npy
-[2026-03-08 12:07:11]   BioBERT_original x mESC500: using original biovect768.npy
-[2026-03-08 12:07:11] 
+[2026-03-18 19:50:26]   BioBERT_original x hESC500: using original biovect768.npy
+[2026-03-18 19:50:26]   BioBERT_original x mESC500: using original biovect768.npy
+[2026-03-18 19:50:26] 
 ============================================================
-[2026-03-08 12:07:11] Gene Coverage Summary
-[2026-03-08 12:07:11] ============================================================
-[2026-03-08 12:07:11] Embedding            Dataset           Mapped    Total   Coverage   Dim
-[2026-03-08 12:07:11] ----------------------------------------------------------------------
-[2026-03-08 12:07:11] difference_v3        hESC500              848      910      93.2%   256
-[2026-03-08 12:07:11] baseline             hESC500              848      910      93.2%   256
-[2026-03-08 12:07:11] scGPT_human          hESC500              848      910      93.2%   512
-[2026-03-08 12:07:11] GF-12L95M            hESC500              637      910      70.0%   512
-[2026-03-08 12:07:11] difference_v3        mESC500              937     1120      83.7%   256
-[2026-03-08 12:07:11] baseline             mESC500              937     1120      83.7%   256
-[2026-03-08 12:07:11] scGPT_human          mESC500              937     1120      83.7%   512
-[2026-03-08 12:07:11] GF-12L95M            mESC500              642     1120      57.3%   512
-[2026-03-08 12:07:11] 
+[2026-03-18 19:50:26] Gene Coverage Summary
+[2026-03-18 19:50:26] ============================================================
+[2026-03-18 19:50:26] Embedding            Dataset           Mapped    Total   Coverage   Dim
+[2026-03-18 19:50:26] ----------------------------------------------------------------------
+[2026-03-18 19:50:26] difference_v3        hESC500              848      910      93.2%   256
+[2026-03-18 19:50:26] difference_v3        mESC500              937     1120      83.7%   256
+[2026-03-18 19:50:26] 
 ============================================================
-[2026-03-08 12:07:11] Generating run script...
-[2026-03-08 12:07:11] ============================================================
-[2026-03-08 12:07:11] Generated run script: /root/autodl-tmp/grn_benchmark/run_all.sh
-[2026-03-08 12:07:11] 
+[2026-03-18 19:50:26] Generating run script...
+[2026-03-18 19:50:26] ============================================================
+[2026-03-18 19:50:26] Generated run script: /bigdata2/hyt/projects/grn_benchmark/run_all.sh
+[2026-03-18 19:50:26] 
 ============================================================
-[2026-03-08 12:07:11] Setup complete!
-[2026-03-08 12:07:11] Experiment dirs: /root/autodl-tmp/grn_benchmark/<embedding>/<dataset>/
-[2026-03-08 12:07:11] Run all experiments: bash /root/autodl-tmp/grn_benchmark/run_all.sh
-[2026-03-08 12:07:11] ============================================================
+[2026-03-18 19:50:26] Setup complete!
+[2026-03-18 19:50:26] Experiment dirs: /bigdata2/hyt/projects/grn_benchmark/<embedding>/<dataset>/
+[2026-03-18 19:50:26] Run all experiments: bash /bigdata2/hyt/projects/grn_benchmark/run_all.sh
+[2026-03-18 19:50:26] ============================================================
+[2026-03-18 20:47:49] ============================================================
+[2026-03-18 20:47:49] scGREAT GRN Benchmark Setup
+[2026-03-18 20:47:49] ============================================================
+[2026-03-18 20:47:49] scGREAT already exists at /bigdata2/hyt/projects/scGREAT
+[2026-03-18 20:47:49] Patching scGREAT source code...
+[2026-03-18 20:47:49]   Patched model.py (nn.Linear(2*embed_size, 1024))
+[2026-03-18 20:47:49]   Patched main.py (biovect{embed_size}.npy, best metric tracking)
+[2026-03-18 20:47:49]   Patched demo.py (--data_dir, --n_runs, mean+std reporting)
+[2026-03-18 20:47:49] All patches applied.
+[2026-03-18 20:47:49]   Dataset hESC500: 910 genes
+[2026-03-18 20:47:49]   Dataset hHEP500: NOT FOUND
+[2026-03-18 20:47:49]   Dataset mESC500: 1120 genes
+[2026-03-18 20:47:49]   Dataset mHSC-E500: NOT FOUND
+[2026-03-18 20:47:49]   Dataset mHSC-GM500: NOT FOUND
+[2026-03-18 20:47:49]   Dataset mHSC-L500: NOT FOUND
+[2026-03-18 20:47:49] 
+Human datasets: ['hESC500']
+[2026-03-18 20:47:49] Mouse datasets: ['mESC500']
+[2026-03-18 20:47:49] Note: Mouse datasets may have low gene coverage with human embeddings
+
+[2026-03-18 20:47:49] Loading vocab...
+[2026-03-18 20:47:49]   Vocab size: 60697
+[2026-03-18 20:47:49] 
+Loading embeddings...
+[2026-03-18 20:47:49]   Loading difference_v3 from /bigdata2/hyt/projects/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt...
+[2026-03-18 20:47:49]     Shape: (60697, 256)
+[2026-03-18 20:47:49]   Loading baseline from /bigdata2/hyt/projects/scbenchmark/save_pretrain/baseline/best_model.pt...
+[2026-03-18 20:49:03] ============================================================
+[2026-03-18 20:49:03] scGREAT GRN Benchmark Setup
+[2026-03-18 20:49:03] ============================================================
+[2026-03-18 20:49:03] scGREAT already exists at /bigdata2/hyt/projects/scGREAT
+[2026-03-18 20:49:03] Patching scGREAT source code...
+[2026-03-18 20:49:03]   Patched model.py (nn.Linear(2*embed_size, 1024))
+[2026-03-18 20:49:03]   Patched main.py (biovect{embed_size}.npy, best metric tracking)
+[2026-03-18 20:49:03]   Patched demo.py (--data_dir, --n_runs, mean+std reporting)
+[2026-03-18 20:49:03] All patches applied.
+[2026-03-18 20:49:03]   Dataset hESC500: 910 genes
+[2026-03-18 20:49:03]   Dataset hHEP500: NOT FOUND
+[2026-03-18 20:49:03]   Dataset mESC500: 1120 genes
+[2026-03-18 20:49:03]   Dataset mHSC-E500: NOT FOUND
+[2026-03-18 20:49:03]   Dataset mHSC-GM500: NOT FOUND
+[2026-03-18 20:49:03]   Dataset mHSC-L500: NOT FOUND
+[2026-03-18 20:49:03] 
+Human datasets: ['hESC500']
+[2026-03-18 20:49:03] Mouse datasets: ['mESC500']
+[2026-03-18 20:49:03] Note: Mouse datasets may have low gene coverage with human embeddings
+
+[2026-03-18 20:49:03] Loading vocab...
+[2026-03-18 20:49:03]   Vocab size: 60697
+[2026-03-18 20:49:03] 
+Loading embeddings...
+[2026-03-18 20:49:03]   Loading difference_v3 from /bigdata2/hyt/projects/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt...
+[2026-03-18 20:49:04]     Shape: (60697, 256)
+[2026-03-18 20:49:04]   Loading baseline from /bigdata2/hyt/projects/scbenchmark/save_pretrain/baseline/best_model.pt...
+[2026-03-18 20:49:04]     Shape: (60697, 256)
+[2026-03-18 20:49:04]   Loading scGPT_human from /bigdata2/hyt/projects/scbenchmark/save_pretrain/scGPT_human/best_model.pt...
+[2026-03-18 20:49:06]     Shape: (60697, 512)
+[2026-03-18 20:49:06] Loading cached gene symbol -> Entrez mapping...
+[2026-03-18 20:49:06] 
+============================================================
+[2026-03-18 20:49:06] Generating embedding files for scGREAT...
+[2026-03-18 20:49:06] ============================================================
+[2026-03-18 20:49:06] 
+Dataset: hESC500 (910 genes)
+[2026-03-18 20:49:06]   difference_v3 x hESC500: 848/910 genes mapped (93.2%)
+[2026-03-18 20:49:06]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-03-18 20:49:06]     Saved /bigdata2/hyt/projects/grn_benchmark/difference_v3/hESC500/biovect256.npy shape=(911, 256)
+[2026-03-18 20:49:06]   baseline x hESC500: 848/910 genes mapped (93.2%)
+[2026-03-18 20:49:06]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-03-18 20:49:06]     Saved /bigdata2/hyt/projects/grn_benchmark/baseline/hESC500/biovect256.npy shape=(911, 256)
+[2026-03-18 20:49:06]   scGPT_human x hESC500: 848/910 genes mapped (93.2%)
+[2026-03-18 20:49:06]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-03-18 20:49:06]     Saved /bigdata2/hyt/projects/grn_benchmark/scGPT_human/hESC500/biovect512.npy shape=(911, 512)
+[2026-03-18 20:49:06] 
+Dataset: mESC500 (1120 genes)
+[2026-03-18 20:49:06]   difference_v3 x mESC500: 937/1120 genes mapped (83.7%)
+[2026-03-18 20:49:06]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-03-18 20:49:07]     Saved /bigdata2/hyt/projects/grn_benchmark/difference_v3/mESC500/biovect256.npy shape=(1121, 256)
+[2026-03-18 20:49:07]   baseline x mESC500: 937/1120 genes mapped (83.7%)
+[2026-03-18 20:49:07]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-03-18 20:49:07]     Saved /bigdata2/hyt/projects/grn_benchmark/baseline/mESC500/biovect256.npy shape=(1121, 256)
+[2026-03-18 20:49:07]   scGPT_human x mESC500: 937/1120 genes mapped (83.7%)
+[2026-03-18 20:49:07]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-03-18 20:49:07]     Saved /bigdata2/hyt/projects/grn_benchmark/scGPT_human/mESC500/biovect512.npy shape=(1121, 512)
+[2026-03-18 20:49:07] 
+Setting up BioBERT original baseline...
+[2026-03-18 20:49:07]   BioBERT_original x hESC500: using original biovect768.npy
+[2026-03-18 20:49:07]   BioBERT_original x mESC500: using original biovect768.npy
+[2026-03-18 20:49:07] 
+============================================================
+[2026-03-18 20:49:07] Gene Coverage Summary
+[2026-03-18 20:49:07] ============================================================
+[2026-03-18 20:49:07] Embedding            Dataset           Mapped    Total   Coverage   Dim
+[2026-03-18 20:49:07] ----------------------------------------------------------------------
+[2026-03-18 20:49:07] difference_v3        hESC500              848      910      93.2%   256
+[2026-03-18 20:49:07] baseline             hESC500              848      910      93.2%   256
+[2026-03-18 20:49:07] scGPT_human          hESC500              848      910      93.2%   512
+[2026-03-18 20:49:07] difference_v3        mESC500              937     1120      83.7%   256
+[2026-03-18 20:49:07] baseline             mESC500              937     1120      83.7%   256
+[2026-03-18 20:49:07] scGPT_human          mESC500              937     1120      83.7%   512
+[2026-03-18 20:49:07] 
+============================================================
+[2026-03-18 20:49:07] Generating run script...
+[2026-03-18 20:49:07] ============================================================
+[2026-03-18 20:49:07] Generated run script: /bigdata2/hyt/projects/grn_benchmark/run_all.sh
+[2026-03-18 20:49:07] 
+============================================================
+[2026-03-18 20:49:07] Setup complete!
+[2026-03-18 20:49:07] Experiment dirs: /bigdata2/hyt/projects/grn_benchmark/<embedding>/<dataset>/
+[2026-03-18 20:49:07] Run all experiments: bash /bigdata2/hyt/projects/grn_benchmark/run_all.sh
+[2026-03-18 20:49:07] ============================================================
