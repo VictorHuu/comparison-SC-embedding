@@ -3,9 +3,9 @@
 Summarize perturbation regression benchmark outputs with paired statistics.
 
 Expected input files:
-- perturbation_regression_results.csv
-- perturbation_regression_ranking_summary.csv
-- perturbation_regression_fold_results.csv
+- results/perturbation_regression/perturbation_regression_results.csv
+- results/perturbation_regression/perturbation_regression_ranking_summary.csv
+- results/perturbation_regression/perturbation_regression_fold_results.csv
 """
 
 from __future__ import annotations
@@ -28,7 +28,7 @@ METRICS = ["pearson_r", "mse", "sign_acc"]
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Paired statistics for perturbation regression results")
-    p.add_argument("--input_dir", type=str, default="/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark")
+    p.add_argument("--input_dir", type=str, default="/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/results/perturbation_regression")
     p.add_argument("--results_csv", type=str, default="perturbation_regression_results.csv")
     p.add_argument("--ranking_csv", type=str, default="perturbation_regression_ranking_summary.csv")
     p.add_argument("--fold_csv", type=str, default="perturbation_regression_fold_results.csv")

@@ -35,7 +35,7 @@ from sklearn.preprocessing import StandardScaler
 warnings.filterwarnings("ignore")
 
 BASE_DIR = '/bigdata2/hyt/projects/scbenchmark'
-OUTPUT_DIR = '/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/perturbation_regression'
+OUTPUT_DIR = '/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/results/perturbation_regression'
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 LOG_FILE = os.path.join(OUTPUT_DIR, "perturbation_regression.log")

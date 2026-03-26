@@ -10,8 +10,8 @@ from __future__ import annotations
 import csv
 import os
 
-DIAG_CSV = "transfer_v2/pair_diagnostics.csv"
-OUT_DIR = "transfer"
+DIAG_CSV = "results/transfer_v2/pair_diagnostics.csv"
+OUT_DIR = "results/transfer_v2"
 OUT_CSV = os.path.join(OUT_DIR, "transfer_control_v2_diagnostics.csv")
 OUT_MD = os.path.join(OUT_DIR, "report_transfer_control_v2.md")
 
