@@ -21,8 +21,8 @@ from scipy.stats import wilcoxon
 PRIMARY_METHOD = "frozen_linear"
 SECONDARY_METHOD = "frozen_backbone_trainable_head"
 TARGET_METHODS = [PRIMARY_METHOD, SECONDARY_METHOD]
-TARGET_EMBEDDING = "difference_v3"
-COMPARATORS = ["baseline", "scGPT_human","minus","v4_bias_rec_best", "v4_plain_best", "v4_type_pe_best"]
+TARGET_EMBEDDING = "baseline"
+COMPARATORS = ["scGPT_human","minus","v4_bias_rec_best", "v4_plain_best", "v4_type_pe_best"]
 METRICS = ["pearson_r", "mse", "sign_acc"]
 
 
@@ -58,7 +58,7 @@ def paired_bootstrap_ci(diffs: np.ndarray, n_boot: int = 10000, seed: int = 42) 
     """Nonparametric paired bootstrap CI for mean difference.
 
     diffs are paired challenger-vs-comparator differences with sign convention
-    already applied so that positive means the challenger (difference_v3) is better.
+    already applied so that positive means the challenger (baseline) is better.
     """
     diffs = np.asarray(diffs, dtype=float)
     diffs = diffs[np.isfinite(diffs)]
@@ -295,7 +295,7 @@ def write_markdown_report(
         f.write("- Primary setting: `frozen_linear`.\n")
         f.write("- Secondary setting: `frozen_backbone_trainable_head`.\n")
         f.write("- Exploratory settings are not used for headline conclusions.\n")
-        f.write("- Across datasets, `difference_v3` did **not** show consistent superiority.\n\n")
+        f.write("- Across datasets, `baseline` did **not** show consistent superiority.\n\n")
 
         f.write("## Descriptive observations by dataset\n\n")
         if "adamson" in best_primary:
@@ -319,7 +319,7 @@ def write_markdown_report(
             f.write("No valid fold-level paired comparisons were available from the provided files.\n")
         else:
             f.write("- Fold-level paired differences are reported with bootstrap 95% CI (descriptive uncertainty quantification).\n")
-            f.write("- Positive mean_diff is defined as better for `difference_v3` across all metrics (including MSE via sign flip).\n")
+            f.write("- Positive mean_diff is defined as better for `baseline` across all metrics (including MSE via sign flip).\n")
             f.write("- Avoid interpreting bootstrap intervals as formal proof by themselves.\n")
             f.write("- Wilcoxon p-values are provided when valid; if missing/NaN, no formal nonparametric inference was possible for that row.\n")
 
@@ -340,9 +340,9 @@ def write_markdown_report(
                     pos = int((p_rows["mean_diff"] > 0).sum())
                     neg = int((p_rows["mean_diff"] < 0).sum())
                     if pos > neg:
-                        trend = "difference_v3 appeared competitive in some paired comparisons"
+                        trend = "baseline appeared competitive in some paired comparisons"
                     elif neg > pos:
-                        trend = "difference_v3 was often lower than comparators in paired folds"
+                        trend = "baseline was often lower than comparators in paired folds"
                     else:
                         trend = "results were mixed with no clear directional advantage"
                     f.write(f"- {dataset}: {trend}.\n")
