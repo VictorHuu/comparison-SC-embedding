@@ -400,7 +400,7 @@ def build_conference_aggregate_tables(
         r = results_df[
             (results_df["embedding"].isin(EMBEDDING_ORDER))
             & (results_df["method"].isin(TARGET_METHODS))
-        ][["dataset", "embedding", "method", "pearson_r", "mse"]].copy()
+        ][["dataset", "embedding", "method", "pearson_r", "mse", "sign_acc"]].copy()
         if r.empty:
             effect_df = pd.DataFrame(columns=metric_cols)
         else:
@@ -419,9 +419,12 @@ def build_conference_aggregate_tables(
                 .agg(
                     mean_pearson_r=("pearson_r", "mean"),
                     mean_mse=("mse", "mean"),
+                    mean_acc=("sign_acc", "mean"),
                 )
             )
             agg = agg.merge(summ, on=["embedding", "method"], how="left")
+            # F1 cannot be reconstructed from aggregate sign_acc without per-sample TP/FP/FN.
+            agg["mean_f1"] = np.nan
 
             method_alias = {
                 "frozen_linear": "frozen_linear",
@@ -440,7 +443,7 @@ def build_conference_aggregate_tables(
             dynamic_cols = []
             for d in ds_list:
                 dynamic_cols.extend([f"{d}_pearson_r", f"{d}_mse"])
-            effect_df = agg[metric_cols + dynamic_cols + ["mean_pearson_r", "mean_mse"]].copy()
+            effect_df = agg[metric_cols + dynamic_cols + ["mean_pearson_r", "mean_mse", "mean_acc", "mean_f1"]].copy()
             effect_df["embedding"] = pd.Categorical(effect_df["embedding"], categories=EMBEDDING_ORDER, ordered=True)
             effect_df["method"] = pd.Categorical(effect_df["method"], categories=TARGET_METHODS, ordered=True)
             effect_df = effect_df.sort_values(["embedding", "method"]).reset_index(drop=True)
@@ -489,7 +492,7 @@ def write_conference_markdown(out_path: str, rank_df: pd.DataFrame, effect_df: p
             ds_cols = [
                 c for c in effect_df.columns
                 if (c.endswith("_pearson_r") or c.endswith("_mse"))
-                and c not in {"mean_pearson_r", "mean_mse"}
+                and c not in {"mean_pearson_r", "mean_mse", "mean_acc", "mean_f1"}
             ]
             datasets = sorted({c.rsplit("_", 2)[0] for c in ds_cols})
             ordered_ds_cols = []
@@ -499,11 +502,19 @@ def write_conference_markdown(out_path: str, rank_df: pd.DataFrame, effect_df: p
                 m_col = f"{ds}_mse"
                 ordered_ds_cols.extend([p_col, m_col])
                 pretty_ds_headers.extend([f"{ds} Pearson r", f"{ds} MSE"])
-            header = ["Embedding", *pretty_ds_headers, "Mean Pearson r", "Mean MSE"]
-            f.write("| " + " | ".join(header) + " |\n")
-            f.write("|" + "|".join(["---"] + ["---:" for _ in header[1:]]) + "|\n")
+            header_top = ["Embedding"]
+            header_bottom = [""]
+            for ds in datasets:
+                header_top.extend([ds, ds])
+                header_bottom.extend(["Pearson r", "MSE"])
+            header_top.extend(["Overall", "Overall", "Overall", "Overall"])
+            header_bottom.extend(["Mean Pearson r", "Mean MSE", "Mean Acc", "Mean F1"])
+
+            f.write("| " + " | ".join(header_top) + " |\n")
+            f.write("|" + "|".join(["---"] + ["---:" for _ in header_top[1:]]) + "|\n")
+            f.write("| " + " | ".join(header_bottom) + " |\n")
             best_by_col = {}
-            for c in ordered_ds_cols + ["mean_pearson_r", "mean_mse"]:
+            for c in ordered_ds_cols + ["mean_pearson_r", "mean_mse", "mean_acc"]:
                 best_by_col[c] = effect_df[c].max(skipna=True)
             for _, r in effect_df.iterrows():
                 emb = str(r["embedding_label"])
@@ -516,11 +527,15 @@ def write_conference_markdown(out_path: str, rank_df: pd.DataFrame, effect_df: p
                     metric_cells.append(cell)
                 pearson = "-" if pd.isna(r["mean_pearson_r"]) else f"{r['mean_pearson_r']:.4f}"
                 mse = "-" if pd.isna(r["mean_mse"]) else f"{r['mean_mse']:.4f}"
+                acc = "-" if pd.isna(r["mean_acc"]) else f"{r['mean_acc']:.4f}"
+                f1 = "-" if pd.isna(r["mean_f1"]) else f"{r['mean_f1']:.4f}"
                 if pd.notna(r["mean_pearson_r"]) and np.isclose(r["mean_pearson_r"], best_by_col["mean_pearson_r"]):
                     pearson = f"**{pearson}**"
                 if pd.notna(r["mean_mse"]) and np.isclose(r["mean_mse"], best_by_col["mean_mse"]):
                     mse = f"**{mse}**"
-                f.write("| " + " | ".join([emb, *metric_cells, pearson, mse]) + " |\n")
+                if pd.notna(r["mean_acc"]) and np.isclose(r["mean_acc"], best_by_col["mean_acc"]):
+                    acc = f"**{acc}**"
+                f.write("| " + " | ".join([emb, *metric_cells, pearson, mse, acc, f1]) + " |\n")
 
         f.write("\n注：当同一张表内同时出现多个 method 时，embedding 名称后会添加括号用于区分 latent variable。\n")
 
@@ -586,6 +601,8 @@ def main() -> None:
         "norman_mse",
         "mean_pearson_r",
         "mean_mse",
+        "mean_acc",
+        "mean_f1",
     ]
     conf_df.reindex(columns=conf_cols).to_csv(conf_csv_out, index=False)
     write_conference_markdown(conf_md_out, rank_df, effect_df)

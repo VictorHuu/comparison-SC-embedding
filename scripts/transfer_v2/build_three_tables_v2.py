@@ -186,7 +186,19 @@ def build_native_lr_aggregate(full: pd.DataFrame) -> pd.DataFrame:
     """Compact aggregate over dataset pairs for protocol=native, clf=lr."""
     sub = full[(full["protocol"] == "native") & (full["clf"] == "lr")].copy()
     if sub.empty:
-        return pd.DataFrame(columns=["embedding", "protocol", "clf", "n_pairs", "agg_mean_auroc", "agg_mean_auprc", "agg_mean_score"])
+        return pd.DataFrame(
+            columns=[
+                "embedding",
+                "protocol",
+                "clf",
+                "n_pairs",
+                "agg_mean_auroc",
+                "agg_mean_auprc",
+                "agg_mean_score",
+                "agg_mean_acc",
+                "agg_mean_f1",
+            ]
+        )
 
     sub["pair_key"] = sub["train_dataset"].astype(str) + "->" + sub["test_dataset"].astype(str)
     out = (
@@ -200,21 +212,42 @@ def build_native_lr_aggregate(full: pd.DataFrame) -> pd.DataFrame:
     out["protocol"] = "native"
     out["clf"] = "lr"
     out["agg_mean_score"] = (out["agg_mean_auroc"] + out["agg_mean_auprc"]) / 2.0
-    return out[["embedding", "protocol", "clf", "n_pairs", "agg_mean_auroc", "agg_mean_auprc", "agg_mean_score"]].sort_values("embedding").reset_index(drop=True)
+    # Seed-level transfer file does not include hard labels/predictions, so ACC/F1 are unavailable.
+    out["agg_mean_acc"] = np.nan
+    out["agg_mean_f1"] = np.nan
+    return (
+        out[
+            [
+                "embedding",
+                "protocol",
+                "clf",
+                "n_pairs",
+                "agg_mean_auroc",
+                "agg_mean_auprc",
+                "agg_mean_score",
+                "agg_mean_acc",
+                "agg_mean_f1",
+            ]
+        ]
+        .sort_values("embedding")
+        .reset_index(drop=True)
+    )
 
 
 def write_native_lr_markdown(out_path: str, agg: pd.DataFrame) -> None:
     with open(out_path, "w") as f:
         f.write("# Native + LR aggregated summary (30 pairs)\n\n")
-        f.write("| Embedding | N Pairs | Mean AU-ROC | Mean AU-PRC | Mean Score ((AU-ROC+AU-PRC)/2) |\n")
-        f.write("|---|---:|---:|---:|---:|\n")
+        f.write("| Embedding | N Pairs | Mean AU-ROC | Mean AU-PRC | Mean Score ((AU-ROC+AU-PRC)/2) | Mean Acc | Mean F1 |\n")
+        f.write("|---|---:|---:|---:|---:|---:|---:|\n")
         if agg.empty:
-            f.write("| _No data_ |  |  |  |  |\n")
+            f.write("| _No data_ |  |  |  |  |  |  |\n")
             return
 
         best_auroc = agg["agg_mean_auroc"].max(skipna=True)
         best_auprc = agg["agg_mean_auprc"].max(skipna=True)
         best_score = agg["agg_mean_score"].max(skipna=True)
+        best_acc = agg["agg_mean_acc"].max(skipna=True) if agg["agg_mean_acc"].notna().any() else np.nan
+        best_f1 = agg["agg_mean_f1"].max(skipna=True) if agg["agg_mean_f1"].notna().any() else np.nan
         show_setting = (agg["protocol"].nunique(dropna=True) > 1) or (agg["clf"].nunique(dropna=True) > 1)
 
         for _, r in agg.iterrows():
@@ -225,6 +258,8 @@ def write_native_lr_markdown(out_path: str, agg: pd.DataFrame) -> None:
             auroc = f"{r['agg_mean_auroc']:.6f}"
             auprc = f"{r['agg_mean_auprc']:.6f}"
             score = f"{r['agg_mean_score']:.6f}"
+            acc = "-" if pd.isna(r["agg_mean_acc"]) else f"{r['agg_mean_acc']:.6f}"
+            f1 = "-" if pd.isna(r["agg_mean_f1"]) else f"{r['agg_mean_f1']:.6f}"
 
             if np.isclose(r["agg_mean_auroc"], best_auroc):
                 auroc = f"**{auroc}**"
@@ -233,8 +268,12 @@ def write_native_lr_markdown(out_path: str, agg: pd.DataFrame) -> None:
             if np.isclose(r["agg_mean_score"], best_score):
                 emb = f"**{emb}**"
                 score = f"**{score}**"
+            if pd.notna(r["agg_mean_acc"]) and pd.notna(best_acc) and np.isclose(r["agg_mean_acc"], best_acc):
+                acc = f"**{acc}**"
+            if pd.notna(r["agg_mean_f1"]) and pd.notna(best_f1) and np.isclose(r["agg_mean_f1"], best_f1):
+                f1 = f"**{f1}**"
 
-            f.write(f"| {emb} | {n_pairs} | {auroc} | {auprc} | {score} |\n")
+            f.write(f"| {emb} | {n_pairs} | {auroc} | {auprc} | {score} | {acc} | {f1} |\n")
 
 
 def main():
