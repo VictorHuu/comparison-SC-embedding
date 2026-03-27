@@ -356,12 +356,13 @@ def write_markdown_report(
 
 
 def build_conference_aggregate_tables(
+    results_df: pd.DataFrame,
     descriptive_df: pd.DataFrame,
     paired_df: pd.DataFrame,
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Build compact conference-style aggregate tables across datasets."""
     rank_cols = ["embedding", "rank_frozen_linear", "rank_frozen_backbone_trainable_head", "rank_overall"]
-    effect_cols = ["embedding", "embedding_advantage", "effect_vs_baseline", "baseline_win_rate", "n_pairs"]
+    metric_cols = ["embedding", "method", "embedding_label"]
 
     # Table A: average rank across datasets (lower better)
     if descriptive_df.empty:
@@ -392,46 +393,60 @@ def build_conference_aggregate_tables(
             rank_df = rank_df.sort_values("embedding").reset_index(drop=True)
             rank_df["embedding"] = rank_df["embedding"].astype(str)
 
-    # Table B: aggregate paired effect vs baseline on pearson_r
-    if paired_df.empty:
-        effect_df = pd.DataFrame(columns=effect_cols)
+    # Table B: dataset-wise common regression metrics under target methods
+    if results_df.empty:
+        effect_df = pd.DataFrame(columns=metric_cols)
     else:
-        p = paired_df[
-            (paired_df["metric"] == "pearson_r")
-            & (paired_df["comparator"].isin(COMPARATORS))
-            & (paired_df["method"].isin(TARGET_METHODS))
-        ].copy()
-        if p.empty:
-            effect_df = pd.DataFrame(columns=effect_cols)
+        r = results_df[
+            (results_df["embedding"].isin(EMBEDDING_ORDER))
+            & (results_df["method"].isin(TARGET_METHODS))
+        ][["dataset", "embedding", "method", "pearson_r", "mse"]].copy()
+        if r.empty:
+            effect_df = pd.DataFrame(columns=metric_cols)
         else:
-            agg = (
-                p.groupby("comparator", as_index=False)
+            ds_list = sorted(r["dataset"].dropna().astype(str).unique().tolist())
+            piv_p = (
+                r.pivot_table(index=["embedding", "method"], columns="dataset", values="pearson_r", aggfunc="mean")
+                .rename(columns={d: f"{d}_pearson_r" for d in ds_list})
+            )
+            piv_m = (
+                r.pivot_table(index=["embedding", "method"], columns="dataset", values="mse", aggfunc="mean")
+                .rename(columns={d: f"{d}_mse" for d in ds_list})
+            )
+            agg = piv_p.join(piv_m, how="outer").reset_index()
+            summ = (
+                r.groupby(["embedding", "method"], as_index=False)
                 .agg(
-                    effect_vs_baseline=("mean_diff", "mean"),
-                    wins=("wins", "sum"),
-                    losses=("losses", "sum"),
-                    n_pairs=("n_folds", "sum"),
+                    mean_pearson_r=("pearson_r", "mean"),
+                    mean_mse=("mse", "mean"),
                 )
-                .rename(columns={"comparator": "embedding"})
             )
-            agg["baseline_win_rate"] = agg["wins"] / (agg["wins"] + agg["losses"]).replace(0, np.nan)
-            agg["embedding_advantage"] = -agg["effect_vs_baseline"]
-            agg = agg[effect_cols]
+            agg = agg.merge(summ, on=["embedding", "method"], how="left")
 
-            baseline_n = float(agg["n_pairs"].max()) if not agg.empty else np.nan
-            baseline_row = pd.DataFrame(
-                [{
-                    "embedding": TARGET_EMBEDDING,
-                    "embedding_advantage": 0.0,
-                    "effect_vs_baseline": 0.0,
-                    "baseline_win_rate": 0.5,
-                    "n_pairs": baseline_n,
-                }]
-            )
-            effect_df = pd.concat([baseline_row, agg], ignore_index=True)
+            method_alias = {
+                "frozen_linear": "frozen_linear",
+                "frozen_backbone_trainable_head": "frozen_head",
+            }
+            need_method_suffix = agg["method"].nunique(dropna=True) > 1
+            agg["embedding_label"] = agg["embedding"].astype(str)
+            if need_method_suffix:
+                agg["embedding_label"] = (
+                    agg["embedding_label"]
+                    + "("
+                    + agg["method"].astype(str).map(lambda x: method_alias.get(x, x))
+                    + ")"
+                )
+
+            dynamic_cols = []
+            for d in ds_list:
+                dynamic_cols.extend([f"{d}_pearson_r", f"{d}_mse"])
+            effect_df = agg[metric_cols + dynamic_cols + ["mean_pearson_r", "mean_mse"]].copy()
             effect_df["embedding"] = pd.Categorical(effect_df["embedding"], categories=EMBEDDING_ORDER, ordered=True)
-            effect_df = effect_df.sort_values("embedding").reset_index(drop=True)
+            effect_df["method"] = pd.Categorical(effect_df["method"], categories=TARGET_METHODS, ordered=True)
+            effect_df = effect_df.sort_values(["embedding", "method"]).reset_index(drop=True)
             effect_df["embedding"] = effect_df["embedding"].astype(str)
+            effect_df["method"] = effect_df["method"].astype(str)
+            effect_df["embedding_label"] = effect_df["embedding_label"].astype(str)
 
     return rank_df, effect_df
 
@@ -440,7 +455,7 @@ def write_conference_markdown(out_path: str, rank_df: pd.DataFrame, effect_df: p
     """Write compact conference-style markdown with bold best values."""
     with open(out_path, "w") as f:
         f.write("# Conference-style Aggregated Embedding Comparison\n\n")
-        f.write("抹除数据集差异后，对多个 embedding 做聚合对比（主指标：rank 与 pearson_r paired effect）。\n\n")
+        f.write("抹除数据集差异后，对多个 embedding 做聚合对比（常用指标：Pearson r、MSE）。\n\n")
 
         f.write("## Table A. Aggregated average rank across datasets (lower is better)\n\n")
         f.write("| Embedding | Frozen Linear Rank | Backbone+Head Rank | Overall Rank |\n")
@@ -465,25 +480,49 @@ def write_conference_markdown(out_path: str, rank_df: pd.DataFrame, effect_df: p
                     overall = f"**{overall}**"
                 f.write(f"| {emb} | {lin} | {head} | {overall} |\n")
 
-        f.write("\n## Table B. Aggregated paired effect vs baseline (pearson_r; higher embedding_advantage is better)\n\n")
-        f.write("| Embedding | Embedding Advantage | Baseline Effect | Baseline Win Rate | N Paired Folds |\n")
-        f.write("|---|---:|---:|---:|---:|\n")
+        f.write("\n## Table B. Dataset-wise regression metrics\n\n")
         if effect_df.empty:
-            f.write("| _No data_ |  |  |  |  |\n")
+            f.write("| Embedding |\n")
+            f.write("|---|\n")
+            f.write("| _No data_ |\n")
         else:
-            best_adv = effect_df["embedding_advantage"].max(skipna=True)
+            ds_cols = [
+                c for c in effect_df.columns
+                if (c.endswith("_pearson_r") or c.endswith("_mse"))
+                and c not in {"mean_pearson_r", "mean_mse"}
+            ]
+            datasets = sorted({c.rsplit("_", 2)[0] for c in ds_cols})
+            ordered_ds_cols = []
+            pretty_ds_headers = []
+            for ds in datasets:
+                p_col = f"{ds}_pearson_r"
+                m_col = f"{ds}_mse"
+                ordered_ds_cols.extend([p_col, m_col])
+                pretty_ds_headers.extend([f"{ds} Pearson r", f"{ds} MSE"])
+            header = ["Embedding", *pretty_ds_headers, "Mean Pearson r", "Mean MSE"]
+            f.write("| " + " | ".join(header) + " |\n")
+            f.write("|" + "|".join(["---"] + ["---:" for _ in header[1:]]) + "|\n")
+            best_by_col = {}
+            for c in ordered_ds_cols + ["mean_pearson_r", "mean_mse"]:
+                best_by_col[c] = effect_df[c].max(skipna=True)
             for _, r in effect_df.iterrows():
-                emb = str(r["embedding"])
-                adv = "-" if pd.isna(r["embedding_advantage"]) else f"{r['embedding_advantage']:.4f}"
-                eff = "-" if pd.isna(r["effect_vs_baseline"]) else f"{r['effect_vs_baseline']:.4f}"
-                wr = "-" if pd.isna(r["baseline_win_rate"]) else f"{r['baseline_win_rate']:.3f}"
-                n = "-" if pd.isna(r["n_pairs"]) else f"{int(r['n_pairs'])}"
-                if pd.notna(r["embedding_advantage"]) and np.isclose(r["embedding_advantage"], best_adv):
-                    emb = f"**{emb}**"
-                    adv = f"**{adv}**"
-                f.write(f"| {emb} | {adv} | {eff} | {wr} | {n} |\n")
+                emb = str(r["embedding_label"])
+                metric_cells = []
+                for c in ordered_ds_cols:
+                    v = r[c]
+                    cell = "-" if pd.isna(v) else f"{v:.4f}"
+                    if pd.notna(v) and np.isclose(v, best_by_col[c]):
+                        cell = f"**{cell}**"
+                    metric_cells.append(cell)
+                pearson = "-" if pd.isna(r["mean_pearson_r"]) else f"{r['mean_pearson_r']:.4f}"
+                mse = "-" if pd.isna(r["mean_mse"]) else f"{r['mean_mse']:.4f}"
+                if pd.notna(r["mean_pearson_r"]) and np.isclose(r["mean_pearson_r"], best_by_col["mean_pearson_r"]):
+                    pearson = f"**{pearson}**"
+                if pd.notna(r["mean_mse"]) and np.isclose(r["mean_mse"], best_by_col["mean_mse"]):
+                    mse = f"**{mse}**"
+                f.write("| " + " | ".join([emb, *metric_cells, pearson, mse]) + " |\n")
 
-        f.write("\n注：Baseline Effect > 0 表示 baseline 更好；Embedding Advantage = - Baseline Effect。\n")
+        f.write("\n注：当同一张表内同时出现多个 method 时，embedding 名称后会添加括号用于区分 latent variable。\n")
 
 
 def main() -> None:
@@ -522,7 +561,7 @@ def main() -> None:
 
     write_markdown_report(md_out, paired_df, descriptive_df)
 
-    rank_df, effect_df = build_conference_aggregate_tables(descriptive_df, paired_df)
+    rank_df, effect_df = build_conference_aggregate_tables(results_df, descriptive_df, paired_df)
     conf_df = pd.concat(
         [
             rank_df.assign(table="A_rank"),
@@ -534,13 +573,19 @@ def main() -> None:
     conf_cols = [
         "table",
         "embedding",
+        "method",
+        "embedding_label",
         "rank_frozen_linear",
         "rank_frozen_backbone_trainable_head",
         "rank_overall",
-        "embedding_advantage",
-        "effect_vs_baseline",
-        "baseline_win_rate",
-        "n_pairs",
+        "adamson_pearson_r",
+        "adamson_mse",
+        "dixit_pearson_r",
+        "dixit_mse",
+        "norman_pearson_r",
+        "norman_mse",
+        "mean_pearson_r",
+        "mean_mse",
     ]
     conf_df.reindex(columns=conf_cols).to_csv(conf_csv_out, index=False)
     write_conference_markdown(conf_md_out, rank_df, effect_df)

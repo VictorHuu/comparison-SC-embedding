@@ -29,6 +29,7 @@ __pycache__/
 scRNA-Seq
 transfer_v2
 !scripts/transfer_v2
+!results/transfer_v2
 processed
 
 # Exclude model weights and large json in result dirs

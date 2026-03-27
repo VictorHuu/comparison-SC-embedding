@@ -186,7 +186,7 @@ def build_native_lr_aggregate(full: pd.DataFrame) -> pd.DataFrame:
     """Compact aggregate over dataset pairs for protocol=native, clf=lr."""
     sub = full[(full["protocol"] == "native") & (full["clf"] == "lr")].copy()
     if sub.empty:
-        return pd.DataFrame(columns=["embedding", "n_pairs", "agg_mean_auroc", "agg_mean_auprc", "agg_mean_score"])
+        return pd.DataFrame(columns=["embedding", "protocol", "clf", "n_pairs", "agg_mean_auroc", "agg_mean_auprc", "agg_mean_score"])
 
     sub["pair_key"] = sub["train_dataset"].astype(str) + "->" + sub["test_dataset"].astype(str)
     out = (
@@ -197,14 +197,16 @@ def build_native_lr_aggregate(full: pd.DataFrame) -> pd.DataFrame:
             agg_mean_auprc=("mean_auprc", "mean"),
         )
     )
+    out["protocol"] = "native"
+    out["clf"] = "lr"
     out["agg_mean_score"] = (out["agg_mean_auroc"] + out["agg_mean_auprc"]) / 2.0
-    return out.sort_values("embedding").reset_index(drop=True)
+    return out[["embedding", "protocol", "clf", "n_pairs", "agg_mean_auroc", "agg_mean_auprc", "agg_mean_score"]].sort_values("embedding").reset_index(drop=True)
 
 
 def write_native_lr_markdown(out_path: str, agg: pd.DataFrame) -> None:
     with open(out_path, "w") as f:
         f.write("# Native + LR aggregated summary (30 pairs)\n\n")
-        f.write("| embedding | n_pairs | agg_mean_auroc | agg_mean_auprc | agg_mean_score |\n")
+        f.write("| Embedding | N Pairs | Mean AU-ROC | Mean AU-PRC | Mean Score ((AU-ROC+AU-PRC)/2) |\n")
         f.write("|---|---:|---:|---:|---:|\n")
         if agg.empty:
             f.write("| _No data_ |  |  |  |  |\n")
@@ -213,9 +215,12 @@ def write_native_lr_markdown(out_path: str, agg: pd.DataFrame) -> None:
         best_auroc = agg["agg_mean_auroc"].max(skipna=True)
         best_auprc = agg["agg_mean_auprc"].max(skipna=True)
         best_score = agg["agg_mean_score"].max(skipna=True)
+        show_setting = (agg["protocol"].nunique(dropna=True) > 1) or (agg["clf"].nunique(dropna=True) > 1)
 
         for _, r in agg.iterrows():
             emb = str(r["embedding"])
+            if show_setting:
+                emb = f"{emb}({r['protocol']}+{r['clf']})"
             n_pairs = int(r["n_pairs"])
             auroc = f"{r['agg_mean_auroc']:.6f}"
             auprc = f"{r['agg_mean_auprc']:.6f}"
