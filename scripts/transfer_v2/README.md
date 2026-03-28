@@ -30,15 +30,21 @@
 
 transfer-v2 同时评估 3 种协议：
 
-- `native`：不做基因集约束；
-- `strict`：使用 train/test 共享基因（可全局或 pairwise）；
-- `coverage_matched`：按检测率匹配到与 strict 相同规模的基因集。
+- `native`：不做基因集约束，使用任务中原始可用基因；
+- `strict`：只使用 train/test 共享基因（可全局或 pairwise）；
+- `coverage_matched`：在共享基因中按检测率排序，取与 strict 相同规模（或指定 `coverage_k`）的基因集。
 
 `transfer_v2_prepare.py` 会输出：
 
 - `transfer_v2/pair_manifest.csv`
 - `transfer_v2/pair_diagnostics.csv`
 - 各协议用到的 gene set 文件。
+
+#### 协议细化说明（与脚本一致）
+
+- `strict_mode=global`：strict 使用所有数据集的全局交集；
+- `strict_mode=pairwise`：strict 使用每个 `(train_dataset, test_dataset)` 方向的两两交集；
+- `strict_mode=auto`：当全局交集占比足够大时用 global，否则自动回退 pairwise。
 
 ### 1.4 统计口径（当前结果）
 
@@ -129,3 +135,11 @@ python scripts/transfer_v2/build_three_tables_v2.py \
   - `transfer_v2/pair_manifest.csv`
   - `transfer_v2/pair_diagnostics.csv`
   - `transfer/report_transfer_control_v2.md`
+
+## 5. 术语与缩写（避免歧义）
+
+- **LR**：Logistic Regression（逻辑回归），这里用于边分类任务（正负边判别）。
+- **MLP**：Multi-Layer Perceptron（多层感知机），这里指前馈神经网络分类器。
+- **AUROC**：Area Under ROC Curve，分类阈值扫描下的 ROC 曲线面积。
+- **AUPRC**：Area Under Precision-Recall Curve，类别不平衡时常更敏感。
+- **seed**：随机种子。`0..4` 表示同一配置重复 5 次，用于估计稳定性。
