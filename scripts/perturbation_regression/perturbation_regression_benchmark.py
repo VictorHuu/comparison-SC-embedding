@@ -38,7 +38,6 @@ BASE_DIR = '/bigdata2/hyt/projects/scbenchmark'
 OUTPUT_DIR = '/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/results/perturbation_regression'
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-LOG_FILE = os.path.join(OUTPUT_DIR, "perturbation_regression.log")
 VOCAB_PATH = f"{BASE_DIR}/vocab.json"
 PERTURB_DATA_DIR = f"{BASE_DIR}/data/downstreams/perturbation/processed_data"
 DATASETS = ["adamson", "dixit", "norman"]
@@ -121,8 +120,6 @@ def log(msg: str) -> None:
     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     line = f"[{ts}] {msg}"
     print(line, flush=True)
-    with open(LOG_FILE, "a") as f:
-        f.write(line + "\n")
 
 
 def str2bool(v: str) -> bool:
@@ -609,65 +606,7 @@ def result_to_fold_rows(
     return rows
 
 
-def build_ranking_summary(summary_df: pd.DataFrame) -> pd.DataFrame:
-    """Descriptive ranking only; no significance claims."""
-    if summary_df.empty:
-        return pd.DataFrame(columns=[
-            "summary_type", "dataset", "method", "embedding", "pearson_r", "rank", "note"
-        ])
-
-    out_rows: List[Dict[str, object]] = []
-    methods = ["frozen_linear", "frozen_backbone_trainable_head"]
-
-    # Per-dataset best embedding (method-specific)
-    for method in methods:
-        mdf = summary_df[summary_df["method"] == method]
-        if mdf.empty:
-            continue
-
-        ds_emb = (
-            mdf.groupby(["dataset", "embedding"], as_index=False)["pearson_r"]
-            .mean()
-        )
-        for ds, g in ds_emb.groupby("dataset"):
-            g = g.sort_values("pearson_r", ascending=False).reset_index(drop=True)
-            if g.empty:
-                continue
-            best = g.iloc[0]
-            out_rows.append({
-                "summary_type": "best_embedding_per_dataset",
-                "dataset": ds,
-                "method": method,
-                "embedding": best["embedding"],
-                "pearson_r": float(best["pearson_r"]),
-                "rank": 1.0,
-                "note": "descriptive_only",
-            })
-
-        # Average rank across datasets
-        rank_rows = []
-        for ds, g in ds_emb.groupby("dataset"):
-            g = g.sort_values("pearson_r", ascending=False).reset_index(drop=True)
-            g["rank"] = np.arange(1, len(g) + 1)
-            rank_rows.append(g[["dataset", "embedding", "rank"]])
-        if rank_rows:
-            rank_df = pd.concat(rank_rows, ignore_index=True)
-            avg_rank = rank_df.groupby("embedding", as_index=False)["rank"].mean()
-            for _, r in avg_rank.iterrows():
-                out_rows.append({
-                    "summary_type": "average_rank_across_datasets",
-                    "dataset": "ALL",
-                    "method": method,
-                    "embedding": r["embedding"],
-                    "pearson_r": np.nan,
-                    "rank": float(r["rank"]),
-                    "note": "descriptive_only",
-                })
-
-    return pd.DataFrame(out_rows)
-
-
-def run_benchmark(args: argparse.Namespace) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+def run_benchmark(args: argparse.Namespace) -> Tuple[pd.DataFrame, pd.DataFrame]:
     log("=" * 92)
     log("Perturbation Regression Benchmark (Conservative + Leak-Free)")
     log("PRIMARY: frozen_linear (probe-based comparison)")
@@ -774,17 +713,15 @@ def run_benchmark(args: argparse.Namespace) -> Tuple[pd.DataFrame, pd.DataFrame,
 
     summary_df = pd.DataFrame(summary_rows)
     folds_df = pd.DataFrame(fold_rows)
-    ranking_df = build_ranking_summary(summary_df)
-    return summary_df, folds_df, ranking_df
+    return summary_df, folds_df
 
 
 def main() -> None:
     args = parse_args()
-    summary_df, folds_df, ranking_df = run_benchmark(args)
+    summary_df, folds_df = run_benchmark(args)
 
     summary_csv = os.path.join(OUTPUT_DIR, "perturbation_regression_results.csv")
     folds_csv = os.path.join(OUTPUT_DIR, "perturbation_regression_fold_results.csv")
-    rank_csv = os.path.join(OUTPUT_DIR, "perturbation_regression_ranking_summary.csv")
 
     summary_cols = [
         "dataset", "context", "embedding", "method", "setting_group",
@@ -806,14 +743,8 @@ def main() -> None:
     else:
         folds_df[fold_cols].to_csv(folds_csv, index=False)
 
-    if ranking_df.empty:
-        pd.DataFrame(columns=["summary_type", "dataset", "method", "embedding", "pearson_r", "rank", "note"]).to_csv(rank_csv, index=False)
-    else:
-        ranking_df.to_csv(rank_csv, index=False)
-
     log(f"Saved summary CSV: {summary_csv}")
     log(f"Saved fold-level CSV: {folds_csv}")
-    log(f"Saved ranking CSV: {rank_csv}")
     log("Interpretation note: frozen_linear is the primary probe-based comparison.")
     log("Interpretation note: frozen_backbone_trainable_head is a secondary adaptation benchmark.")
     log("Interpretation note: full_finetune_embedding_head is exploratory and disabled by default.")

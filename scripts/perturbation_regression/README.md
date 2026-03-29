@@ -97,8 +97,6 @@ python scripts/perturbation_regression/perturbation_regression_benchmark.py \
 
 - `perturbation_regression_results.csv`（summary 级）
 - `perturbation_regression_fold_results.csv`（fold 级）
-- `perturbation_regression_ranking_summary.csv`（描述性排名）
-- `perturbation_regression.log`（日志）
 
 ---
 

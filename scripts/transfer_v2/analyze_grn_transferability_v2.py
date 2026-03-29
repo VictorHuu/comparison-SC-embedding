@@ -345,7 +345,6 @@ def main() -> None:
 
     seed_csv = os.path.join(args.out_dir, "embedding_transfer_seed_results_v2.csv")
     sum_csv = os.path.join(args.out_dir, "embedding_transfer_summary_v2.csv")
-    report_md = os.path.join(args.out_dir, "embedding_transfer_report_v2.md")
 
     with open(f"{args.base_dir}/vocab.json", encoding="utf-8") as f:
         vocab = json.load(f)
@@ -512,22 +511,8 @@ def main() -> None:
         ],
     )
 
-    with open(report_md, "w", encoding="utf-8") as f:
-        f.write("# embedding_transfer_report_v2\n\n")
-        f.write("## 实验设置（h5ad-only, v1-aligned edge-level）\n\n")
-        f.write(f"- h5ad_root: {args.h5ad_root}\n")
-        f.write(f"- pair_manifest: {args.pair_manifest}\n")
-        f.write(f"- embeddings: {list(emb_map.keys())}\n")
-        f.write(f"- classifiers: {args.classifiers}\n")
-        f.write(f"- seeds: {args.seeds}\n")
-        f.write(f"- resample_lr: {args.resample_lr}\n\n")
-        f.write("## 输出\n\n")
-        f.write(f"- `{seed_csv}`\n")
-        f.write(f"- `{sum_csv}`\n")
-
     print(f"[OK] wrote {seed_csv}")
     print(f"[OK] wrote {sum_csv}")
-    print(f"[OK] wrote {report_md}")
 
 
 if __name__ == "__main__":
