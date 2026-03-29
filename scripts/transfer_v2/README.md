@@ -84,42 +84,27 @@ python scripts/transfer_v2/analyze_grn_transferability_v2.py \
 - `transfer/embedding_transfer_summary_v2.csv`
 - `transfer/embedding_transfer_report_v2.md`
 
-### 2.3 控制诊断 + 三表汇总
+### 2.3 控制诊断 + 汇总表
 
 ```bash
 python scripts/transfer_v2/run_transfer_control_v2.py
-python scripts/transfer_v2/build_three_tables_v2.py \
+python scripts/transfer_v2/build_native_lr_train_embedding_tables.py \
   --seed-results transfer/embedding_transfer_seed_results_v2.csv \
-  --quality transfer_v2/pair_diagnostics.csv \
   --out-dir transfer
 ```
 
 ## 3. 实验结果（当前仓库结果）
 
-### 3.1 总体 winner（30 个迁移对）
-
-`transfer/winner_table.csv` 统计：
-
-- `baseline` 胜出：11 对
-- `scgpt_human` 胜出：10 对
-- `minus` 胜出：7 对
-- `mixed`：2 对
-
-结论：当前结果不存在单一 embedding 在全部迁移方向上占优，表现具有明显方向性与任务依赖性。
-
-### 3.2 按协议分层 winner
-
-来自 `transfer/winner_subtables/winner_by_protocol_*.csv`：
-
-- `native`：baseline 11 / minus 3 / scgpt_human 8 / mixed 8
-- `strict`：baseline 9 / minus 7 / scgpt_human 9 / mixed 5
-- `coverage_matched`：baseline 10 / minus 8 / scgpt_human 7 / mixed 5
-
-结论：协议变化会显著影响 winner 判定，说明结果具有 protocol sensitivity。
-
-### 3.3 数据质量与基因名规范化
+### 3.1 数据质量与基因名规范化
 
 `transfer/data_description_table.csv` 显示 `canonical_over_raw_ratio` 接近 1（约 `1.0001`），说明本批数据中大小写归一化主要用于稳健性保障，而非造成大规模基因集偏移。
+
+### 3.2 按 setting 的 AUROC/AUPRC 汇总矩阵
+
+- `transfer/auroc_embedding_x_train_all_settings.md`
+- `transfer/auprc_embedding_x_train_all_settings.md`
+
+以上两个文件分别汇总所有 `protocol × clf` setting 的 `embedding × train_dataset` 矩阵，单元格格式为 `mean ± std`。
 
 ## 4. 关键输出文件
 
@@ -127,9 +112,10 @@ python scripts/transfer_v2/build_three_tables_v2.py \
   - `transfer/embedding_transfer_seed_results_v2.csv`
   - `transfer/embedding_transfer_summary_v2.csv`
   - `transfer/embedding_transfer_report_v2.md`
-- 三张主表：
+- 汇总结果：
   - `transfer/data_description_table.csv`
-  - `transfer/winner_table.csv`
+  - `transfer/auroc_embedding_x_train_all_settings.md`
+  - `transfer/auprc_embedding_x_train_all_settings.md`
   - `transfer/embedding_transfer_seed_results_v2.csv`（seed-level 主表）
 - 诊断：
   - `transfer_v2/pair_manifest.csv`
