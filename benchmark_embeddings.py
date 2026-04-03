@@ -7,6 +7,7 @@ Standard weighted average aggregation (no post-hoc fusion).
 
 Embeddings:
   - difference_v3 (60697 x 256)
+  - minus (60697 x 256)
   - baseline (60697 x 256)
   - scGPT_human (60697 x 512)
   - GF-12L95M (Geneformer V2 12L, 11355 x 512, Entrez IDs)
@@ -18,7 +19,7 @@ Tasks:
 Evaluation: 5-fold stratified CV, LR + MLP
 """
 
-import os, sys, json, time, gzip, warnings, urllib.request
+import os, sys, json, time, gzip, warnings, urllib.request, argparse
 import numpy as np
 import torch
 from sklearn.linear_model import LogisticRegression
@@ -34,15 +35,22 @@ warnings.filterwarnings("ignore")
 # =============================================================
 # Configuration
 # =============================================================
-BASE_DIR = '/root/autodl-tmp/scbenchmark'
-OUTPUT_DIR = '/root/autodl-tmp/embedding_benchmark'
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+BASE_DIR = '/bigdata2/hyt/projects/scbenchmark'
+RESULTS_ROOT_DIR = '/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/results'
+ANNOTATION_OUTPUT_DIR = os.path.join(RESULTS_ROOT_DIR, 'annotation')
+PERTURBATION_OUTPUT_DIR = os.path.join(RESULTS_ROOT_DIR, 'perturbation')
+os.makedirs(ANNOTATION_OUTPUT_DIR, exist_ok=True)
+os.makedirs(PERTURBATION_OUTPUT_DIR, exist_ok=True)
 
-LOG_FILE = os.path.join(OUTPUT_DIR, 'benchmark.log')
+LOG_FILE = os.path.join(RESULTS_ROOT_DIR, 'benchmark.log')
 
 EMBEDDINGS = {
-    'difference_v3': {
-        'path': f'{BASE_DIR}/save_pretrain/difference_aligned_v3/best_model.pt',
+    # 'difference_v3': {
+    #     'path': f'{BASE_DIR}/save_pretrain/difference_aligned_v3/best_model.pt',
+    #     'key': 'module.embedding.weight',
+    # },
+    'minus': {
+        'path': f'{BASE_DIR}/save_pretrain/minus/best_model.pt',
         'key': 'module.embedding.weight',
     },
     'baseline': {
@@ -50,7 +58,7 @@ EMBEDDINGS = {
         'key': 'module.embedding.weight',
     },
     'scGPT_human': {
-        'path': '/root/autodl-tmp/scGPT_human/best_model.pt',
+        'path': f'{BASE_DIR}/save_pretrain/scGPT_human/best_model.pt',
         'key': 'encoder.embedding.weight',
     },
     "v4_bias_rec_best": {
@@ -68,7 +76,7 @@ EMBEDDINGS = {
 }
 
 GF_CONFIG = {
-    'dir': '/root/autodl-tmp/gene_embeddings/intersect/GF-12L95M',
+    'dir': '/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/gene_embeddings/intersect/GF-12L95M',
     'name': 'GF-12L95M',
 }
 
@@ -122,7 +130,7 @@ def load_vocab(vocab_path):
 # =============================================================
 def build_symbol_to_entrez():
     """Download NCBI gene_info and build symbol -> entrezID mapping"""
-    mapping_file = os.path.join(OUTPUT_DIR, 'gene_symbol_to_entrez.json')
+    mapping_file = os.path.join(RESULTS_ROOT_DIR, 'gene_symbol_to_entrez.json')
     if os.path.exists(mapping_file):
         log("Loading cached gene symbol -> Entrez mapping...")
         with open(mapping_file) as f:
@@ -130,7 +138,7 @@ def build_symbol_to_entrez():
 
     log("Downloading NCBI Homo_sapiens.gene_info.gz ...")
     url = 'https://ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO/Mammalia/Homo_sapiens.gene_info.gz'
-    local_path = os.path.join(OUTPUT_DIR, 'Homo_sapiens.gene_info.gz')
+    local_path = os.path.join(RESULTS_ROOT_DIR, 'Homo_sapiens.gene_info.gz')
 
     try:
         urllib.request.urlretrieve(url, local_path)
@@ -364,9 +372,98 @@ def run_task(task_name, datasets, data_dir, embeddings, gf_emb, vocab_to_gf, all
 
 
 # =============================================================
+# Conference-style Markdown Export (annotation)
+# =============================================================
+def export_annotation_conference_markdown(results_df, output_dir):
+    """Export annotation results to conference-style markdown tables."""
+    ann_df = results_df[results_df['task'] == 'annotation'].copy()
+    if ann_df.empty:
+        log("No annotation results found; skip conference markdown export.")
+        return
+
+    metrics = [
+        ('accuracy_mean', 'accuracy_std', 'Accuracy'),
+        ('f1_macro_mean', 'f1_macro_std', 'F1-macro'),
+        ('f1_weighted_mean', 'f1_weighted_std', 'F1-weighted'),
+    ]
+    classifiers = ['lr', 'mlp']
+
+    preferred_order = list(EMBEDDINGS.keys()) + ['GF-12L95M']
+    embeddings = ann_df['embedding'].drop_duplicates().tolist()
+    embeddings.sort(
+        key=lambda x: (preferred_order.index(x) if x in preferred_order else len(preferred_order), x)
+    )
+
+    datasets = sorted(ann_df['dataset'].drop_duplicates().tolist())
+
+    md_lines = [
+        "# Annotation Benchmark (Conference-style Tables)",
+        "",
+        "Tables are generated from `benchmark_results.csv` (`task=annotation`).",
+        "Each metric is shown in a separate table; **non-baseline embeddings are bold if mean > baseline under the same dataset + classifier**.",
+        "",
+    ]
+
+    for mean_col, std_col, title in metrics:
+        md_lines.extend([f"## {title}", ""])
+
+        header = "| Dataset | Classifier | " + " | ".join(embeddings) + " |"
+        sep = "|---|---:|" + "---:|" * len(embeddings)
+        md_lines.extend([header, sep])
+
+        for ds in datasets:
+            for clf in classifiers:
+                sub = ann_df[(ann_df['dataset'] == ds) & (ann_df['classifier'] == clf)]
+                if sub.empty:
+                    continue
+
+                base_row = sub[sub['embedding'] == 'baseline']
+                baseline_val = float(base_row.iloc[0][mean_col]) if not base_row.empty else None
+
+                values = []
+                for emb in embeddings:
+                    row = sub[sub['embedding'] == emb]
+                    if row.empty:
+                        values.append("N/A")
+                        continue
+
+                    mean = float(row.iloc[0][mean_col])
+                    std = float(row.iloc[0][std_col])
+                    text = f"{mean:.4f}±{std:.4f}"
+
+                    if emb != 'baseline' and baseline_val is not None and mean > baseline_val:
+                        text = f"**{text}**"
+                    values.append(text)
+
+                md_lines.append(f"| {ds} | {clf.upper()} | " + " | ".join(values) + " |")
+        md_lines.append("")
+
+    md_path = os.path.join(output_dir, 'annotation_conference_tables.md')
+    with open(md_path, 'w', encoding='utf-8') as f:
+        f.write("\n".join(md_lines))
+    log(f"Conference markdown saved to {md_path}")
+
+
+def export_annotation_conference_markdown_from_csv(csv_path, output_dir):
+    """Load benchmark csv and export annotation conference markdown directly."""
+    if not os.path.exists(csv_path):
+        raise FileNotFoundError(f"CSV not found: {csv_path}")
+    results_df = pd.read_csv(csv_path)
+    export_annotation_conference_markdown(results_df, output_dir)
+
+
+# =============================================================
 # Main
 # =============================================================
-def main():
+def main(args):
+    if args.csv_to_md:
+        log("=" * 70)
+        log("Conference Markdown Export (from existing CSV)")
+        log("=" * 70)
+        export_annotation_conference_markdown_from_csv(args.csv_to_md, args.annotation_output_dir)
+        log(f"\nDone. Markdown exported from csv: {args.csv_to_md}")
+        return None
+
     log("=" * 70)
     log("Gene Embedding Benchmark")
     log(f"Started: {datetime.now()}")
@@ -377,7 +474,7 @@ def main():
     log(f"Vocab: {len(vocab)} genes")
 
     # --- Check if scGPT_human uses same vocab ---
-    scgpt_vocab = load_vocab('/root/autodl-tmp/scGPT_human/vocab.json')
+    scgpt_vocab = load_vocab('/bigdata2/hyt/projects/scbenchmark/save_pretrain/scGPT_human/vocab.json')
     common = set(vocab.keys()) & set(scgpt_vocab.keys())
     log(f"Vocab overlap with scGPT_human: {len(common)}/{len(vocab)}")
     if len(common) < len(vocab) * 0.9:
@@ -420,14 +517,21 @@ def main():
              embeddings, gf_emb, vocab_to_gf, all_results)
 
     # --- Task B: Perturbation Classification ---
-    run_task('perturbation_cls', PERTURBATION_DATASETS, CLS_DATA_DIR,
+    run_task('perturbation_cls', PERTURBATION_DATASETS, PERTURB_DATA_DIR,
              embeddings, gf_emb, vocab_to_gf, all_results)
 
     # --- Save results ---
     results_df = pd.DataFrame(all_results)
-    csv_path = os.path.join(OUTPUT_DIR, 'benchmark_results.csv')
-    results_df.to_csv(csv_path, index=False)
-    log(f"\nResults saved to {csv_path}")
+    ann_df = results_df[results_df['task'] == 'annotation'].copy()
+    perturb_df = results_df[results_df['task'] == 'perturbation_cls'].copy()
+
+    ann_csv_path = os.path.join(args.annotation_output_dir, 'benchmark_results.csv')
+    perturb_csv_path = os.path.join(args.perturbation_output_dir, 'benchmark_results.csv')
+    ann_df.to_csv(ann_csv_path, index=False)
+    perturb_df.to_csv(perturb_csv_path, index=False)
+    log(f"\nAnnotation results saved to {ann_csv_path}")
+    log(f"Perturbation results saved to {perturb_csv_path}")
+    export_annotation_conference_markdown(ann_df, args.annotation_output_dir)
 
     # --- Summary Table ---
     log("\n" + "=" * 70)
@@ -458,4 +562,27 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(description='Gene embedding benchmark runner.')
+    parser.add_argument(
+        '--csv-to-md',
+        type=str,
+        default=None,
+        help='If provided, skip benchmark and directly generate annotation_conference_tables.md from this csv path.',
+    )
+    parser.add_argument(
+        '--annotation-output-dir',
+        type=str,
+        default=ANNOTATION_OUTPUT_DIR,
+        help='Output directory for annotation benchmark results and annotation_conference_tables.md.',
+    )
+    parser.add_argument(
+        '--perturbation-output-dir',
+        type=str,
+        default=PERTURBATION_OUTPUT_DIR,
+        help='Output directory for perturbation benchmark results.',
+    )
+    args = parser.parse_args()
+    os.makedirs(args.annotation_output_dir, exist_ok=True)
+    os.makedirs(args.perturbation_output_dir, exist_ok=True)
+    os.makedirs(RESULTS_ROOT_DIR, exist_ok=True)
+    main(args)
