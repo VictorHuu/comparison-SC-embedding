@@ -92,6 +92,7 @@ DEFAULT_DATASETS = [
 ]
 REQUIRED_DATASET_FILES = ['Target.csv', 'Train_set.csv', 'Validation_set.csv', 'Test_set.csv']
 EMBED_ORDER = ['minus', 'baseline', 'scGPT_human', 'v4_bias_rec_best', 'v4_plain_best', 'v4_type_pe_best', 'difference_v3', 'GF-12L95M', 'random_256']
+TABLE_DATASET_CHUNK_SIZE = 6
 
 
 def log(msg):
@@ -102,26 +103,36 @@ def log(msg):
         f.write(line + '\n')
 
 
-def _style_metric_row(row):
-    vals = row.dropna()
-    if vals.empty:
-        return {k: '-' for k in row.index}
-    best = vals.max()
-    baseline = row.get('baseline', np.nan)
-    out = {}
-    for emb in row.index:
-        v = row.get(emb, np.nan)
-        if pd.isna(v):
-            out[emb] = '-'
-        else:
+def _style_metric_matrix(pivot):
+    """Style matrix where rows=embedding, cols=dataset.
+    Per dataset column: red bold = best; bold = better than baseline.
+    """
+    styled = {}
+    for emb in pivot.index:
+        styled[emb] = {}
+        for ds in pivot.columns:
+            v = pivot.at[emb, ds]
+            if pd.isna(v):
+                styled[emb][ds] = '-'
+                continue
             txt = f'{v:.4f}'
-            if v == best:
-                out[emb] = f"<span style='color:red'><strong>{txt}</strong></span>"
-            elif pd.notna(baseline) and emb != 'baseline' and v > baseline:
-                out[emb] = f'**{txt}**'
+            col = pivot[ds].dropna()
+            best = col.max() if not col.empty else np.nan
+            baseline = pivot.at['baseline', ds] if 'baseline' in pivot.index else np.nan
+            if pd.notna(best) and v == best:
+                styled[emb][ds] = f"<span style='color:red'><strong>{txt}</strong></span>"
+            elif emb != 'baseline' and pd.notna(baseline) and v > baseline:
+                styled[emb][ds] = f'**{txt}**'
             else:
-                out[emb] = txt
-    return out
+                styled[emb][ds] = txt
+    return styled
+
+
+def _collapse_dataset_label(name):
+    """Collapse transfer datasets like A->B, A->C into A for table display."""
+    if not isinstance(name, str):
+        return name
+    return name.split('->', 1)[0].strip()
 
 
 def write_conference_md(df):
@@ -134,22 +145,31 @@ def write_conference_md(df):
     lines = [
         '# GRN Embedding Only (Conference-style Tables)',
         '',
-        '说明：`-`表示该组合无结果；**加粗**表示优于同一行 baseline；<span style="color:red"><strong>红色加粗</strong></span>表示该行最优。',
+        '说明：`-`表示该组合无结果；按列（同一dataset）比较：**加粗**表示优于baseline；<span style="color:red"><strong>红色加粗</strong></span>表示该列最优。',
+        '仅将`dataset`与`embedding`作为显式变量；其余设置作为表上方 latent variables 展示。',
         ''
     ]
     for metric in ['auroc', 'auprc']:
-        lines += [f'## {metric.upper()}', '']
         for clf in sorted(df['clf'].dropna().unique()):
             sub = df[df['clf'] == clf]
-            pivot = sub.pivot_table(index='dataset', columns='embedding', values=metric, aggfunc='mean')
-            pivot = pivot.reindex(columns=embeddings)
-            lines += [f'### Classifier = {clf}', '']
-            lines.append('| Dataset | ' + ' | '.join(embeddings) + ' |')
-            lines.append('|---|' + '|'.join(['---:'] * len(embeddings)) + '|')
-            for ds in pivot.index:
-                styled = _style_metric_row(pivot.loc[ds])
-                lines.append('| ' + ds + ' | ' + ' | '.join(styled[e] for e in embeddings) + ' |')
-            lines.append('')
+            sub = sub.copy()
+            sub['dataset_display'] = sub['dataset'].map(_collapse_dataset_label)
+            pivot = sub.pivot_table(index='embedding', columns='dataset_display', values=metric, aggfunc='mean')
+            pivot = pivot.reindex(index=embeddings)
+            datasets = list(pivot.columns)
+            chunks = [datasets[i:i + TABLE_DATASET_CHUNK_SIZE] for i in range(0, len(datasets), TABLE_DATASET_CHUNK_SIZE)]
+
+            lines += [f'## {metric.upper()} | Classifier={clf}', '']
+            for i, ds_chunk in enumerate(chunks, start=1):
+                sub_pivot = pivot[ds_chunk]
+                styled = _style_metric_matrix(sub_pivot)
+                lines.append(f'Latent variables: metric={metric.upper()}, classifier={clf}, aggregation=mean, dataset_split={i}/{len(chunks)}')
+                lines.append('')
+                lines.append('| Embedding | ' + ' | '.join(ds_chunk) + ' |')
+                lines.append('|---|' + '|'.join(['---:'] * len(ds_chunk)) + '|')
+                for emb in sub_pivot.index:
+                    lines.append('| ' + emb + ' | ' + ' | '.join(styled[emb][ds] for ds in ds_chunk) + ' |')
+                lines.append('')
     with open(out_md, 'w') as f:
         f.write('\n'.join(lines) + '\n')
     log(f'Conference table saved to {out_md}')
