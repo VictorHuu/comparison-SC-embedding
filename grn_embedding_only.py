@@ -33,8 +33,10 @@ BASE_DIR = '/bigdata2/hyt/projects/scbenchmark'
 SCGREAT_DIR = '/bigdata2/hyt/projects/scGREAT'
 OUTPUT_DIR = '/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark'
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+RESULTS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'results', 'grn_embedding_only')
+os.makedirs(RESULTS_DIR, exist_ok=True)
 
-LOG_FILE = os.path.join(OUTPUT_DIR, 'grn_emb_only.log')
+LOG_FILE = os.path.join(RESULTS_DIR, 'grn_emb_only.log')
 VOCAB_PATH = f'{BASE_DIR}/vocab.json'
 
 EMBEDDINGS = {
@@ -89,6 +91,7 @@ DEFAULT_DATASETS = [
     'mHSC-L500',
 ]
 REQUIRED_DATASET_FILES = ['Target.csv', 'Train_set.csv', 'Validation_set.csv', 'Test_set.csv']
+EMBED_ORDER = ['minus', 'baseline', 'scGPT_human', 'v4_bias_rec_best', 'v4_plain_best', 'v4_type_pe_best', 'difference_v3', 'GF-12L95M', 'random_256']
 
 
 def log(msg):
@@ -97,6 +100,59 @@ def log(msg):
     print(line, flush=True)
     with open(LOG_FILE, 'a') as f:
         f.write(line + '\n')
+
+
+def _style_metric_row(row):
+    vals = row.dropna()
+    if vals.empty:
+        return {k: '-' for k in row.index}
+    best = vals.max()
+    baseline = row.get('baseline', np.nan)
+    out = {}
+    for emb in row.index:
+        v = row.get(emb, np.nan)
+        if pd.isna(v):
+            out[emb] = '-'
+        else:
+            txt = f'{v:.4f}'
+            if v == best:
+                out[emb] = f"<span style='color:red'><strong>{txt}</strong></span>"
+            elif pd.notna(baseline) and emb != 'baseline' and v > baseline:
+                out[emb] = f'**{txt}**'
+            else:
+                out[emb] = txt
+    return out
+
+
+def write_conference_md(df):
+    out_md = os.path.join(RESULTS_DIR, 'conference_table.md')
+    out_csv = os.path.join(RESULTS_DIR, 'grn_emb_only_results.csv')
+
+    df.to_csv(out_csv, index=False)
+
+    embeddings = [e for e in EMBED_ORDER if e in df['embedding'].unique()] + [e for e in sorted(df['embedding'].unique()) if e not in EMBED_ORDER]
+    lines = [
+        '# GRN Embedding Only (Conference-style Tables)',
+        '',
+        '说明：`-`表示该组合无结果；**加粗**表示优于同一行 baseline；<span style="color:red"><strong>红色加粗</strong></span>表示该行最优。',
+        ''
+    ]
+    for metric in ['auroc', 'auprc']:
+        lines += [f'## {metric.upper()}', '']
+        for clf in sorted(df['clf'].dropna().unique()):
+            sub = df[df['clf'] == clf]
+            pivot = sub.pivot_table(index='dataset', columns='embedding', values=metric, aggfunc='mean')
+            pivot = pivot.reindex(columns=embeddings)
+            lines += [f'### Classifier = {clf}', '']
+            lines.append('| Dataset | ' + ' | '.join(embeddings) + ' |')
+            lines.append('|---|' + '|'.join(['---:'] * len(embeddings)) + '|')
+            for ds in pivot.index:
+                styled = _style_metric_row(pivot.loc[ds])
+                lines.append('| ' + ds + ' | ' + ' | '.join(styled[e] for e in embeddings) + ' |')
+            lines.append('')
+    with open(out_md, 'w') as f:
+        f.write('\n'.join(lines) + '\n')
+    log(f'Conference table saved to {out_md}')
 
 
 # =============================================================
@@ -514,8 +570,10 @@ def main():
             log(f"{r['embedding']:<20} {r['clf']:<5} {r['coverage']:>10} {r['auroc']:>11.4f} {r['auprc']:>11.4f}")
 
     # Save CSV
-    csv_path = os.path.join(OUTPUT_DIR, 'grn_emb_only_results.csv')
-    pd.DataFrame(all_results).to_csv(csv_path, index=False)
+    csv_path = os.path.join(RESULTS_DIR, 'grn_emb_only_results.csv')
+    df = pd.DataFrame(all_results)
+    df.to_csv(csv_path, index=False)
+    write_conference_md(df)
     log(f"\nResults saved to {csv_path}")
     log("Done!")
 
