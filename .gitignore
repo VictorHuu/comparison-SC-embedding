@@ -42,3 +42,6 @@ embedding_benchmark/Homo_sapiens.gene_info.gz
 # Loggings
 nohup.out
 *.patch
+scgreat.log
+grn_beeline.log
+grn_embedding_only.log

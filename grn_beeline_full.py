@@ -26,18 +26,23 @@ warnings.filterwarnings("ignore")
 # =============================================================
 # Config
 # =============================================================
-BASE_DIR = '/root/autodl-tmp/scbenchmark'
-BEELINE_DIR = '/root/autodl-tmp/BEELINE'
-SCGREAT_DIR = '/root/autodl-tmp/scGREAT'
-OUTPUT_DIR = '/root/autodl-tmp/grn_benchmark'
+BASE_DIR = '/bigdata2/hyt/projects/scbenchmark'
+BEELINE_DIR = '/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/BEELINE'
+SCGREAT_DIR = '/bigdata2/hyt/projects/scGREAT'
+OUTPUT_DIR = '/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark'
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 LOG_FILE = os.path.join(OUTPUT_DIR, 'grn_beeline.log')
 VOCAB_PATH = f'{BASE_DIR}/vocab.json'
 
 EMBEDDINGS = {
-    'difference_v3': {
-        'path': f'{BASE_DIR}/save_pretrain/difference_aligned_v3/best_model.pt',
+    # 'difference_v3': {
+    #     'path': f'{BASE_DIR}/save_pretrain/difference_aligned_v3/best_model.pt',
+    #     'key': 'module.embedding.weight',
+    #     'type': 'checkpoint',
+    # },
+    'minus': {
+        'path': f'{BASE_DIR}/save_pretrain/minus/best_model.pt',
         'key': 'module.embedding.weight',
         'type': 'checkpoint',
     },
@@ -47,12 +52,27 @@ EMBEDDINGS = {
         'type': 'checkpoint',
     },
     'scGPT_human': {
-        'path': '/root/autodl-tmp/scGPT_human/best_model.pt',
+        'path': f'{BASE_DIR}/save_pretrain/scGPT_human/best_model.pt',
         'key': 'encoder.embedding.weight',
         'type': 'checkpoint',
     },
+    'v4_bias_rec_best': {
+        'path': f'{BASE_DIR}/save_pretrain/v4_bias_rec_best/best_model.pt',
+        'key': 'embedding.weight',
+        'type': 'checkpoint',
+    },
+    'v4_plain_best': {
+        'path': f'{BASE_DIR}/save_pretrain/v4_plain_best/best_model.pt',
+        'key': 'embedding.weight',
+        'type': 'checkpoint',
+    },
+    'v4_type_pe_best': {
+        'path': f'{BASE_DIR}/save_pretrain/v4_type_pe_best/best_model.pt',
+        'key': 'embedding.weight',
+        'type': 'checkpoint',
+    },
     'GF-12L95M': {
-        'dir': '/root/autodl-tmp/gene_embeddings/intersect/GF-12L95M',
+        'dir': '/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/gene_embeddings/intersect/GF-12L95M',
         'type': 'geneformer',
     },
 }
@@ -121,6 +141,43 @@ def log(msg):
         f.write(line + '\n')
 
 
+def first_existing(paths):
+    for p in paths:
+        if p and os.path.exists(p):
+            return p
+    return None
+
+
+def resolve_expression_path(cell_type, cfg):
+    """
+    Resolve ExpressionData.csv path with local override support.
+    Priority:
+      1) BEELINE_EXPR_ROOT/<cell_type>/ExpressionData.csv (env)
+      2) ./scRNA-Seq/<cell_type>/ExpressionData.csv (current working tree)
+      3) legacy BEELINE zip layout path
+    """
+    env_root = os.environ.get('BEELINE_EXPR_ROOT', '').strip()
+    return first_existing([
+        os.path.join(env_root, cell_type, 'ExpressionData.csv') if env_root else None,
+        os.path.join(os.getcwd(), 'scRNA-Seq', cell_type, 'ExpressionData.csv'),
+        os.path.join(BEELINE_DIR, cfg['expr_dir'], 'ExpressionData.csv'),
+    ])
+
+
+def resolve_tf_list_path(species):
+    return first_existing([
+        os.path.join(BEELINE_DIR, f'{species}-tfs.csv'),
+        os.path.join(BEELINE_DIR, 'BEELINE-data', 'inputs', 'TFs', f'{species}-tfs.csv'),
+    ])
+
+
+def resolve_network_root():
+    return first_existing([
+        os.path.join(BEELINE_DIR, 'Networks'),
+        os.path.join(BEELINE_DIR, 'BEELINE-Networks'),
+    ])
+
+
 # =============================================================
 # Download BEELINE data
 # =============================================================
@@ -175,7 +232,7 @@ def build_symbol_to_entrez():
     if os.path.exists(mapping_file):
         with open(mapping_file) as f:
             return json.load(f)
-    alt_path = '/root/autodl-tmp/embedding_benchmark/gene_symbol_to_entrez.json'
+    alt_path = '/bigdata2/hyt/projects/embedding_benchmark/gene_symbol_to_entrez.json'
     if os.path.exists(alt_path):
         import shutil
         shutil.copy2(alt_path, mapping_file)
@@ -467,14 +524,21 @@ def main():
 
     loaded_embs = {}
     for name, cfg in EMBEDDINGS.items():
-        if cfg['type'] == 'checkpoint':
-            mat = load_checkpoint_embedding(cfg['path'], cfg['key'])
-            loaded_embs[name] = {'matrix': mat, 'type': 'checkpoint'}
-            log(f"Loaded {name}: {mat.shape}")
-        else:
-            emb, gl = load_gf_embedding(cfg['dir'])
-            loaded_embs[name] = {'matrix': emb, 'genelist': gl, 'type': 'geneformer'}
-            log(f"Loaded {name}: {emb.shape}")
+        try:
+            if cfg['type'] == 'checkpoint':
+                mat = load_checkpoint_embedding(cfg['path'], cfg['key'])
+                loaded_embs[name] = {'matrix': mat, 'type': 'checkpoint'}
+                log(f"Loaded {name}: {mat.shape}")
+            else:
+                emb, gl = load_gf_embedding(cfg['dir'])
+                loaded_embs[name] = {'matrix': emb, 'genelist': gl, 'type': 'geneformer'}
+                log(f"Loaded {name}: {emb.shape}")
+        except Exception as e:
+            log(f"SKIP embedding {name}: {e}")
+
+    if not loaded_embs:
+        log("No embedding loaded successfully. Exiting.")
+        return
 
     s2e = build_symbol_to_entrez()
 
@@ -518,18 +582,25 @@ def main():
     log("\n--- Part 2: BEELINE datasets (from raw data) ---")
 
     for cell_type, cfg in CELL_CONFIGS.items():
-        expr_path = os.path.join(BEELINE_DIR, cfg['expr_dir'], 'ExpressionData.csv')
-        if not os.path.exists(expr_path):
+        expr_path = resolve_expression_path(cell_type, cfg)
+        if expr_path is None or not os.path.exists(expr_path):
             log(f"  {cell_type}: ExpressionData.csv not found, skipping")
             continue
 
         species = cfg['species']
-        tf_list_path = os.path.join(BEELINE_DIR, f'{species}-tfs.csv')
+        tf_list_path = resolve_tf_list_path(species)
+        if tf_list_path is None:
+            log(f"  {cell_type}: TF list for {species} not found, skipping")
+            continue
+        network_root = resolve_network_root()
+        if network_root is None:
+            log(f"  {cell_type}: network root not found, skipping")
+            continue
 
         # Build network type -> file path mapping
         net_types = {}
         # Specific network
-        specific_file = os.path.join(BEELINE_DIR, 'Networks', species, cfg['specific_net'])
+        specific_file = os.path.join(network_root, species, cfg['specific_net'])
         if os.path.exists(specific_file):
             net_types['Specific'] = specific_file
 
@@ -537,7 +608,7 @@ def main():
         for net_name, net_file in NETWORK_TYPES[species].items():
             if net_name == 'Specific':
                 continue
-            fpath = os.path.join(BEELINE_DIR, 'Networks', species, net_file)
+            fpath = os.path.join(network_root, species, net_file)
             if os.path.exists(fpath):
                 net_types[net_name] = fpath
 

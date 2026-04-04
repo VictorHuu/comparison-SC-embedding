@@ -31,15 +31,20 @@ warnings.filterwarnings("ignore")
 # =============================================================
 BASE_DIR = '/bigdata2/hyt/projects/scbenchmark'
 SCGREAT_DIR = '/bigdata2/hyt/projects/scGREAT'
-OUTPUT_DIR = '/bigdata2/hyt/projects/grn_benchmark'
+OUTPUT_DIR = '/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark'
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 LOG_FILE = os.path.join(OUTPUT_DIR, 'grn_emb_only.log')
 VOCAB_PATH = f'{BASE_DIR}/vocab.json'
 
 EMBEDDINGS = {
-    'difference_v3': {
-        'path': f'{BASE_DIR}/save_pretrain/difference_aligned_v3/best_model.pt',
+    # 'difference_v3': {
+    #     'path': f'{BASE_DIR}/save_pretrain/difference_aligned_v3/best_model.pt',
+    #     'key': 'module.embedding.weight',
+    #     'type': 'checkpoint',
+    # },
+    'minus': {
+        'path': f'{BASE_DIR}/save_pretrain/minus/best_model.pt',
         'key': 'module.embedding.weight',
         'type': 'checkpoint',
     },
@@ -53,13 +58,37 @@ EMBEDDINGS = {
         'key': 'encoder.embedding.weight',
         'type': 'checkpoint',
     },
+    'v4_bias_rec_best': {
+        'path': f'{BASE_DIR}/save_pretrain/v4_bias_rec_best/best_model.pt',
+        'key': 'embedding.weight',
+        'type': 'checkpoint',
+    },
+    'v4_plain_best': {
+        'path': f'{BASE_DIR}/save_pretrain/v4_plain_best/best_model.pt',
+        'key': 'embedding.weight',
+        'type': 'checkpoint',
+    },
+    'v4_type_pe_best': {
+        'path': f'{BASE_DIR}/save_pretrain/v4_type_pe_best/best_model.pt',
+        'key': 'embedding.weight',
+        'type': 'checkpoint',
+    },
     # 'GF-12L95M': {
     #     'dir': '/root/autodl-tmp/gene_embeddings/intersect/GF-12L95M',
     #     'type': 'geneformer',
     # },
 }
 
-DATASETS = ['hESC500', 'mESC500']
+DEFAULT_DATASETS = [
+    'hESC500',
+    'hHep500',
+    'mESC500',
+    'mDC500',
+    'mHSC-E500',
+    'mHSC-GM500',
+    'mHSC-L500',
+]
+REQUIRED_DATASET_FILES = ['Target.csv', 'Train_set.csv', 'Validation_set.csv', 'Test_set.csv']
 
 
 def log(msg):
@@ -128,19 +157,69 @@ def build_symbol_to_entrez():
 
 
 def get_dataset_genes(dataset_name):
-    target_path = os.path.join(SCGREAT_DIR, dataset_name, 'Target.csv')
+    ds_dir = resolve_dataset_dir(dataset_name)
+    if ds_dir is None:
+        return []
+    target_path = os.path.join(ds_dir, 'Target.csv')
     df = pd.read_csv(target_path)
     return df['Gene'].tolist()
 
 
 def load_grn_split(dataset_name, split_name):
     """Load train/val/test split. Returns (TF_indices, Target_indices, labels)."""
-    path = os.path.join(SCGREAT_DIR, dataset_name, f'{split_name}.csv')
+    ds_dir = resolve_dataset_dir(dataset_name)
+    if ds_dir is None:
+        raise FileNotFoundError(f"Dataset not found: {dataset_name}")
+    path = os.path.join(ds_dir, f'{split_name}.csv')
     df = pd.read_csv(path, index_col=0, header=0)
     tf_idx = df.iloc[:, 0].values.astype(int)
     tgt_idx = df.iloc[:, 1].values.astype(int)
     labels = df.iloc[:, 2].values.astype(int)
     return tf_idx, tgt_idx, labels
+
+
+def resolve_dataset_dir(dataset_name):
+    for base_dir in [SCGREAT_DIR, os.path.join(OUTPUT_DIR, 'generated_datasets')]:
+        ds_dir = os.path.join(base_dir, dataset_name)
+        if os.path.isdir(ds_dir) and all(os.path.exists(os.path.join(ds_dir, f)) for f in REQUIRED_DATASET_FILES):
+            return ds_dir
+    return None
+
+
+def discover_datasets():
+    """
+    Discover available scGREAT GRN datasets under SCGREAT_DIR.
+    Priority:
+      1) GRN_DATASETS env var (comma separated)
+      2) DEFAULT_DATASETS filtered by existence
+      3) Auto-discover any directory with full split files
+    """
+    env_datasets = os.environ.get('GRN_DATASETS', '').strip()
+    if env_datasets:
+        return [d.strip() for d in env_datasets.split(',') if d.strip()]
+
+    preferred = []
+    for ds_name in DEFAULT_DATASETS:
+        if resolve_dataset_dir(ds_name) is not None:
+            preferred.append(ds_name)
+
+    # Alias: historical hHEP500 vs hHep500 naming
+    if 'hHep500' not in preferred and resolve_dataset_dir('hHEP500') is not None:
+        preferred.append('hHEP500')
+    if preferred:
+        return preferred
+
+    discovered = []
+    for base_dir in [SCGREAT_DIR, os.path.join(OUTPUT_DIR, 'generated_datasets')]:
+        if not os.path.isdir(base_dir):
+            continue
+        for name in sorted(os.listdir(base_dir)):
+            ds_dir = os.path.join(base_dir, name)
+            if not os.path.isdir(ds_dir):
+                continue
+            if all(os.path.exists(os.path.join(ds_dir, f)) for f in REQUIRED_DATASET_FILES) and name not in discovered:
+                discovered.append(name)
+    return discovered
 
 
 # =============================================================
@@ -236,6 +315,13 @@ def main():
     log("GRN Benchmark - Embedding Only (No Expression)")
     log("=" * 70)
 
+    datasets = discover_datasets()
+    if not datasets:
+        log(f"No valid datasets found in {SCGREAT_DIR}.")
+        log("Expected files per dataset: Target.csv, Train_set.csv, Validation_set.csv, Test_set.csv")
+        return
+    log(f"Datasets to evaluate ({len(datasets)}): {datasets}")
+
     # Load vocab
     vocab = load_vocab()
     log(f"Vocab: {len(vocab)} genes")
@@ -261,9 +347,9 @@ def main():
     all_results = []
 
     dataset_cache = {}
-    for ds_name in DATASETS:
-        ds_path = os.path.join(SCGREAT_DIR, ds_name)
-        if not os.path.exists(ds_path):
+    for ds_name in datasets:
+        ds_path = resolve_dataset_dir(ds_name)
+        if ds_path is None:
             log(f"Dataset {ds_name}: NOT FOUND, skipping")
             continue
 
@@ -358,8 +444,8 @@ def main():
         log(f"\n{'='*70}")
         log("CROSS-DATASET TRANSFER")
         log(f"{'='*70}")
-        for src_ds in DATASETS:
-            for tgt_ds in DATASETS:
+        for src_ds in datasets:
+            for tgt_ds in datasets:
                 if src_ds == tgt_ds:
                     continue
                 if src_ds not in dataset_cache or tgt_ds not in dataset_cache:
@@ -417,7 +503,7 @@ def main():
     log("SUMMARY")
     log(f"{'='*70}")
 
-    for ds_name in DATASETS:
+    for ds_name in datasets:
         ds_results = [r for r in all_results if r['dataset'] == ds_name]
         if not ds_results:
             continue

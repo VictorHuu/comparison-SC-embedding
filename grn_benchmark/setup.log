@@ -253,3 +253,1433 @@ Setting up BioBERT original baseline...
 [2026-03-18 20:49:07] Experiment dirs: /bigdata2/hyt/projects/grn_benchmark/<embedding>/<dataset>/
 [2026-03-18 20:49:07] Run all experiments: bash /bigdata2/hyt/projects/grn_benchmark/run_all.sh
 [2026-03-18 20:49:07] ============================================================
+[2026-04-03 15:05:59] ============================================================
+[2026-04-03 15:05:59] scGREAT GRN Benchmark Setup
+[2026-04-03 15:05:59] ============================================================
+[2026-04-03 15:05:59] scGREAT already exists at /bigdata2/hyt/projects/scGREAT
+[2026-04-03 15:05:59] Patching scGREAT source code...
+[2026-04-03 15:05:59]   Patched model.py (nn.Linear(2*embed_size, 1024))
+[2026-04-03 15:05:59]   Patched main.py (biovect{embed_size}.npy, best metric tracking)
+[2026-04-03 15:05:59]   Patched demo.py (--data_dir, --n_runs, mean+std reporting)
+[2026-04-03 15:05:59] All patches applied.
+[2026-04-03 15:05:59]   Raw source missing for hHep500: expr=/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/scRNA-Seq/hHep/ExpressionData.csv, tf=None, net=None
+[2026-04-03 15:05:59]   Raw source missing for mDC500: expr=/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/scRNA-Seq/mDC/ExpressionData.csv, tf=None, net=None
+[2026-04-03 15:05:59]   Raw source missing for mHSC-E500: expr=/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/scRNA-Seq/mHSC-E/ExpressionData.csv, tf=None, net=None
+[2026-04-03 15:05:59]   Raw source missing for mHSC-GM500: expr=/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/scRNA-Seq/mHSC-GM/ExpressionData.csv, tf=None, net=None
+[2026-04-03 15:05:59]   Raw source missing for mHSC-L500: expr=/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/scRNA-Seq/mHSC-L/ExpressionData.csv, tf=None, net=None
+[2026-04-03 15:05:59]   Dataset hESC500: 910 genes
+[2026-04-03 15:05:59]   Dataset mESC500: 1120 genes
+[2026-04-03 15:05:59] 
+Human datasets: ['hESC500']
+[2026-04-03 15:05:59] Mouse datasets: ['mESC500']
+[2026-04-03 15:05:59] Note: Mouse datasets may have low gene coverage with human embeddings
+
+[2026-04-03 15:05:59] Loading vocab...
+[2026-04-03 15:05:59]   Vocab size: 60697
+[2026-04-03 15:05:59] 
+Loading embeddings...
+[2026-04-03 15:05:59]   Loading difference_v3 from /bigdata2/hyt/projects/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt...
+[2026-04-03 15:10:11] ============================================================
+[2026-04-03 15:10:11] scGREAT GRN Benchmark Setup
+[2026-04-03 15:10:11] ============================================================
+[2026-04-03 15:10:11] scGREAT already exists at /bigdata2/hyt/projects/scGREAT
+[2026-04-03 15:10:11] Patching scGREAT source code...
+[2026-04-03 15:10:11]   Patched model.py (nn.Linear(2*embed_size, 1024))
+[2026-04-03 15:10:11]   Patched main.py (biovect{embed_size}.npy, best metric tracking)
+[2026-04-03 15:10:11]   Patched demo.py (--data_dir, --n_runs, mean+std reporting)
+[2026-04-03 15:10:11] All patches applied.
+[2026-04-03 15:10:11]   Raw source missing for hHep500: expr=/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/scRNA-Seq/hHep/ExpressionData.csv, tf=None, net=None
+[2026-04-03 15:10:11]   Raw source missing for mDC500: expr=/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/scRNA-Seq/mDC/ExpressionData.csv, tf=None, net=None
+[2026-04-03 15:10:11]   Raw source missing for mHSC-E500: expr=/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/scRNA-Seq/mHSC-E/ExpressionData.csv, tf=None, net=None
+[2026-04-03 15:10:11]   Raw source missing for mHSC-GM500: expr=/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/scRNA-Seq/mHSC-GM/ExpressionData.csv, tf=None, net=None
+[2026-04-03 15:10:11]   Raw source missing for mHSC-L500: expr=/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/scRNA-Seq/mHSC-L/ExpressionData.csv, tf=None, net=None
+[2026-04-03 15:10:11]   Dataset hESC500: 910 genes
+[2026-04-03 15:10:11]   Dataset mESC500: 1120 genes
+[2026-04-03 15:10:11] 
+Human datasets: ['hESC500']
+[2026-04-03 15:10:11] Mouse datasets: ['mESC500']
+[2026-04-03 15:10:11] Note: Mouse datasets may have low gene coverage with human embeddings
+
+[2026-04-03 15:10:11] Loading vocab...
+[2026-04-03 15:10:11]   Vocab size: 60697
+[2026-04-03 15:10:11] 
+Loading embeddings...
+[2026-04-03 15:10:11]   Loading difference_v3 from /bigdata2/hyt/projects/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt...
+[2026-04-03 15:10:11]   SKIP difference_v3: /bigdata2/hyt/projects/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt
+[2026-04-03 15:10:11]   Loading minus from /bigdata2/hyt/projects/scbenchmark/save_pretrain/minus/best_model.pt...
+[2026-04-03 15:10:11]     Shape: (60697, 256)
+[2026-04-03 15:10:11]   Loading baseline from /bigdata2/hyt/projects/scbenchmark/save_pretrain/baseline/best_model.pt...
+[2026-04-03 15:10:11]     Shape: (60697, 256)
+[2026-04-03 15:10:11]   Loading scGPT_human from /bigdata2/hyt/projects/scbenchmark/save_pretrain/scGPT_human/best_model.pt...
+[2026-04-03 15:10:12]     Shape: (60697, 512)
+[2026-04-03 15:10:12]   Loading v4_bias_rec_best from /bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_bias_rec_best/best_model.pt...
+[2026-04-03 15:10:12]     Shape: (60697, 256)
+[2026-04-03 15:10:12]   Loading v4_plain_best from /bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_plain_best/best_model.pt...
+[2026-04-03 15:10:12]   SKIP v4_plain_best: 'encoder.embedding.weight'
+[2026-04-03 15:10:12]   Loading v4_type_pe_best from /bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_type_pe_best/best_model.pt...
+[2026-04-03 15:10:12]     Shape: (60697, 256)
+[2026-04-03 15:10:12] 
+============================================================
+[2026-04-03 15:10:12] Generating embedding files for scGREAT...
+[2026-04-03 15:10:12] ============================================================
+[2026-04-03 15:10:12] 
+Dataset: hESC500 (910 genes)
+[2026-04-03 15:10:12]   minus x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 15:10:12]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 15:10:12]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-03 15:10:12]   baseline x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 15:10:12]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 15:10:12]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-03 15:10:12]   scGPT_human x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 15:10:12]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 15:10:12]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/hESC500/biovect512.npy shape=(911, 512)
+[2026-04-03 15:10:12]   v4_bias_rec_best x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 15:10:12]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 15:10:12]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-03 15:10:12]   v4_type_pe_best x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 15:10:12]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 15:10:12]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-03 15:10:12] 
+Dataset: mESC500 (1120 genes)
+[2026-04-03 15:10:12]   minus x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 15:10:12]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 15:10:12]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-03 15:10:12]   baseline x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 15:10:12]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 15:10:12]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-03 15:10:12]   scGPT_human x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 15:10:12]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 15:10:12]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/mESC500/biovect512.npy shape=(1121, 512)
+[2026-04-03 15:10:12]   v4_bias_rec_best x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 15:10:12]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 15:10:12]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-03 15:10:12]   v4_type_pe_best x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 15:10:12]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 15:10:12]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-03 15:10:12] 
+Setting up BioBERT original baseline...
+[2026-04-03 15:10:12]   BioBERT_original x hESC500: using original biovect768.npy
+[2026-04-03 15:10:12]   BioBERT_original x mESC500: using original biovect768.npy
+[2026-04-03 15:10:12] 
+============================================================
+[2026-04-03 15:10:12] Gene Coverage Summary
+[2026-04-03 15:10:12] ============================================================
+[2026-04-03 15:10:12] Embedding            Dataset           Mapped    Total   Coverage   Dim
+[2026-04-03 15:10:12] ----------------------------------------------------------------------
+[2026-04-03 15:10:12] minus                hESC500              848      910      93.2%   256
+[2026-04-03 15:10:12] baseline             hESC500              848      910      93.2%   256
+[2026-04-03 15:10:12] scGPT_human          hESC500              848      910      93.2%   512
+[2026-04-03 15:10:12] v4_bias_rec_best     hESC500              848      910      93.2%   256
+[2026-04-03 15:10:12] v4_type_pe_best      hESC500              848      910      93.2%   256
+[2026-04-03 15:10:12] minus                mESC500              937     1120      83.7%   256
+[2026-04-03 15:10:12] baseline             mESC500              937     1120      83.7%   256
+[2026-04-03 15:10:12] scGPT_human          mESC500              937     1120      83.7%   512
+[2026-04-03 15:10:12] v4_bias_rec_best     mESC500              937     1120      83.7%   256
+[2026-04-03 15:10:12] v4_type_pe_best      mESC500              937     1120      83.7%   256
+[2026-04-03 15:10:12] 
+============================================================
+[2026-04-03 15:10:12] Generating run script...
+[2026-04-03 15:10:12] ============================================================
+[2026-04-03 15:10:12] Generated run script: /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/run_all.sh
+[2026-04-03 15:10:12] 
+============================================================
+[2026-04-03 15:10:12] Setup complete!
+[2026-04-03 15:10:12] Experiment dirs: /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/<embedding>/<dataset>/
+[2026-04-03 15:10:12] Run all experiments: bash /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/run_all.sh
+[2026-04-03 15:10:12] ============================================================
+[2026-04-03 15:15:13] ============================================================
+[2026-04-03 15:15:13] scGREAT GRN Benchmark Setup
+[2026-04-03 15:15:13] ============================================================
+[2026-04-03 15:15:13] scGREAT already exists at /bigdata2/hyt/projects/scGREAT
+[2026-04-03 15:15:13] Patching scGREAT source code...
+[2026-04-03 15:15:13]   Patched model.py (nn.Linear(2*embed_size, 1024))
+[2026-04-03 15:15:13]   Patched main.py (biovect{embed_size}.npy, best metric tracking)
+[2026-04-03 15:15:13]   Patched demo.py (--data_dir, --n_runs, mean+std reporting)
+[2026-04-03 15:15:13] All patches applied.
+[2026-04-03 15:15:13]   Raw source missing for hHep500: expr=/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/scRNA-Seq/hHep/ExpressionData.csv, tf=None, net=None
+[2026-04-03 15:15:13]   Raw source missing for mDC500: expr=/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/scRNA-Seq/mDC/ExpressionData.csv, tf=None, net=None
+[2026-04-03 15:15:13]   Raw source missing for mHSC-E500: expr=/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/scRNA-Seq/mHSC-E/ExpressionData.csv, tf=None, net=None
+[2026-04-03 15:15:13]   Raw source missing for mHSC-GM500: expr=/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/scRNA-Seq/mHSC-GM/ExpressionData.csv, tf=None, net=None
+[2026-04-03 15:15:13]   Raw source missing for mHSC-L500: expr=/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/scRNA-Seq/mHSC-L/ExpressionData.csv, tf=None, net=None
+[2026-04-03 15:15:13] WARNING: target datasets still missing after generation: ['hHep500', 'mDC500', 'mHSC-E500', 'mHSC-GM500', 'mHSC-L500']
+[2026-04-03 15:15:13]   Dataset hESC500: 910 genes
+[2026-04-03 15:15:13]   Dataset mESC500: 1120 genes
+[2026-04-03 15:15:13] 
+Human datasets: ['hESC500']
+[2026-04-03 15:15:13] Mouse datasets: ['mESC500']
+[2026-04-03 15:15:13] Note: Mouse datasets may have low gene coverage with human embeddings
+
+[2026-04-03 15:15:13] Loading vocab...
+[2026-04-03 15:15:13]   Vocab size: 60697
+[2026-04-03 15:15:13] 
+Loading embeddings...
+[2026-04-03 15:15:13]   Loading difference_v3 from /bigdata2/hyt/projects/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt...
+[2026-04-03 15:15:13]   SKIP difference_v3: /bigdata2/hyt/projects/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt
+[2026-04-03 15:15:13]   Loading minus from /bigdata2/hyt/projects/scbenchmark/save_pretrain/minus/best_model.pt...
+[2026-04-03 15:15:13]     Shape: (60697, 256)
+[2026-04-03 15:15:13]   Loading baseline from /bigdata2/hyt/projects/scbenchmark/save_pretrain/baseline/best_model.pt...
+[2026-04-03 15:15:13]     Shape: (60697, 256)
+[2026-04-03 15:15:13]   Loading scGPT_human from /bigdata2/hyt/projects/scbenchmark/save_pretrain/scGPT_human/best_model.pt...
+[2026-04-03 15:15:13]     Shape: (60697, 512)
+[2026-04-03 15:15:13]   Loading v4_bias_rec_best from /bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_bias_rec_best/best_model.pt...
+[2026-04-03 15:15:13]     Shape: (60697, 256)
+[2026-04-03 15:15:13]   Loading v4_plain_best from /bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_plain_best/best_model.pt...
+[2026-04-03 15:15:13]   SKIP v4_plain_best: 'encoder.embedding.weight'
+[2026-04-03 15:15:13]   Loading v4_type_pe_best from /bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_type_pe_best/best_model.pt...
+[2026-04-03 15:15:13]     Shape: (60697, 256)
+[2026-04-03 15:15:13] 
+============================================================
+[2026-04-03 15:15:13] Generating embedding files for scGREAT...
+[2026-04-03 15:15:13] ============================================================
+[2026-04-03 15:15:13] 
+Dataset: hESC500 (910 genes)
+[2026-04-03 15:15:13]   minus x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 15:15:13]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 15:15:13]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-03 15:15:13]   baseline x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 15:15:13]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 15:15:13]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-03 15:15:13]   scGPT_human x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 15:15:13]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 15:15:14]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/hESC500/biovect512.npy shape=(911, 512)
+[2026-04-03 15:15:14]   v4_bias_rec_best x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 15:15:14]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 15:15:14]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-03 15:15:14]   v4_type_pe_best x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 15:15:14]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 15:15:14]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-03 15:15:14] 
+Dataset: mESC500 (1120 genes)
+[2026-04-03 15:15:14]   minus x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 15:15:14]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 15:15:14]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-03 15:15:14]   baseline x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 15:15:14]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 15:15:14]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-03 15:15:14]   scGPT_human x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 15:15:14]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 15:15:14]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/mESC500/biovect512.npy shape=(1121, 512)
+[2026-04-03 15:15:14]   v4_bias_rec_best x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 15:15:14]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 15:15:14]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-03 15:15:14]   v4_type_pe_best x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 15:15:14]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 15:15:14]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-03 15:15:14] 
+Setting up BioBERT original baseline...
+[2026-04-03 15:15:14]   BioBERT_original x hESC500: using original biovect768.npy
+[2026-04-03 15:15:14]   BioBERT_original x mESC500: using original biovect768.npy
+[2026-04-03 15:15:14] 
+============================================================
+[2026-04-03 15:15:14] Gene Coverage Summary
+[2026-04-03 15:15:14] ============================================================
+[2026-04-03 15:15:14] Embedding            Dataset           Mapped    Total   Coverage   Dim
+[2026-04-03 15:15:14] ----------------------------------------------------------------------
+[2026-04-03 15:15:14] minus                hESC500              848      910      93.2%   256
+[2026-04-03 15:15:14] baseline             hESC500              848      910      93.2%   256
+[2026-04-03 15:15:14] scGPT_human          hESC500              848      910      93.2%   512
+[2026-04-03 15:15:14] v4_bias_rec_best     hESC500              848      910      93.2%   256
+[2026-04-03 15:15:14] v4_type_pe_best      hESC500              848      910      93.2%   256
+[2026-04-03 15:15:14] minus                mESC500              937     1120      83.7%   256
+[2026-04-03 15:15:14] baseline             mESC500              937     1120      83.7%   256
+[2026-04-03 15:15:14] scGPT_human          mESC500              937     1120      83.7%   512
+[2026-04-03 15:15:14] v4_bias_rec_best     mESC500              937     1120      83.7%   256
+[2026-04-03 15:15:14] v4_type_pe_best      mESC500              937     1120      83.7%   256
+[2026-04-03 15:15:14] 
+============================================================
+[2026-04-03 15:15:14] Generating run script...
+[2026-04-03 15:15:14] ============================================================
+[2026-04-03 15:15:14] Generated run script: /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/run_all.sh
+[2026-04-03 15:15:14] 
+============================================================
+[2026-04-03 15:15:14] Setup complete!
+[2026-04-03 15:15:14] Experiment dirs: /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/<embedding>/<dataset>/
+[2026-04-03 15:15:14] Run all experiments: bash /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/run_all.sh
+[2026-04-03 15:15:14] ============================================================
+[2026-04-03 15:20:44] ============================================================
+[2026-04-03 15:20:44] scGREAT GRN Benchmark Setup
+[2026-04-03 15:20:44] ============================================================
+[2026-04-03 15:20:44] scGREAT already exists at /bigdata2/hyt/projects/scGREAT
+[2026-04-03 15:20:44] Patching scGREAT source code...
+[2026-04-03 15:20:44]   Patched model.py (nn.Linear(2*embed_size, 1024))
+[2026-04-03 15:20:44]   Patched main.py (biovect{embed_size}.npy, best metric tracking)
+[2026-04-03 15:20:44]   Patched demo.py (--data_dir, --n_runs, mean+std reporting)
+[2026-04-03 15:20:44] All patches applied.
+[2026-04-03 15:20:44]   Downloading BEELINE support file: BEELINE-data.zip
+[2026-04-03 15:20:49]   WARNING: failed to download/extract BEELINE support files: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1017)>
+[2026-04-03 15:20:49]   Raw source missing for hHep500: expr=/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/scRNA-Seq/hHep/ExpressionData.csv, tf=None, net=None
+[2026-04-03 15:20:49]   Downloading BEELINE support file: BEELINE-data.zip
+[2026-04-03 15:20:54]   WARNING: failed to download/extract BEELINE support files: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1017)>
+[2026-04-03 15:20:54]   Raw source missing for mDC500: expr=/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/scRNA-Seq/mDC/ExpressionData.csv, tf=None, net=None
+[2026-04-03 15:20:54]   Downloading BEELINE support file: BEELINE-data.zip
+[2026-04-03 15:21:36]   WARNING: failed to download/extract BEELINE support files: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1017)>
+[2026-04-03 15:21:36]   Raw source missing for mHSC-E500: expr=/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/scRNA-Seq/mHSC-E/ExpressionData.csv, tf=None, net=None
+[2026-04-03 15:21:36]   Downloading BEELINE support file: BEELINE-data.zip
+[2026-04-03 15:21:36]   WARNING: failed to download/extract BEELINE support files: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1017)>
+[2026-04-03 15:21:36]   Raw source missing for mHSC-GM500: expr=/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/scRNA-Seq/mHSC-GM/ExpressionData.csv, tf=None, net=None
+[2026-04-03 15:21:36]   Downloading BEELINE support file: BEELINE-data.zip
+[2026-04-03 15:21:41]   WARNING: failed to download/extract BEELINE support files: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1017)>
+[2026-04-03 15:21:41]   Raw source missing for mHSC-L500: expr=/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/scRNA-Seq/mHSC-L/ExpressionData.csv, tf=None, net=None
+[2026-04-03 15:21:41] WARNING: target datasets still missing after generation: ['hHep500', 'mDC500', 'mHSC-E500', 'mHSC-GM500', 'mHSC-L500']
+[2026-04-03 15:21:41]   Dataset hESC500: 910 genes
+[2026-04-03 15:21:41]   Dataset mESC500: 1120 genes
+[2026-04-03 15:21:41] 
+Human datasets: ['hESC500']
+[2026-04-03 15:21:41] Mouse datasets: ['mESC500']
+[2026-04-03 15:21:41] Note: Mouse datasets may have low gene coverage with human embeddings
+
+[2026-04-03 15:21:41] Loading vocab...
+[2026-04-03 15:21:41]   Vocab size: 60697
+[2026-04-03 15:21:41] 
+Loading embeddings...
+[2026-04-03 15:21:41]   Loading difference_v3 from /bigdata2/hyt/projects/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt...
+[2026-04-03 15:21:41]   SKIP difference_v3: /bigdata2/hyt/projects/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt
+[2026-04-03 15:21:41]   Loading minus from /bigdata2/hyt/projects/scbenchmark/save_pretrain/minus/best_model.pt...
+[2026-04-03 15:21:41]     Shape: (60697, 256)
+[2026-04-03 15:21:41]   Loading baseline from /bigdata2/hyt/projects/scbenchmark/save_pretrain/baseline/best_model.pt...
+[2026-04-03 15:21:41]     Shape: (60697, 256)
+[2026-04-03 15:21:41]   Loading scGPT_human from /bigdata2/hyt/projects/scbenchmark/save_pretrain/scGPT_human/best_model.pt...
+[2026-04-03 15:21:42]     Shape: (60697, 512)
+[2026-04-03 15:21:42]   Loading v4_bias_rec_best from /bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_bias_rec_best/best_model.pt...
+[2026-04-03 15:21:42]     Shape: (60697, 256)
+[2026-04-03 15:21:42]   Loading v4_plain_best from /bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_plain_best/best_model.pt...
+[2026-04-03 15:21:42]   SKIP v4_plain_best: 'encoder.embedding.weight'
+[2026-04-03 15:21:42]   Loading v4_type_pe_best from /bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_type_pe_best/best_model.pt...
+[2026-04-03 15:21:42]     Shape: (60697, 256)
+[2026-04-03 15:21:42] 
+============================================================
+[2026-04-03 15:21:42] Generating embedding files for scGREAT...
+[2026-04-03 15:21:42] ============================================================
+[2026-04-03 15:21:42] 
+Dataset: hESC500 (910 genes)
+[2026-04-03 15:21:42]   minus x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 15:21:42]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 15:21:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-03 15:21:42]   baseline x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 15:21:42]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 15:21:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-03 15:21:42]   scGPT_human x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 15:21:42]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 15:21:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/hESC500/biovect512.npy shape=(911, 512)
+[2026-04-03 15:21:42]   v4_bias_rec_best x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 15:21:42]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 15:21:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-03 15:21:42]   v4_type_pe_best x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 15:21:42]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 15:21:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-03 15:21:42] 
+Dataset: mESC500 (1120 genes)
+[2026-04-03 15:21:42]   minus x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 15:21:42]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 15:21:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-03 15:21:42]   baseline x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 15:21:42]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 15:21:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-03 15:21:42]   scGPT_human x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 15:21:42]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 15:21:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/mESC500/biovect512.npy shape=(1121, 512)
+[2026-04-03 15:21:42]   v4_bias_rec_best x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 15:21:42]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 15:21:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-03 15:21:42]   v4_type_pe_best x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 15:21:42]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 15:21:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-03 15:21:42] 
+Setting up BioBERT original baseline...
+[2026-04-03 15:21:42]   BioBERT_original x hESC500: using original biovect768.npy
+[2026-04-03 15:21:42]   BioBERT_original x mESC500: using original biovect768.npy
+[2026-04-03 15:21:42] 
+============================================================
+[2026-04-03 15:21:42] Gene Coverage Summary
+[2026-04-03 15:21:42] ============================================================
+[2026-04-03 15:21:42] Embedding            Dataset           Mapped    Total   Coverage   Dim
+[2026-04-03 15:21:42] ----------------------------------------------------------------------
+[2026-04-03 15:21:42] minus                hESC500              848      910      93.2%   256
+[2026-04-03 15:21:42] baseline             hESC500              848      910      93.2%   256
+[2026-04-03 15:21:42] scGPT_human          hESC500              848      910      93.2%   512
+[2026-04-03 15:21:42] v4_bias_rec_best     hESC500              848      910      93.2%   256
+[2026-04-03 15:21:42] v4_type_pe_best      hESC500              848      910      93.2%   256
+[2026-04-03 15:21:42] minus                mESC500              937     1120      83.7%   256
+[2026-04-03 15:21:42] baseline             mESC500              937     1120      83.7%   256
+[2026-04-03 15:21:42] scGPT_human          mESC500              937     1120      83.7%   512
+[2026-04-03 15:21:42] v4_bias_rec_best     mESC500              937     1120      83.7%   256
+[2026-04-03 15:21:42] v4_type_pe_best      mESC500              937     1120      83.7%   256
+[2026-04-03 15:21:42] 
+============================================================
+[2026-04-03 15:21:42] Generating run script...
+[2026-04-03 15:21:42] ============================================================
+[2026-04-03 15:21:42] Generated run script: /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/run_all.sh
+[2026-04-03 15:21:42] 
+============================================================
+[2026-04-03 15:21:42] Setup complete!
+[2026-04-03 15:21:42] Experiment dirs: /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/<embedding>/<dataset>/
+[2026-04-03 15:21:42] Run all experiments: bash /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/run_all.sh
+[2026-04-03 15:21:42] ============================================================
+[2026-04-03 16:25:00] ============================================================
+[2026-04-03 16:25:00] scGREAT GRN Benchmark Setup
+[2026-04-03 16:25:00] ============================================================
+[2026-04-03 16:25:00] scGREAT already exists at /bigdata2/hyt/projects/scGREAT
+[2026-04-03 16:25:00] Patching scGREAT source code...
+[2026-04-03 16:25:00]   Patched model.py (nn.Linear(2*embed_size, 1024))
+[2026-04-03 16:25:00]   Patched main.py (biovect{embed_size}.npy, best metric tracking)
+[2026-04-03 16:25:00]   Patched demo.py (--data_dir, --n_runs, mean+std reporting)
+[2026-04-03 16:25:00] All patches applied.
+[2026-04-03 16:25:00]   Reusing existing archive: /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/BEELINE/BEELINE-data.zip
+[2026-04-03 16:25:04]   Reusing existing archive: /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/BEELINE/BEELINE-Networks.zip
+[2026-04-03 16:25:05]   Generating hHep500 from raw data...
+[2026-04-03 16:25:06]   Generated hHep500: genes=500, pairs=6 -> /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/generated_datasets/hHep500
+[2026-04-03 16:25:06]   Generating mDC500 from raw data...
+[2026-04-03 16:25:07]   Too few edges after filtering for mDC500: 0
+[2026-04-03 16:25:07]   Generating mHSC-E500 from raw data...
+[2026-04-03 16:25:10]   Generated mHSC-E500: genes=500, pairs=1572 -> /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/generated_datasets/mHSC-E500
+[2026-04-03 16:25:10]   Generating mHSC-GM500 from raw data...
+[2026-04-03 16:25:12]   Generated mHSC-GM500: genes=500, pairs=2582 -> /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/generated_datasets/mHSC-GM500
+[2026-04-03 16:25:12]   Generating mHSC-L500 from raw data...
+[2026-04-03 16:25:14]   Generated mHSC-L500: genes=500, pairs=3244 -> /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/generated_datasets/mHSC-L500
+[2026-04-03 16:25:14] WARNING: target datasets still missing after generation: ['mDC500']
+[2026-04-03 16:25:14]   Dataset hESC500: 910 genes
+[2026-04-03 16:25:14]   Dataset hHep500: 500 genes
+[2026-04-03 16:25:14]   Dataset mESC500: 1120 genes
+[2026-04-03 16:25:14]   Dataset mHSC-E500: 500 genes
+[2026-04-03 16:25:14]   Dataset mHSC-GM500: 500 genes
+[2026-04-03 16:25:14]   Dataset mHSC-L500: 500 genes
+[2026-04-03 16:25:14] 
+Human datasets: ['hESC500', 'hHep500']
+[2026-04-03 16:25:14] Mouse datasets: ['mESC500', 'mHSC-E500', 'mHSC-GM500', 'mHSC-L500']
+[2026-04-03 16:25:14] Note: Mouse datasets may have low gene coverage with human embeddings
+
+[2026-04-03 16:25:14] Loading vocab...
+[2026-04-03 16:25:14]   Vocab size: 60697
+[2026-04-03 16:25:14] 
+Loading embeddings...
+[2026-04-03 16:25:14]   Loading difference_v3 from /bigdata2/hyt/projects/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt...
+[2026-04-03 16:25:14]   SKIP difference_v3: /bigdata2/hyt/projects/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt
+[2026-04-03 16:25:14]   Loading minus from /bigdata2/hyt/projects/scbenchmark/save_pretrain/minus/best_model.pt...
+[2026-04-03 16:25:15]     Shape: (60697, 256)
+[2026-04-03 16:25:15]   Loading baseline from /bigdata2/hyt/projects/scbenchmark/save_pretrain/baseline/best_model.pt...
+[2026-04-03 16:25:15]     Shape: (60697, 256)
+[2026-04-03 16:25:15]   Loading scGPT_human from /bigdata2/hyt/projects/scbenchmark/save_pretrain/scGPT_human/best_model.pt...
+[2026-04-03 16:25:15]     Shape: (60697, 512)
+[2026-04-03 16:25:15]   Loading v4_bias_rec_best from /bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_bias_rec_best/best_model.pt...
+[2026-04-03 16:25:15]     Shape: (60697, 256)
+[2026-04-03 16:25:15]   Loading v4_plain_best from /bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_plain_best/best_model.pt...
+[2026-04-03 16:25:15]   SKIP v4_plain_best: 'encoder.embedding.weight'
+[2026-04-03 16:25:15]   Loading v4_type_pe_best from /bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_type_pe_best/best_model.pt...
+[2026-04-03 16:25:15]     Shape: (60697, 256)
+[2026-04-03 16:25:15] 
+============================================================
+[2026-04-03 16:25:15] Generating embedding files for scGREAT...
+[2026-04-03 16:25:15] ============================================================
+[2026-04-03 16:25:15] 
+Dataset: hESC500 (910 genes)
+[2026-04-03 16:25:15]   minus x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 16:25:15]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-03 16:25:15]   baseline x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 16:25:15]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-03 16:25:15]   scGPT_human x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 16:25:15]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/hESC500/biovect512.npy shape=(911, 512)
+[2026-04-03 16:25:15]   v4_bias_rec_best x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 16:25:15]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-03 16:25:15]   v4_type_pe_best x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 16:25:15]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-03 16:25:15] 
+Dataset: hHep500 (500 genes)
+[2026-04-03 16:25:15]   minus x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-03 16:25:15]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/hHep500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:25:15]   baseline x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-03 16:25:15]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/hHep500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:25:15]   scGPT_human x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-03 16:25:15]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/hHep500/biovect512.npy shape=(501, 512)
+[2026-04-03 16:25:15]   v4_bias_rec_best x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-03 16:25:15]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/hHep500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:25:15]   v4_type_pe_best x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-03 16:25:15]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/hHep500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:25:15] 
+Dataset: mESC500 (1120 genes)
+[2026-04-03 16:25:15]   minus x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 16:25:15]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-03 16:25:15]   baseline x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 16:25:15]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-03 16:25:15]   scGPT_human x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 16:25:15]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/mESC500/biovect512.npy shape=(1121, 512)
+[2026-04-03 16:25:15]   v4_bias_rec_best x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 16:25:15]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-03 16:25:15]   v4_type_pe_best x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 16:25:15]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-03 16:25:15] 
+Dataset: mHSC-E500 (500 genes)
+[2026-04-03 16:25:15]   minus x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-03 16:25:15]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/mHSC-E500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:25:15]   baseline x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-03 16:25:15]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/mHSC-E500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:25:15]   scGPT_human x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-03 16:25:15]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/mHSC-E500/biovect512.npy shape=(501, 512)
+[2026-04-03 16:25:15]   v4_bias_rec_best x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-03 16:25:15]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/mHSC-E500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:25:15]   v4_type_pe_best x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-03 16:25:15]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/mHSC-E500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:25:15] 
+Dataset: mHSC-GM500 (500 genes)
+[2026-04-03 16:25:15]   minus x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-03 16:25:15]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/mHSC-GM500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:25:15]   baseline x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-03 16:25:15]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/mHSC-GM500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:25:15]   scGPT_human x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-03 16:25:15]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/mHSC-GM500/biovect512.npy shape=(501, 512)
+[2026-04-03 16:25:15]   v4_bias_rec_best x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-03 16:25:15]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/mHSC-GM500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:25:15]   v4_type_pe_best x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-03 16:25:15]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/mHSC-GM500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:25:15] 
+Dataset: mHSC-L500 (500 genes)
+[2026-04-03 16:25:15]   minus x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-03 16:25:15]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/mHSC-L500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:25:15]   baseline x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-03 16:25:15]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/mHSC-L500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:25:15]   scGPT_human x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-03 16:25:15]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/mHSC-L500/biovect512.npy shape=(501, 512)
+[2026-04-03 16:25:15]   v4_bias_rec_best x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-03 16:25:15]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/mHSC-L500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:25:15]   v4_type_pe_best x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-03 16:25:15]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-03 16:25:15]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/mHSC-L500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:25:15] 
+Setting up BioBERT original baseline...
+[2026-04-03 16:25:15]   BioBERT_original x hESC500: using original biovect768.npy
+[2026-04-03 16:25:15]   BioBERT_original x hHep500: using original biovect768.npy
+[2026-04-03 16:25:15]   BioBERT_original x mESC500: using original biovect768.npy
+[2026-04-03 16:25:15]   BioBERT_original x mHSC-E500: using original biovect768.npy
+[2026-04-03 16:25:15]   BioBERT_original x mHSC-GM500: using original biovect768.npy
+[2026-04-03 16:25:15]   BioBERT_original x mHSC-L500: using original biovect768.npy
+[2026-04-03 16:25:15] 
+============================================================
+[2026-04-03 16:25:15] Gene Coverage Summary
+[2026-04-03 16:25:15] ============================================================
+[2026-04-03 16:25:15] Embedding            Dataset           Mapped    Total   Coverage   Dim
+[2026-04-03 16:25:15] ----------------------------------------------------------------------
+[2026-04-03 16:25:15] minus                hESC500              848      910      93.2%   256
+[2026-04-03 16:25:15] baseline             hESC500              848      910      93.2%   256
+[2026-04-03 16:25:15] scGPT_human          hESC500              848      910      93.2%   512
+[2026-04-03 16:25:15] v4_bias_rec_best     hESC500              848      910      93.2%   256
+[2026-04-03 16:25:15] v4_type_pe_best      hESC500              848      910      93.2%   256
+[2026-04-03 16:25:15] minus                hHep500              487      500      97.4%   256
+[2026-04-03 16:25:15] baseline             hHep500              487      500      97.4%   256
+[2026-04-03 16:25:15] scGPT_human          hHep500              487      500      97.4%   512
+[2026-04-03 16:25:15] v4_bias_rec_best     hHep500              487      500      97.4%   256
+[2026-04-03 16:25:15] v4_type_pe_best      hHep500              487      500      97.4%   256
+[2026-04-03 16:25:15] minus                mESC500              937     1120      83.7%   256
+[2026-04-03 16:25:15] baseline             mESC500              937     1120      83.7%   256
+[2026-04-03 16:25:15] scGPT_human          mESC500              937     1120      83.7%   512
+[2026-04-03 16:25:15] v4_bias_rec_best     mESC500              937     1120      83.7%   256
+[2026-04-03 16:25:15] v4_type_pe_best      mESC500              937     1120      83.7%   256
+[2026-04-03 16:25:15] minus                mHSC-E500            457      500      91.4%   256
+[2026-04-03 16:25:15] baseline             mHSC-E500            457      500      91.4%   256
+[2026-04-03 16:25:15] scGPT_human          mHSC-E500            457      500      91.4%   512
+[2026-04-03 16:25:15] v4_bias_rec_best     mHSC-E500            457      500      91.4%   256
+[2026-04-03 16:25:15] v4_type_pe_best      mHSC-E500            457      500      91.4%   256
+[2026-04-03 16:25:15] minus                mHSC-GM500           449      500      89.8%   256
+[2026-04-03 16:25:15] baseline             mHSC-GM500           449      500      89.8%   256
+[2026-04-03 16:25:15] scGPT_human          mHSC-GM500           449      500      89.8%   512
+[2026-04-03 16:25:15] v4_bias_rec_best     mHSC-GM500           449      500      89.8%   256
+[2026-04-03 16:25:15] v4_type_pe_best      mHSC-GM500           449      500      89.8%   256
+[2026-04-03 16:25:15] minus                mHSC-L500            442      500      88.4%   256
+[2026-04-03 16:25:15] baseline             mHSC-L500            442      500      88.4%   256
+[2026-04-03 16:25:15] scGPT_human          mHSC-L500            442      500      88.4%   512
+[2026-04-03 16:25:15] v4_bias_rec_best     mHSC-L500            442      500      88.4%   256
+[2026-04-03 16:25:15] v4_type_pe_best      mHSC-L500            442      500      88.4%   256
+[2026-04-03 16:25:15] 
+============================================================
+[2026-04-03 16:25:15] Generating run script...
+[2026-04-03 16:25:15] ============================================================
+[2026-04-03 16:25:15] Generated run script: /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/run_all.sh
+[2026-04-03 16:25:15] 
+============================================================
+[2026-04-03 16:25:15] Setup complete!
+[2026-04-03 16:25:15] Experiment dirs: /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/<embedding>/<dataset>/
+[2026-04-03 16:25:15] Run all experiments: bash /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/run_all.sh
+[2026-04-03 16:25:15] ============================================================
+[2026-04-03 16:55:55] ============================================================
+[2026-04-03 16:55:55] scGREAT GRN Benchmark Setup
+[2026-04-03 16:55:55] ============================================================
+[2026-04-03 16:55:55] scGREAT already exists at /bigdata2/hyt/projects/scGREAT
+[2026-04-03 16:55:55] Patching scGREAT source code...
+[2026-04-03 16:55:55]   Patched model.py (nn.Linear(2*embed_size, 1024))
+[2026-04-03 16:55:55]   Patched main.py (biovect{embed_size}.npy, best metric tracking)
+[2026-04-03 16:55:55]   Patched demo.py (--data_dir, --n_runs, mean+std reporting)
+[2026-04-03 16:55:55] All patches applied.
+[2026-04-03 16:55:55]   Generating mDC500 from raw data...
+[2026-04-03 16:55:56]   Too few edges after filtering for mDC500: 0
+[2026-04-03 16:55:56] WARNING: target datasets still missing after generation: ['mDC500']
+[2026-04-03 16:55:56]   Dataset hESC500: 910 genes
+[2026-04-03 16:55:56]   Dataset hHep500: 500 genes
+[2026-04-03 16:55:56]   Dataset mESC500: 1120 genes
+[2026-04-03 16:55:56]   Dataset mHSC-E500: 500 genes
+[2026-04-03 16:55:56]   Dataset mHSC-GM500: 500 genes
+[2026-04-03 16:55:56]   Dataset mHSC-L500: 500 genes
+[2026-04-03 16:55:56] 
+Human datasets: ['hESC500', 'hHep500']
+[2026-04-03 16:55:56] Mouse datasets: ['mESC500', 'mHSC-E500', 'mHSC-GM500', 'mHSC-L500']
+[2026-04-03 16:55:56] Note: Mouse datasets may have low gene coverage with human embeddings
+
+[2026-04-03 16:55:56] Loading vocab...
+[2026-04-03 16:55:56]   Vocab size: 60697
+[2026-04-03 16:55:56] 
+Loading embeddings...
+[2026-04-03 16:55:56]   Loading difference_v3 from /bigdata2/hyt/projects/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt...
+[2026-04-03 16:55:56]   SKIP difference_v3: /bigdata2/hyt/projects/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt
+[2026-04-03 16:55:56]   Loading minus from /bigdata2/hyt/projects/scbenchmark/save_pretrain/minus/best_model.pt...
+[2026-04-03 16:55:56]     Shape: (60697, 256)
+[2026-04-03 16:55:56]   Loading baseline from /bigdata2/hyt/projects/scbenchmark/save_pretrain/baseline/best_model.pt...
+[2026-04-03 16:55:56]     Shape: (60697, 256)
+[2026-04-03 16:55:56]   Loading scGPT_human from /bigdata2/hyt/projects/scbenchmark/save_pretrain/scGPT_human/best_model.pt...
+[2026-04-03 16:55:56]     Shape: (60697, 512)
+[2026-04-03 16:55:56]   Loading v4_bias_rec_best from /bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_bias_rec_best/best_model.pt...
+[2026-04-03 16:55:56]     Shape: (60697, 256)
+[2026-04-03 16:55:56]   Loading v4_plain_best from /bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_plain_best/best_model.pt...
+[2026-04-03 16:55:56]   SKIP v4_plain_best: 'encoder.embedding.weight'
+[2026-04-03 16:55:56]   Loading v4_type_pe_best from /bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_type_pe_best/best_model.pt...
+[2026-04-03 16:55:56]     Shape: (60697, 256)
+[2026-04-03 16:55:56] 
+============================================================
+[2026-04-03 16:55:56] Generating embedding files for scGREAT...
+[2026-04-03 16:55:56] ============================================================
+[2026-04-03 16:55:56] 
+Dataset: hESC500 (910 genes)
+[2026-04-03 16:55:56]   minus x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 16:55:56]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-03 16:55:56]   baseline x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 16:55:56]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-03 16:55:56]   scGPT_human x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 16:55:56]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/hESC500/biovect512.npy shape=(911, 512)
+[2026-04-03 16:55:56]   v4_bias_rec_best x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 16:55:56]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-03 16:55:56]   v4_type_pe_best x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 16:55:56]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-03 16:55:56] 
+Dataset: hHep500 (500 genes)
+[2026-04-03 16:55:56]   minus x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-03 16:55:56]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/hHep500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:55:56]   baseline x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-03 16:55:56]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/hHep500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:55:56]   scGPT_human x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-03 16:55:56]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/hHep500/biovect512.npy shape=(501, 512)
+[2026-04-03 16:55:56]   v4_bias_rec_best x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-03 16:55:56]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/hHep500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:55:56]   v4_type_pe_best x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-03 16:55:56]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/hHep500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:55:56] 
+Dataset: mESC500 (1120 genes)
+[2026-04-03 16:55:56]   minus x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 16:55:56]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-03 16:55:56]   baseline x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 16:55:56]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-03 16:55:56]   scGPT_human x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 16:55:56]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/mESC500/biovect512.npy shape=(1121, 512)
+[2026-04-03 16:55:56]   v4_bias_rec_best x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 16:55:56]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-03 16:55:56]   v4_type_pe_best x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 16:55:56]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-03 16:55:56] 
+Dataset: mHSC-E500 (500 genes)
+[2026-04-03 16:55:56]   minus x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-03 16:55:56]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/mHSC-E500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:55:56]   baseline x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-03 16:55:56]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/mHSC-E500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:55:56]   scGPT_human x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-03 16:55:56]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/mHSC-E500/biovect512.npy shape=(501, 512)
+[2026-04-03 16:55:56]   v4_bias_rec_best x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-03 16:55:56]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/mHSC-E500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:55:56]   v4_type_pe_best x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-03 16:55:56]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/mHSC-E500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:55:56] 
+Dataset: mHSC-GM500 (500 genes)
+[2026-04-03 16:55:56]   minus x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-03 16:55:56]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/mHSC-GM500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:55:56]   baseline x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-03 16:55:56]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/mHSC-GM500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:55:56]   scGPT_human x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-03 16:55:56]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/mHSC-GM500/biovect512.npy shape=(501, 512)
+[2026-04-03 16:55:56]   v4_bias_rec_best x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-03 16:55:56]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/mHSC-GM500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:55:56]   v4_type_pe_best x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-03 16:55:56]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-03 16:55:56]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/mHSC-GM500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:55:56] 
+Dataset: mHSC-L500 (500 genes)
+[2026-04-03 16:55:56]   minus x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-03 16:55:57]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-03 16:55:57]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/mHSC-L500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:55:57]   baseline x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-03 16:55:57]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-03 16:55:57]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/mHSC-L500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:55:57]   scGPT_human x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-03 16:55:57]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-03 16:55:57]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/mHSC-L500/biovect512.npy shape=(501, 512)
+[2026-04-03 16:55:57]   v4_bias_rec_best x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-03 16:55:57]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-03 16:55:57]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/mHSC-L500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:55:57]   v4_type_pe_best x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-03 16:55:57]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-03 16:55:57]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/mHSC-L500/biovect256.npy shape=(501, 256)
+[2026-04-03 16:55:57] 
+Setting up BioBERT original baseline...
+[2026-04-03 16:55:57]   BioBERT_original x hESC500: using original biovect768.npy
+[2026-04-03 16:55:57]   BioBERT_original x hHep500: using original biovect768.npy
+[2026-04-03 16:55:57]   BioBERT_original x mESC500: using original biovect768.npy
+[2026-04-03 16:55:57]   BioBERT_original x mHSC-E500: using original biovect768.npy
+[2026-04-03 16:55:57]   BioBERT_original x mHSC-GM500: using original biovect768.npy
+[2026-04-03 16:55:57]   BioBERT_original x mHSC-L500: using original biovect768.npy
+[2026-04-03 16:55:57] 
+============================================================
+[2026-04-03 16:55:57] Gene Coverage Summary
+[2026-04-03 16:55:57] ============================================================
+[2026-04-03 16:55:57] Embedding            Dataset           Mapped    Total   Coverage   Dim
+[2026-04-03 16:55:57] ----------------------------------------------------------------------
+[2026-04-03 16:55:57] minus                hESC500              848      910      93.2%   256
+[2026-04-03 16:55:57] baseline             hESC500              848      910      93.2%   256
+[2026-04-03 16:55:57] scGPT_human          hESC500              848      910      93.2%   512
+[2026-04-03 16:55:57] v4_bias_rec_best     hESC500              848      910      93.2%   256
+[2026-04-03 16:55:57] v4_type_pe_best      hESC500              848      910      93.2%   256
+[2026-04-03 16:55:57] minus                hHep500              487      500      97.4%   256
+[2026-04-03 16:55:57] baseline             hHep500              487      500      97.4%   256
+[2026-04-03 16:55:57] scGPT_human          hHep500              487      500      97.4%   512
+[2026-04-03 16:55:57] v4_bias_rec_best     hHep500              487      500      97.4%   256
+[2026-04-03 16:55:57] v4_type_pe_best      hHep500              487      500      97.4%   256
+[2026-04-03 16:55:57] minus                mESC500              937     1120      83.7%   256
+[2026-04-03 16:55:57] baseline             mESC500              937     1120      83.7%   256
+[2026-04-03 16:55:57] scGPT_human          mESC500              937     1120      83.7%   512
+[2026-04-03 16:55:57] v4_bias_rec_best     mESC500              937     1120      83.7%   256
+[2026-04-03 16:55:57] v4_type_pe_best      mESC500              937     1120      83.7%   256
+[2026-04-03 16:55:57] minus                mHSC-E500            457      500      91.4%   256
+[2026-04-03 16:55:57] baseline             mHSC-E500            457      500      91.4%   256
+[2026-04-03 16:55:57] scGPT_human          mHSC-E500            457      500      91.4%   512
+[2026-04-03 16:55:57] v4_bias_rec_best     mHSC-E500            457      500      91.4%   256
+[2026-04-03 16:55:57] v4_type_pe_best      mHSC-E500            457      500      91.4%   256
+[2026-04-03 16:55:57] minus                mHSC-GM500           449      500      89.8%   256
+[2026-04-03 16:55:57] baseline             mHSC-GM500           449      500      89.8%   256
+[2026-04-03 16:55:57] scGPT_human          mHSC-GM500           449      500      89.8%   512
+[2026-04-03 16:55:57] v4_bias_rec_best     mHSC-GM500           449      500      89.8%   256
+[2026-04-03 16:55:57] v4_type_pe_best      mHSC-GM500           449      500      89.8%   256
+[2026-04-03 16:55:57] minus                mHSC-L500            442      500      88.4%   256
+[2026-04-03 16:55:57] baseline             mHSC-L500            442      500      88.4%   256
+[2026-04-03 16:55:57] scGPT_human          mHSC-L500            442      500      88.4%   512
+[2026-04-03 16:55:57] v4_bias_rec_best     mHSC-L500            442      500      88.4%   256
+[2026-04-03 16:55:57] v4_type_pe_best      mHSC-L500            442      500      88.4%   256
+[2026-04-03 16:55:57] 
+============================================================
+[2026-04-03 16:55:57] Generating run script...
+[2026-04-03 16:55:57] ============================================================
+[2026-04-03 16:55:57] Generated run script: /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/run_all.sh
+[2026-04-03 16:55:57] 
+============================================================
+[2026-04-03 16:55:57] Setup complete!
+[2026-04-03 16:55:57] Experiment dirs: /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/<embedding>/<dataset>/
+[2026-04-03 16:55:57] Run all experiments: bash /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/run_all.sh
+[2026-04-03 16:55:57] ============================================================
+[2026-04-03 19:26:39] ============================================================
+[2026-04-03 19:26:39] scGREAT GRN Benchmark Setup
+[2026-04-03 19:26:39] ============================================================
+[2026-04-03 19:26:39] scGREAT already exists at /bigdata2/hyt/projects/scGREAT
+[2026-04-03 19:26:39] Patching scGREAT source code...
+[2026-04-03 19:26:39]   Patched model.py (nn.Linear(2*embed_size, 1024))
+[2026-04-03 19:26:39]   Patched main.py (biovect{embed_size}.npy, best metric tracking)
+[2026-04-03 19:26:39]   Patched demo.py (--data_dir, --n_runs, mean+std reporting)
+[2026-04-03 19:26:39] All patches applied.
+[2026-04-03 19:26:39]   Generating mDC500 from raw data...
+[2026-04-03 19:26:40]   Too few edges after filtering for mDC500: 0
+[2026-04-03 19:26:40] WARNING: target datasets still missing after generation: ['mDC500']
+[2026-04-03 19:26:40]   Dataset hESC500: 910 genes
+[2026-04-03 19:26:40]   Dataset hHep500: 500 genes
+[2026-04-03 19:26:40]   Dataset mESC500: 1120 genes
+[2026-04-03 19:26:40]   Dataset mHSC-E500: 500 genes
+[2026-04-03 19:26:40]   Dataset mHSC-GM500: 500 genes
+[2026-04-03 19:26:40]   Dataset mHSC-L500: 500 genes
+[2026-04-03 19:26:40] 
+Human datasets: ['hESC500', 'hHep500']
+[2026-04-03 19:26:40] Mouse datasets: ['mESC500', 'mHSC-E500', 'mHSC-GM500', 'mHSC-L500']
+[2026-04-03 19:26:40] Note: Mouse datasets may have low gene coverage with human embeddings
+
+[2026-04-03 19:26:40] Loading vocab...
+[2026-04-03 19:26:40]   Vocab size: 60697
+[2026-04-03 19:26:40] 
+Loading embeddings...
+[2026-04-03 19:26:40]   Loading difference_v3 from /bigdata2/hyt/projects/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt...
+[2026-04-03 19:26:40]   SKIP difference_v3: /bigdata2/hyt/projects/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt
+[2026-04-03 19:26:40]   Loading minus from /bigdata2/hyt/projects/scbenchmark/save_pretrain/minus/best_model.pt...
+[2026-04-03 19:26:40]     Shape: (60697, 256)
+[2026-04-03 19:26:40]   Loading baseline from /bigdata2/hyt/projects/scbenchmark/save_pretrain/baseline/best_model.pt...
+[2026-04-03 19:26:40]     Shape: (60697, 256)
+[2026-04-03 19:26:40]   Loading scGPT_human from /bigdata2/hyt/projects/scbenchmark/save_pretrain/scGPT_human/best_model.pt...
+[2026-04-03 19:26:40]     Shape: (60697, 512)
+[2026-04-03 19:26:40]   Loading v4_bias_rec_best from /bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_bias_rec_best/best_model.pt...
+[2026-04-03 19:26:40]     Shape: (60697, 256)
+[2026-04-03 19:26:40]   Loading v4_plain_best from /bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_plain_best/best_model.pt...
+[2026-04-03 19:26:40]   SKIP v4_plain_best: 'encoder.embedding.weight'
+[2026-04-03 19:26:40]   Loading v4_type_pe_best from /bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_type_pe_best/best_model.pt...
+[2026-04-03 19:26:41]     Shape: (60697, 256)
+[2026-04-03 19:26:41] 
+============================================================
+[2026-04-03 19:26:41] Generating embedding files for scGREAT...
+[2026-04-03 19:26:41] ============================================================
+[2026-04-03 19:26:41] 
+Dataset: hESC500 (910 genes)
+[2026-04-03 19:26:41]   minus x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 19:26:41]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 19:26:41]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-03 19:26:41]   baseline x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 19:26:41]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 19:26:41]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-03 19:26:41]   scGPT_human x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 19:26:41]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 19:26:41]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/hESC500/biovect512.npy shape=(911, 512)
+[2026-04-03 19:26:41]   v4_bias_rec_best x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 19:26:41]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 19:26:41]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-03 19:26:41]   v4_type_pe_best x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-03 19:26:41]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-03 19:26:41]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-03 19:26:41] 
+Dataset: hHep500 (500 genes)
+[2026-04-03 19:26:41]   minus x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-03 19:26:41]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-03 19:26:41]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/hHep500/biovect256.npy shape=(501, 256)
+[2026-04-03 19:26:41]   baseline x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-03 19:26:41]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-03 19:26:41]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/hHep500/biovect256.npy shape=(501, 256)
+[2026-04-03 19:26:41]   scGPT_human x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-03 19:26:41]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-03 19:26:41]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/hHep500/biovect512.npy shape=(501, 512)
+[2026-04-03 19:26:41]   v4_bias_rec_best x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-03 19:26:41]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-03 19:26:41]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/hHep500/biovect256.npy shape=(501, 256)
+[2026-04-03 19:26:41]   v4_type_pe_best x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-03 19:26:41]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-03 19:26:41]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/hHep500/biovect256.npy shape=(501, 256)
+[2026-04-03 19:26:41] 
+Dataset: mESC500 (1120 genes)
+[2026-04-03 19:26:41]   minus x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 19:26:41]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 19:26:41]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-03 19:26:42]   baseline x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 19:26:42]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 19:26:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-03 19:26:42]   scGPT_human x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 19:26:42]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 19:26:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/mESC500/biovect512.npy shape=(1121, 512)
+[2026-04-03 19:26:42]   v4_bias_rec_best x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 19:26:42]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 19:26:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-03 19:26:43]   v4_type_pe_best x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-03 19:26:43]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-03 19:26:43]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-03 19:26:43] 
+Dataset: mHSC-E500 (500 genes)
+[2026-04-03 19:26:43]   minus x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-03 19:26:43]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-03 19:26:43]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/mHSC-E500/biovect256.npy shape=(501, 256)
+[2026-04-03 19:26:43]   baseline x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-03 19:26:43]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-03 19:26:43]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/mHSC-E500/biovect256.npy shape=(501, 256)
+[2026-04-03 19:26:43]   scGPT_human x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-03 19:26:43]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-03 19:26:43]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/mHSC-E500/biovect512.npy shape=(501, 512)
+[2026-04-03 19:26:43]   v4_bias_rec_best x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-03 19:26:43]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-03 19:26:43]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/mHSC-E500/biovect256.npy shape=(501, 256)
+[2026-04-03 19:26:43]   v4_type_pe_best x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-03 19:26:43]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-03 19:26:43]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/mHSC-E500/biovect256.npy shape=(501, 256)
+[2026-04-03 19:26:43] 
+Dataset: mHSC-GM500 (500 genes)
+[2026-04-03 19:26:43]   minus x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-03 19:26:43]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-03 19:26:43]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/mHSC-GM500/biovect256.npy shape=(501, 256)
+[2026-04-03 19:26:43]   baseline x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-03 19:26:43]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-03 19:26:43]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/mHSC-GM500/biovect256.npy shape=(501, 256)
+[2026-04-03 19:26:43]   scGPT_human x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-03 19:26:43]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-03 19:26:43]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/mHSC-GM500/biovect512.npy shape=(501, 512)
+[2026-04-03 19:26:43]   v4_bias_rec_best x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-03 19:26:43]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-03 19:26:43]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/mHSC-GM500/biovect256.npy shape=(501, 256)
+[2026-04-03 19:26:43]   v4_type_pe_best x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-03 19:26:43]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-03 19:26:43]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/mHSC-GM500/biovect256.npy shape=(501, 256)
+[2026-04-03 19:26:43] 
+Dataset: mHSC-L500 (500 genes)
+[2026-04-03 19:26:43]   minus x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-03 19:26:43]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-03 19:26:43]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/mHSC-L500/biovect256.npy shape=(501, 256)
+[2026-04-03 19:26:43]   baseline x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-03 19:26:43]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-03 19:26:43]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/mHSC-L500/biovect256.npy shape=(501, 256)
+[2026-04-03 19:26:43]   scGPT_human x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-03 19:26:43]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-03 19:26:43]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/mHSC-L500/biovect512.npy shape=(501, 512)
+[2026-04-03 19:26:43]   v4_bias_rec_best x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-03 19:26:43]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-03 19:26:43]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/mHSC-L500/biovect256.npy shape=(501, 256)
+[2026-04-03 19:26:43]   v4_type_pe_best x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-03 19:26:43]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-03 19:26:43]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/mHSC-L500/biovect256.npy shape=(501, 256)
+[2026-04-03 19:26:43] 
+Setting up BioBERT original baseline...
+[2026-04-03 19:26:43]   BioBERT_original x hESC500: using original biovect768.npy
+[2026-04-03 19:26:43]   BioBERT_original x hHep500: using original biovect768.npy
+[2026-04-03 19:26:43]   BioBERT_original x mESC500: using original biovect768.npy
+[2026-04-03 19:26:43]   BioBERT_original x mHSC-E500: using original biovect768.npy
+[2026-04-03 19:26:43]   BioBERT_original x mHSC-GM500: using original biovect768.npy
+[2026-04-03 19:26:43]   BioBERT_original x mHSC-L500: using original biovect768.npy
+[2026-04-03 19:26:43] 
+============================================================
+[2026-04-03 19:26:43] Gene Coverage Summary
+[2026-04-03 19:26:43] ============================================================
+[2026-04-03 19:26:43] Embedding            Dataset           Mapped    Total   Coverage   Dim
+[2026-04-03 19:26:43] ----------------------------------------------------------------------
+[2026-04-03 19:26:43] minus                hESC500              848      910      93.2%   256
+[2026-04-03 19:26:43] baseline             hESC500              848      910      93.2%   256
+[2026-04-03 19:26:43] scGPT_human          hESC500              848      910      93.2%   512
+[2026-04-03 19:26:43] v4_bias_rec_best     hESC500              848      910      93.2%   256
+[2026-04-03 19:26:43] v4_type_pe_best      hESC500              848      910      93.2%   256
+[2026-04-03 19:26:43] minus                hHep500              487      500      97.4%   256
+[2026-04-03 19:26:43] baseline             hHep500              487      500      97.4%   256
+[2026-04-03 19:26:43] scGPT_human          hHep500              487      500      97.4%   512
+[2026-04-03 19:26:43] v4_bias_rec_best     hHep500              487      500      97.4%   256
+[2026-04-03 19:26:43] v4_type_pe_best      hHep500              487      500      97.4%   256
+[2026-04-03 19:26:43] minus                mESC500              937     1120      83.7%   256
+[2026-04-03 19:26:43] baseline             mESC500              937     1120      83.7%   256
+[2026-04-03 19:26:43] scGPT_human          mESC500              937     1120      83.7%   512
+[2026-04-03 19:26:43] v4_bias_rec_best     mESC500              937     1120      83.7%   256
+[2026-04-03 19:26:43] v4_type_pe_best      mESC500              937     1120      83.7%   256
+[2026-04-03 19:26:43] minus                mHSC-E500            457      500      91.4%   256
+[2026-04-03 19:26:43] baseline             mHSC-E500            457      500      91.4%   256
+[2026-04-03 19:26:43] scGPT_human          mHSC-E500            457      500      91.4%   512
+[2026-04-03 19:26:43] v4_bias_rec_best     mHSC-E500            457      500      91.4%   256
+[2026-04-03 19:26:43] v4_type_pe_best      mHSC-E500            457      500      91.4%   256
+[2026-04-03 19:26:43] minus                mHSC-GM500           449      500      89.8%   256
+[2026-04-03 19:26:43] baseline             mHSC-GM500           449      500      89.8%   256
+[2026-04-03 19:26:43] scGPT_human          mHSC-GM500           449      500      89.8%   512
+[2026-04-03 19:26:43] v4_bias_rec_best     mHSC-GM500           449      500      89.8%   256
+[2026-04-03 19:26:43] v4_type_pe_best      mHSC-GM500           449      500      89.8%   256
+[2026-04-03 19:26:43] minus                mHSC-L500            442      500      88.4%   256
+[2026-04-03 19:26:43] baseline             mHSC-L500            442      500      88.4%   256
+[2026-04-03 19:26:43] scGPT_human          mHSC-L500            442      500      88.4%   512
+[2026-04-03 19:26:43] v4_bias_rec_best     mHSC-L500            442      500      88.4%   256
+[2026-04-03 19:26:43] v4_type_pe_best      mHSC-L500            442      500      88.4%   256
+[2026-04-03 19:26:43] 
+============================================================
+[2026-04-03 19:26:43] Generating run script...
+[2026-04-03 19:26:43] ============================================================
+[2026-04-03 19:26:43] Generated run script: /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/run_all.sh
+[2026-04-03 19:26:43] 
+============================================================
+[2026-04-03 19:26:43] Setup complete!
+[2026-04-03 19:26:43] Experiment dirs: /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/<embedding>/<dataset>/
+[2026-04-03 19:26:43] Run all experiments: bash /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/run_all.sh
+[2026-04-03 19:26:43] ============================================================
+[2026-04-04 11:26:38] ============================================================
+[2026-04-04 11:26:38] scGREAT GRN Benchmark Setup
+[2026-04-04 11:26:38] ============================================================
+[2026-04-04 11:26:38] scGREAT already exists at /bigdata2/hyt/projects/scGREAT
+[2026-04-04 11:26:38] Patching scGREAT source code...
+[2026-04-04 11:26:38]   Patched model.py (nn.Linear(2*embed_size, 1024))
+[2026-04-04 11:26:38]   Patched main.py (biovect{embed_size}.npy, best metric tracking)
+[2026-04-04 11:26:38]   Patched demo.py (--data_dir, --n_runs, mean+std reporting)
+[2026-04-04 11:26:38] All patches applied.
+[2026-04-04 11:26:38]   Generating mDC500 from raw data...
+[2026-04-04 11:26:39]   Too few edges after filtering for mDC500: 0
+[2026-04-04 11:26:39] WARNING: target datasets still missing after generation: ['mDC500']
+[2026-04-04 11:26:39]   Dataset hESC500: 910 genes
+[2026-04-04 11:26:39]   Dataset hHep500: 500 genes
+[2026-04-04 11:26:39]   Dataset mESC500: 1120 genes
+[2026-04-04 11:26:39]   Dataset mHSC-E500: 500 genes
+[2026-04-04 11:26:39]   Dataset mHSC-GM500: 500 genes
+[2026-04-04 11:26:39]   Dataset mHSC-L500: 500 genes
+[2026-04-04 11:26:39] 
+Human datasets: ['hESC500', 'hHep500']
+[2026-04-04 11:26:39] Mouse datasets: ['mESC500', 'mHSC-E500', 'mHSC-GM500', 'mHSC-L500']
+[2026-04-04 11:26:39] Note: Mouse datasets may have low gene coverage with human embeddings
+
+[2026-04-04 11:26:39] Loading vocab...
+[2026-04-04 11:26:39]   Vocab size: 60697
+[2026-04-04 11:26:39] 
+Loading embeddings...
+[2026-04-04 11:26:39]   Loading difference_v3 from /bigdata2/hyt/projects/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt...
+[2026-04-04 11:26:39]   SKIP difference_v3: /bigdata2/hyt/projects/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt
+[2026-04-04 11:26:39]   Loading minus from /bigdata2/hyt/projects/scbenchmark/save_pretrain/minus/best_model.pt...
+[2026-04-04 11:26:39]     Shape: (60697, 256)
+[2026-04-04 11:26:39]   Loading baseline from /bigdata2/hyt/projects/scbenchmark/save_pretrain/baseline/best_model.pt...
+[2026-04-04 11:26:39]     Shape: (60697, 256)
+[2026-04-04 11:26:39]   Loading scGPT_human from /bigdata2/hyt/projects/scbenchmark/save_pretrain/scGPT_human/best_model.pt...
+[2026-04-04 11:26:39]     Shape: (60697, 512)
+[2026-04-04 11:26:39]   Loading v4_bias_rec_best from /bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_bias_rec_best/best_model.pt...
+[2026-04-04 11:26:39]     Shape: (60697, 256)
+[2026-04-04 11:26:39]   Loading v4_plain_best from /bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_plain_best/best_model.pt...
+[2026-04-04 11:26:39]     Shape: (60697, 256)
+[2026-04-04 11:26:39]   Loading v4_type_pe_best from /bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_type_pe_best/best_model.pt...
+[2026-04-04 11:26:40]     Shape: (60697, 256)
+[2026-04-04 11:26:40] 
+============================================================
+[2026-04-04 11:26:40] Generating embedding files for scGREAT...
+[2026-04-04 11:26:40] ============================================================
+[2026-04-04 11:26:40] 
+Dataset: hESC500 (910 genes)
+[2026-04-04 11:26:40]   minus x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-04 11:26:40]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-04 11:26:40]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-04 11:26:40]   baseline x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-04 11:26:40]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-04 11:26:40]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-04 11:26:40]   scGPT_human x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-04 11:26:40]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-04 11:26:40]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/hESC500/biovect512.npy shape=(911, 512)
+[2026-04-04 11:26:40]   v4_bias_rec_best x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-04 11:26:40]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-04 11:26:40]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-04 11:26:40]   v4_plain_best x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-04 11:26:40]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-04 11:26:40]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_plain_best/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-04 11:26:40]   v4_type_pe_best x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-04 11:26:40]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-04 11:26:40]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-04 11:26:40] 
+Dataset: hHep500 (500 genes)
+[2026-04-04 11:26:40]   minus x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-04 11:26:40]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-04 11:26:40]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/hHep500/biovect256.npy shape=(501, 256)
+[2026-04-04 11:26:40]   baseline x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-04 11:26:40]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-04 11:26:40]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/hHep500/biovect256.npy shape=(501, 256)
+[2026-04-04 11:26:40]   scGPT_human x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-04 11:26:40]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-04 11:26:40]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/hHep500/biovect512.npy shape=(501, 512)
+[2026-04-04 11:26:40]   v4_bias_rec_best x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-04 11:26:40]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-04 11:26:40]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/hHep500/biovect256.npy shape=(501, 256)
+[2026-04-04 11:26:40]   v4_plain_best x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-04 11:26:40]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-04 11:26:40]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_plain_best/hHep500/biovect256.npy shape=(501, 256)
+[2026-04-04 11:26:40]   v4_type_pe_best x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-04 11:26:40]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-04 11:26:40]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/hHep500/biovect256.npy shape=(501, 256)
+[2026-04-04 11:26:40] 
+Dataset: mESC500 (1120 genes)
+[2026-04-04 11:26:40]   minus x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-04 11:26:40]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-04 11:26:40]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-04 11:26:41]   baseline x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-04 11:26:41]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-04 11:26:41]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-04 11:26:41]   scGPT_human x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-04 11:26:41]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-04 11:26:41]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/mESC500/biovect512.npy shape=(1121, 512)
+[2026-04-04 11:26:41]   v4_bias_rec_best x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-04 11:26:41]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-04 11:26:41]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-04 11:26:41]   v4_plain_best x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-04 11:26:41]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-04 11:26:41]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_plain_best/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-04 11:26:41]   v4_type_pe_best x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-04 11:26:41]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-04 11:26:41]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-04 11:26:42] 
+Dataset: mHSC-E500 (500 genes)
+[2026-04-04 11:26:42]   minus x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-04 11:26:42]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-04 11:26:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/mHSC-E500/biovect256.npy shape=(501, 256)
+[2026-04-04 11:26:42]   baseline x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-04 11:26:42]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-04 11:26:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/mHSC-E500/biovect256.npy shape=(501, 256)
+[2026-04-04 11:26:42]   scGPT_human x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-04 11:26:42]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-04 11:26:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/mHSC-E500/biovect512.npy shape=(501, 512)
+[2026-04-04 11:26:42]   v4_bias_rec_best x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-04 11:26:42]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-04 11:26:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/mHSC-E500/biovect256.npy shape=(501, 256)
+[2026-04-04 11:26:42]   v4_plain_best x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-04 11:26:42]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-04 11:26:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_plain_best/mHSC-E500/biovect256.npy shape=(501, 256)
+[2026-04-04 11:26:42]   v4_type_pe_best x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-04 11:26:42]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-04 11:26:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/mHSC-E500/biovect256.npy shape=(501, 256)
+[2026-04-04 11:26:42] 
+Dataset: mHSC-GM500 (500 genes)
+[2026-04-04 11:26:42]   minus x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-04 11:26:42]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-04 11:26:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/mHSC-GM500/biovect256.npy shape=(501, 256)
+[2026-04-04 11:26:42]   baseline x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-04 11:26:42]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-04 11:26:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/mHSC-GM500/biovect256.npy shape=(501, 256)
+[2026-04-04 11:26:42]   scGPT_human x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-04 11:26:42]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-04 11:26:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/mHSC-GM500/biovect512.npy shape=(501, 512)
+[2026-04-04 11:26:42]   v4_bias_rec_best x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-04 11:26:42]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-04 11:26:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/mHSC-GM500/biovect256.npy shape=(501, 256)
+[2026-04-04 11:26:42]   v4_plain_best x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-04 11:26:42]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-04 11:26:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_plain_best/mHSC-GM500/biovect256.npy shape=(501, 256)
+[2026-04-04 11:26:42]   v4_type_pe_best x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-04 11:26:42]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-04 11:26:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/mHSC-GM500/biovect256.npy shape=(501, 256)
+[2026-04-04 11:26:42] 
+Dataset: mHSC-L500 (500 genes)
+[2026-04-04 11:26:42]   minus x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-04 11:26:42]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-04 11:26:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/mHSC-L500/biovect256.npy shape=(501, 256)
+[2026-04-04 11:26:42]   baseline x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-04 11:26:42]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-04 11:26:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/mHSC-L500/biovect256.npy shape=(501, 256)
+[2026-04-04 11:26:42]   scGPT_human x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-04 11:26:42]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-04 11:26:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/mHSC-L500/biovect512.npy shape=(501, 512)
+[2026-04-04 11:26:42]   v4_bias_rec_best x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-04 11:26:42]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-04 11:26:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/mHSC-L500/biovect256.npy shape=(501, 256)
+[2026-04-04 11:26:42]   v4_plain_best x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-04 11:26:42]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-04 11:26:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_plain_best/mHSC-L500/biovect256.npy shape=(501, 256)
+[2026-04-04 11:26:42]   v4_type_pe_best x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-04 11:26:42]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-04 11:26:42]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/mHSC-L500/biovect256.npy shape=(501, 256)
+[2026-04-04 11:26:42] 
+Setting up BioBERT original baseline...
+[2026-04-04 11:26:42]   BioBERT_original x hESC500: using original biovect768.npy
+[2026-04-04 11:26:42]   BioBERT_original x hHep500: using original biovect768.npy
+[2026-04-04 11:26:42]   BioBERT_original x mESC500: using original biovect768.npy
+[2026-04-04 11:26:42]   BioBERT_original x mHSC-E500: using original biovect768.npy
+[2026-04-04 11:26:42]   BioBERT_original x mHSC-GM500: using original biovect768.npy
+[2026-04-04 11:26:42]   BioBERT_original x mHSC-L500: using original biovect768.npy
+[2026-04-04 11:26:42] 
+============================================================
+[2026-04-04 11:26:42] Gene Coverage Summary
+[2026-04-04 11:26:42] ============================================================
+[2026-04-04 11:26:42] Embedding            Dataset           Mapped    Total   Coverage   Dim
+[2026-04-04 11:26:42] ----------------------------------------------------------------------
+[2026-04-04 11:26:42] minus                hESC500              848      910      93.2%   256
+[2026-04-04 11:26:42] baseline             hESC500              848      910      93.2%   256
+[2026-04-04 11:26:42] scGPT_human          hESC500              848      910      93.2%   512
+[2026-04-04 11:26:42] v4_bias_rec_best     hESC500              848      910      93.2%   256
+[2026-04-04 11:26:42] v4_plain_best        hESC500              848      910      93.2%   256
+[2026-04-04 11:26:42] v4_type_pe_best      hESC500              848      910      93.2%   256
+[2026-04-04 11:26:42] minus                hHep500              487      500      97.4%   256
+[2026-04-04 11:26:42] baseline             hHep500              487      500      97.4%   256
+[2026-04-04 11:26:42] scGPT_human          hHep500              487      500      97.4%   512
+[2026-04-04 11:26:42] v4_bias_rec_best     hHep500              487      500      97.4%   256
+[2026-04-04 11:26:42] v4_plain_best        hHep500              487      500      97.4%   256
+[2026-04-04 11:26:42] v4_type_pe_best      hHep500              487      500      97.4%   256
+[2026-04-04 11:26:42] minus                mESC500              937     1120      83.7%   256
+[2026-04-04 11:26:42] baseline             mESC500              937     1120      83.7%   256
+[2026-04-04 11:26:42] scGPT_human          mESC500              937     1120      83.7%   512
+[2026-04-04 11:26:42] v4_bias_rec_best     mESC500              937     1120      83.7%   256
+[2026-04-04 11:26:42] v4_plain_best        mESC500              937     1120      83.7%   256
+[2026-04-04 11:26:42] v4_type_pe_best      mESC500              937     1120      83.7%   256
+[2026-04-04 11:26:42] minus                mHSC-E500            457      500      91.4%   256
+[2026-04-04 11:26:42] baseline             mHSC-E500            457      500      91.4%   256
+[2026-04-04 11:26:42] scGPT_human          mHSC-E500            457      500      91.4%   512
+[2026-04-04 11:26:42] v4_bias_rec_best     mHSC-E500            457      500      91.4%   256
+[2026-04-04 11:26:42] v4_plain_best        mHSC-E500            457      500      91.4%   256
+[2026-04-04 11:26:42] v4_type_pe_best      mHSC-E500            457      500      91.4%   256
+[2026-04-04 11:26:42] minus                mHSC-GM500           449      500      89.8%   256
+[2026-04-04 11:26:42] baseline             mHSC-GM500           449      500      89.8%   256
+[2026-04-04 11:26:42] scGPT_human          mHSC-GM500           449      500      89.8%   512
+[2026-04-04 11:26:42] v4_bias_rec_best     mHSC-GM500           449      500      89.8%   256
+[2026-04-04 11:26:42] v4_plain_best        mHSC-GM500           449      500      89.8%   256
+[2026-04-04 11:26:42] v4_type_pe_best      mHSC-GM500           449      500      89.8%   256
+[2026-04-04 11:26:42] minus                mHSC-L500            442      500      88.4%   256
+[2026-04-04 11:26:42] baseline             mHSC-L500            442      500      88.4%   256
+[2026-04-04 11:26:42] scGPT_human          mHSC-L500            442      500      88.4%   512
+[2026-04-04 11:26:42] v4_bias_rec_best     mHSC-L500            442      500      88.4%   256
+[2026-04-04 11:26:42] v4_plain_best        mHSC-L500            442      500      88.4%   256
+[2026-04-04 11:26:42] v4_type_pe_best      mHSC-L500            442      500      88.4%   256
+[2026-04-04 11:26:42] 
+============================================================
+[2026-04-04 11:26:42] Generating run script...
+[2026-04-04 11:26:42] ============================================================
+[2026-04-04 11:26:42] Generated run script: /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/run_all.sh
+[2026-04-04 11:26:42] 
+============================================================
+[2026-04-04 11:26:42] Setup complete!
+[2026-04-04 11:26:42] Experiment dirs: /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/<embedding>/<dataset>/
+[2026-04-04 11:26:42] Run all experiments: bash /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/run_all.sh
+[2026-04-04 11:26:42] ============================================================
+[2026-04-04 13:37:48] ============================================================
+[2026-04-04 13:37:48] scGREAT GRN Benchmark Setup
+[2026-04-04 13:37:48] ============================================================
+[2026-04-04 13:37:48] scGREAT already exists at /bigdata2/hyt/projects/scGREAT
+[2026-04-04 13:37:48] Patching scGREAT source code...
+[2026-04-04 13:37:48]   Patched model.py (nn.Linear(2*embed_size, 1024))
+[2026-04-04 13:37:48]   Patched main.py (biovect{embed_size}.npy, best metric tracking)
+[2026-04-04 13:37:48]   Patched demo.py (--data_dir, --n_runs, mean+std reporting)
+[2026-04-04 13:37:48] All patches applied.
+[2026-04-04 13:37:48]   Generating mDC500 from raw data...
+[2026-04-04 13:37:49]   Too few edges after filtering for mDC500: 0
+[2026-04-04 13:37:49] WARNING: target datasets still missing after generation: ['mDC500']
+[2026-04-04 13:37:49]   Dataset hESC500: 910 genes
+[2026-04-04 13:37:49]   Dataset hHep500: 500 genes
+[2026-04-04 13:37:49]   Dataset mESC500: 1120 genes
+[2026-04-04 13:37:49]   Dataset mHSC-E500: 500 genes
+[2026-04-04 13:37:49]   Dataset mHSC-GM500: 500 genes
+[2026-04-04 13:37:49]   Dataset mHSC-L500: 500 genes
+[2026-04-04 13:37:49] 
+Human datasets: ['hESC500', 'hHep500']
+[2026-04-04 13:37:49] Mouse datasets: ['mESC500', 'mHSC-E500', 'mHSC-GM500', 'mHSC-L500']
+[2026-04-04 13:37:49] Note: Mouse datasets may have low gene coverage with human embeddings
+
+[2026-04-04 13:37:49] Loading vocab...
+[2026-04-04 13:37:49]   Vocab size: 60697
+[2026-04-04 13:37:49] 
+Loading embeddings...
+[2026-04-04 13:37:49]   Loading difference_v3 from /bigdata2/hyt/projects/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt...
+[2026-04-04 13:37:49]   SKIP difference_v3: /bigdata2/hyt/projects/scbenchmark/save_pretrain/difference_aligned_v3/best_model.pt
+[2026-04-04 13:37:49]   Loading minus from /bigdata2/hyt/projects/scbenchmark/save_pretrain/minus/best_model.pt...
+[2026-04-04 13:37:49]     Shape: (60697, 256)
+[2026-04-04 13:37:49]   Loading baseline from /bigdata2/hyt/projects/scbenchmark/save_pretrain/baseline/best_model.pt...
+[2026-04-04 13:37:49]     Shape: (60697, 256)
+[2026-04-04 13:37:49]   Loading scGPT_human from /bigdata2/hyt/projects/scbenchmark/save_pretrain/scGPT_human/best_model.pt...
+[2026-04-04 13:37:49]     Shape: (60697, 512)
+[2026-04-04 13:37:49]   Loading v4_bias_rec_best from /bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_bias_rec_best/best_model.pt...
+[2026-04-04 13:37:49]     Shape: (60697, 256)
+[2026-04-04 13:37:49]   Loading v4_plain_best from /bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_plain_best/best_model.pt...
+[2026-04-04 13:37:49]     Shape: (60697, 256)
+[2026-04-04 13:37:49]   Loading v4_type_pe_best from /bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_type_pe_best/best_model.pt...
+[2026-04-04 13:37:50]     Shape: (60697, 256)
+[2026-04-04 13:37:50] 
+============================================================
+[2026-04-04 13:37:50] Generating embedding files for scGREAT...
+[2026-04-04 13:37:50] ============================================================
+[2026-04-04 13:37:50] 
+Dataset: hESC500 (910 genes)
+[2026-04-04 13:37:50]   minus x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-04 13:37:50]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-04 13:37:50]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-04 13:37:50]   baseline x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-04 13:37:50]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-04 13:37:50]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-04 13:37:50]   scGPT_human x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-04 13:37:50]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-04 13:37:50]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/hESC500/biovect512.npy shape=(911, 512)
+[2026-04-04 13:37:50]   v4_bias_rec_best x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-04 13:37:50]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-04 13:37:50]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-04 13:37:50]   v4_plain_best x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-04 13:37:50]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-04 13:37:50]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_plain_best/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-04 13:37:50]   v4_type_pe_best x hESC500: 848/910 genes mapped (93.2%)
+[2026-04-04 13:37:50]     Missing (62): ['MLF1IP', 'ERCC-00145', 'KIAA0528', 'FAM46A', 'ERCC-00022', 'LECT1', 'C11orf46', 'ERCC-00042', 'FAM69A', 'KIAA1467']...
+[2026-04-04 13:37:50]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/hESC500/biovect256.npy shape=(911, 256)
+[2026-04-04 13:37:50] 
+Dataset: hHep500 (500 genes)
+[2026-04-04 13:37:50]   minus x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-04 13:37:50]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-04 13:37:50]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/hHep500/biovect256.npy shape=(501, 256)
+[2026-04-04 13:37:50]   baseline x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-04 13:37:50]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-04 13:37:50]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/hHep500/biovect256.npy shape=(501, 256)
+[2026-04-04 13:37:50]   scGPT_human x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-04 13:37:50]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-04 13:37:50]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/hHep500/biovect512.npy shape=(501, 512)
+[2026-04-04 13:37:50]   v4_bias_rec_best x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-04 13:37:50]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-04 13:37:50]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/hHep500/biovect256.npy shape=(501, 256)
+[2026-04-04 13:37:50]   v4_plain_best x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-04 13:37:50]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-04 13:37:50]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_plain_best/hHep500/biovect256.npy shape=(501, 256)
+[2026-04-04 13:37:50]   v4_type_pe_best x hHep500: 487/500 genes mapped (97.4%)
+[2026-04-04 13:37:50]     Missing (13): ['APOC4.APOC2', 'ARSE', 'ASUN', 'CCBL2', 'FAM122B', 'HIST1H2BK', 'HLA.DRB5', 'KIAA0101', 'LUZP6', 'NUPL2']...
+[2026-04-04 13:37:50]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/hHep500/biovect256.npy shape=(501, 256)
+[2026-04-04 13:37:50] 
+Dataset: mESC500 (1120 genes)
+[2026-04-04 13:37:50]   minus x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-04 13:37:50]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-04 13:37:50]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-04 13:37:50]   baseline x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-04 13:37:50]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-04 13:37:50]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-04 13:37:51]   scGPT_human x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-04 13:37:51]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-04 13:37:51]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/mESC500/biovect512.npy shape=(1121, 512)
+[2026-04-04 13:37:51]   v4_bias_rec_best x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-04 13:37:51]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-04 13:37:51]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-04 13:37:51]   v4_plain_best x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-04 13:37:51]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-04 13:37:51]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_plain_best/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-04 13:37:51]   v4_type_pe_best x mESC500: 937/1120 genes mapped (83.7%)
+[2026-04-04 13:37:51]     Missing (183): ['GM13597', 'GM24044', 'CRAMP1L', 'GM14303', 'GM8355', 'TCL1', 'GM44429', 'MIR291B', 'ZFP989', 'GM22862']...
+[2026-04-04 13:37:51]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/mESC500/biovect256.npy shape=(1121, 256)
+[2026-04-04 13:37:51] 
+Dataset: mHSC-E500 (500 genes)
+[2026-04-04 13:37:51]   minus x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-04 13:37:51]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-04 13:37:51]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/mHSC-E500/biovect256.npy shape=(501, 256)
+[2026-04-04 13:37:51]   baseline x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-04 13:37:51]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-04 13:37:51]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/mHSC-E500/biovect256.npy shape=(501, 256)
+[2026-04-04 13:37:51]   scGPT_human x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-04 13:37:51]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-04 13:37:51]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/mHSC-E500/biovect512.npy shape=(501, 512)
+[2026-04-04 13:37:51]   v4_bias_rec_best x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-04 13:37:51]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-04 13:37:51]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/mHSC-E500/biovect256.npy shape=(501, 256)
+[2026-04-04 13:37:51]   v4_plain_best x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-04 13:37:51]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-04 13:37:51]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_plain_best/mHSC-E500/biovect256.npy shape=(501, 256)
+[2026-04-04 13:37:51]   v4_type_pe_best x mHSC-E500: 457/500 genes mapped (91.4%)
+[2026-04-04 13:37:51]     Missing (43): ['1700017B05RIK', '2210016F16RIK', '2610035D17RIK', '4632427E13RIK', 'AW112010', 'CAR1', 'CD1D1', 'CES2G', 'CLDN13', 'CTLA2A']...
+[2026-04-04 13:37:51]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/mHSC-E500/biovect256.npy shape=(501, 256)
+[2026-04-04 13:37:51] 
+Dataset: mHSC-GM500 (500 genes)
+[2026-04-04 13:37:51]   minus x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-04 13:37:51]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-04 13:37:51]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/mHSC-GM500/biovect256.npy shape=(501, 256)
+[2026-04-04 13:37:51]   baseline x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-04 13:37:51]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-04 13:37:51]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/mHSC-GM500/biovect256.npy shape=(501, 256)
+[2026-04-04 13:37:51]   scGPT_human x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-04 13:37:51]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-04 13:37:51]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/mHSC-GM500/biovect512.npy shape=(501, 512)
+[2026-04-04 13:37:51]   v4_bias_rec_best x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-04 13:37:51]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-04 13:37:51]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/mHSC-GM500/biovect256.npy shape=(501, 256)
+[2026-04-04 13:37:51]   v4_plain_best x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-04 13:37:51]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-04 13:37:51]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_plain_best/mHSC-GM500/biovect256.npy shape=(501, 256)
+[2026-04-04 13:37:51]   v4_type_pe_best x mHSC-GM500: 449/500 genes mapped (89.8%)
+[2026-04-04 13:37:51]     Missing (51): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '4632427E13RIK', '9030619P08RIK', 'ADSSL1', 'AW549877', 'BC035044', 'CCL9', 'CD1D1']...
+[2026-04-04 13:37:51]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/mHSC-GM500/biovect256.npy shape=(501, 256)
+[2026-04-04 13:37:51] 
+Dataset: mHSC-L500 (500 genes)
+[2026-04-04 13:37:51]   minus x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-04 13:37:51]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-04 13:37:51]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/minus/mHSC-L500/biovect256.npy shape=(501, 256)
+[2026-04-04 13:37:52]   baseline x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-04 13:37:52]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-04 13:37:52]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/baseline/mHSC-L500/biovect256.npy shape=(501, 256)
+[2026-04-04 13:37:52]   scGPT_human x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-04 13:37:52]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-04 13:37:52]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/scGPT_human/mHSC-L500/biovect512.npy shape=(501, 512)
+[2026-04-04 13:37:52]   v4_bias_rec_best x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-04 13:37:52]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-04 13:37:52]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_bias_rec_best/mHSC-L500/biovect256.npy shape=(501, 256)
+[2026-04-04 13:37:52]   v4_plain_best x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-04 13:37:52]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-04 13:37:52]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_plain_best/mHSC-L500/biovect256.npy shape=(501, 256)
+[2026-04-04 13:37:52]   v4_type_pe_best x mHSC-L500: 442/500 genes mapped (88.4%)
+[2026-04-04 13:37:52]     Missing (58): ['1110059E24RIK', '1600014C10RIK', '2610035D17RIK', '2610307P16RIK', '4632427E13RIK', '4833407H14RIK', '4930555A03RIK', '9030619P08RIK', 'ADSSL1', 'AW549877']...
+[2026-04-04 13:37:52]     Saved /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/v4_type_pe_best/mHSC-L500/biovect256.npy shape=(501, 256)
+[2026-04-04 13:37:52] 
+Setting up BioBERT original baseline...
+[2026-04-04 13:37:52]   BioBERT_original x hESC500: using original biovect768.npy
+[2026-04-04 13:37:52]   BioBERT_original x hHep500: using original biovect768.npy
+[2026-04-04 13:37:52]   BioBERT_original x mESC500: using original biovect768.npy
+[2026-04-04 13:37:52]   BioBERT_original x mHSC-E500: using original biovect768.npy
+[2026-04-04 13:37:52]   BioBERT_original x mHSC-GM500: using original biovect768.npy
+[2026-04-04 13:37:52]   BioBERT_original x mHSC-L500: using original biovect768.npy
+[2026-04-04 13:37:52] 
+============================================================
+[2026-04-04 13:37:52] Gene Coverage Summary
+[2026-04-04 13:37:52] ============================================================
+[2026-04-04 13:37:52] Embedding            Dataset           Mapped    Total   Coverage   Dim
+[2026-04-04 13:37:52] ----------------------------------------------------------------------
+[2026-04-04 13:37:52] minus                hESC500              848      910      93.2%   256
+[2026-04-04 13:37:52] baseline             hESC500              848      910      93.2%   256
+[2026-04-04 13:37:52] scGPT_human          hESC500              848      910      93.2%   512
+[2026-04-04 13:37:52] v4_bias_rec_best     hESC500              848      910      93.2%   256
+[2026-04-04 13:37:52] v4_plain_best        hESC500              848      910      93.2%   256
+[2026-04-04 13:37:52] v4_type_pe_best      hESC500              848      910      93.2%   256
+[2026-04-04 13:37:52] minus                hHep500              487      500      97.4%   256
+[2026-04-04 13:37:52] baseline             hHep500              487      500      97.4%   256
+[2026-04-04 13:37:52] scGPT_human          hHep500              487      500      97.4%   512
+[2026-04-04 13:37:52] v4_bias_rec_best     hHep500              487      500      97.4%   256
+[2026-04-04 13:37:52] v4_plain_best        hHep500              487      500      97.4%   256
+[2026-04-04 13:37:52] v4_type_pe_best      hHep500              487      500      97.4%   256
+[2026-04-04 13:37:52] minus                mESC500              937     1120      83.7%   256
+[2026-04-04 13:37:52] baseline             mESC500              937     1120      83.7%   256
+[2026-04-04 13:37:52] scGPT_human          mESC500              937     1120      83.7%   512
+[2026-04-04 13:37:52] v4_bias_rec_best     mESC500              937     1120      83.7%   256
+[2026-04-04 13:37:52] v4_plain_best        mESC500              937     1120      83.7%   256
+[2026-04-04 13:37:52] v4_type_pe_best      mESC500              937     1120      83.7%   256
+[2026-04-04 13:37:52] minus                mHSC-E500            457      500      91.4%   256
+[2026-04-04 13:37:52] baseline             mHSC-E500            457      500      91.4%   256
+[2026-04-04 13:37:52] scGPT_human          mHSC-E500            457      500      91.4%   512
+[2026-04-04 13:37:52] v4_bias_rec_best     mHSC-E500            457      500      91.4%   256
+[2026-04-04 13:37:52] v4_plain_best        mHSC-E500            457      500      91.4%   256
+[2026-04-04 13:37:52] v4_type_pe_best      mHSC-E500            457      500      91.4%   256
+[2026-04-04 13:37:52] minus                mHSC-GM500           449      500      89.8%   256
+[2026-04-04 13:37:52] baseline             mHSC-GM500           449      500      89.8%   256
+[2026-04-04 13:37:52] scGPT_human          mHSC-GM500           449      500      89.8%   512
+[2026-04-04 13:37:52] v4_bias_rec_best     mHSC-GM500           449      500      89.8%   256
+[2026-04-04 13:37:52] v4_plain_best        mHSC-GM500           449      500      89.8%   256
+[2026-04-04 13:37:52] v4_type_pe_best      mHSC-GM500           449      500      89.8%   256
+[2026-04-04 13:37:52] minus                mHSC-L500            442      500      88.4%   256
+[2026-04-04 13:37:52] baseline             mHSC-L500            442      500      88.4%   256
+[2026-04-04 13:37:52] scGPT_human          mHSC-L500            442      500      88.4%   512
+[2026-04-04 13:37:52] v4_bias_rec_best     mHSC-L500            442      500      88.4%   256
+[2026-04-04 13:37:52] v4_plain_best        mHSC-L500            442      500      88.4%   256
+[2026-04-04 13:37:52] v4_type_pe_best      mHSC-L500            442      500      88.4%   256
+[2026-04-04 13:37:52] 
+============================================================
+[2026-04-04 13:37:52] Generating run script...
+[2026-04-04 13:37:52] ============================================================
+[2026-04-04 13:37:52] Generated run script: /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/run_all.sh
+[2026-04-04 13:37:52] 
+============================================================
+[2026-04-04 13:37:52] Setup complete!
+[2026-04-04 13:37:52] Experiment dirs: /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/<embedding>/<dataset>/
+[2026-04-04 13:37:52] Run all experiments: bash /bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark/run_all.sh
+[2026-04-04 13:37:52] ============================================================

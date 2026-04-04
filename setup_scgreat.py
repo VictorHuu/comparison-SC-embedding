@@ -11,11 +11,14 @@ Usage: python setup_scgreat.py [--run]
   With --run: generates embeddings + patches + runs all experiments
 """
 
-import os, sys, json, gzip, subprocess, shutil
+import os, sys, json, gzip, subprocess, shutil, random
+import shlex
 import numpy as np
 import pandas as pd
 import torch
 import urllib.request
+import zipfile
+import ssl
 from datetime import datetime
 
 # =============================================================
@@ -23,7 +26,7 @@ from datetime import datetime
 # =============================================================
 BASE_DIR = '/bigdata2/hyt/projects/scbenchmark'
 SCGREAT_DIR = '/bigdata2/hyt/projects/scGREAT'
-OUTPUT_DIR = '/bigdata2/hyt/projects/grn_benchmark'
+OUTPUT_DIR = '/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark'
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 LOG_FILE = os.path.join(OUTPUT_DIR, 'setup.log')
@@ -37,6 +40,11 @@ EMBEDDINGS = {
         'key': 'module.embedding.weight',
         'type': 'checkpoint',
     },
+    'minus': {
+        'path': f'{BASE_DIR}/save_pretrain/minus/best_model.pt',
+        'key': 'module.embedding.weight',
+        'type': 'checkpoint',
+    },
     'baseline': {
         'path': f'{BASE_DIR}/save_pretrain/baseline/best_model.pt',
         'key': 'module.embedding.weight',
@@ -47,15 +55,42 @@ EMBEDDINGS = {
         'key': 'encoder.embedding.weight',
         'type': 'checkpoint',
     },
+    'v4_bias_rec_best': {
+        'path': f'{BASE_DIR}/save_pretrain/v4_bias_rec_best/best_model.pt',
+        'key': 'embedding.weight',
+        'type': 'checkpoint',
+    },
+    'v4_plain_best': {
+        'path': f'{BASE_DIR}/save_pretrain/v4_plain_best/best_model.pt',
+        'key': 'embedding.weight',
+        'type': 'checkpoint',
+    },
+    'v4_type_pe_best': {
+        'path': f'{BASE_DIR}/save_pretrain/v4_type_pe_best/best_model.pt',
+        'key': 'embedding.weight',
+        'type': 'checkpoint',
+    },
     # 'GF-12L95M': {
     #     'dir': '/root/autodl-tmp/gene_embeddings/intersect/GF-12L95M',
     #     'type': 'geneformer',
     # },
 }
 
-# scGREAT datasets
-HUMAN_DATASETS = ['hESC500', 'hHEP500']
-MOUSE_DATASETS = ['mESC500', 'mHSC-E500', 'mHSC-GM500', 'mHSC-L500']
+# Preferred scGREAT datasets (will auto-discover additional *_500 datasets)
+HUMAN_DATASETS = ['hESC500', 'hHep500', 'hHEP500']
+MOUSE_DATASETS = ['mDC500', 'mESC500', 'mHSC-E500', 'mHSC-GM500', 'mHSC-L500']
+TARGET_DATASETS_7 = ['hESC500', 'hHep500', 'mDC500', 'mESC500', 'mHSC-E500', 'mHSC-GM500', 'mHSC-L500']
+
+RAW_DATASET_CONFIGS = {
+    'hESC500': {'cell_type': 'hESC', 'species': 'human', 'specific_net': 'hESC-ChIP-seq-network.csv'},
+    'hHep500': {'cell_type': 'hHep', 'species': 'human', 'specific_net': 'HepG2-ChIP-seq-network.csv'},
+    'mDC500': {'cell_type': 'mDC', 'species': 'mouse', 'specific_net': 'mDC-ChIP-seq-network.csv'},
+    'mESC500': {'cell_type': 'mESC', 'species': 'mouse', 'specific_net': 'mESC-ChIP-seq-network.csv'},
+    'mHSC-E500': {'cell_type': 'mHSC-E', 'species': 'mouse', 'specific_net': 'mHSC-ChIP-seq-network.csv'},
+    'mHSC-GM500': {'cell_type': 'mHSC-GM', 'species': 'mouse', 'specific_net': 'mHSC-ChIP-seq-network.csv'},
+    'mHSC-L500': {'cell_type': 'mHSC-L', 'species': 'mouse', 'specific_net': 'mHSC-ChIP-seq-network.csv'},
+}
+_BEELINE_ASSETS_READY = False
 
 
 def log(msg):
@@ -64,6 +99,66 @@ def log(msg):
     print(line, flush=True)
     with open(LOG_FILE, 'a') as f:
         f.write(line + '\n')
+
+
+def download_file(url, dst_path):
+    """
+    Download helper with SSL fallback for environments with broken CA bundles.
+    """
+    try:
+        urllib.request.urlretrieve(url, dst_path)
+        return
+    except Exception as e:
+        log(f"  WARNING: standard download failed for {url}: {e}")
+
+    # Fallback: disable SSL verification (best-effort for restricted environments)
+    ctx = ssl._create_unverified_context()
+    req = urllib.request.Request(url)
+    with urllib.request.urlopen(req, context=ctx) as resp, open(dst_path, 'wb') as out:
+        out.write(resp.read())
+
+
+def ensure_beeline_assets(beeline_root):
+    """
+    Ensure BEELINE-data and Networks are available locally.
+    Will NOT re-download zip files if they already exist.
+    """
+    global _BEELINE_ASSETS_READY
+    if _BEELINE_ASSETS_READY:
+        return True
+
+    data_check = os.path.join(beeline_root, 'BEELINE-data')
+    net_check = os.path.join(beeline_root, 'Networks')
+    if os.path.exists(data_check) and os.path.exists(net_check):
+        _BEELINE_ASSETS_READY = True
+        return True
+
+    os.makedirs(beeline_root, exist_ok=True)
+    base_url = 'https://zenodo.org/records/3701939/files'
+    try:
+        file_to_target = {
+            'BEELINE-data.zip': data_check,
+            'BEELINE-Networks.zip': net_check,
+        }
+        for fname in ['BEELINE-data.zip', 'BEELINE-Networks.zip']:
+            target_dir = file_to_target[fname]
+            if os.path.exists(target_dir):
+                log(f"  Reusing existing extracted dir: {target_dir}")
+                continue
+            fpath = os.path.join(beeline_root, fname)
+            if not os.path.exists(fpath):
+                log(f"  Downloading BEELINE support file: {fname}")
+                download_file(f'{base_url}/{fname}?download=1', fpath)
+            else:
+                log(f"  Reusing existing archive: {fpath}")
+            with zipfile.ZipFile(fpath, 'r') as z:
+                z.extractall(beeline_root)
+    except Exception as e:
+        log(f"  WARNING: failed to prepare BEELINE support files: {e}")
+        return False
+
+    _BEELINE_ASSETS_READY = os.path.exists(data_check) and os.path.exists(net_check)
+    return _BEELINE_ASSETS_READY
 
 
 # =============================================================
@@ -328,11 +423,16 @@ print(f'{"="*80}')
 # Step 2: Load embeddings
 # =============================================================
 def load_vocab():
+    if not os.path.exists(VOCAB_PATH):
+        log(f"WARNING: vocab not found, skip checkpoint embeddings: {VOCAB_PATH}")
+        return None
     with open(VOCAB_PATH) as f:
         return json.load(f)
 
 
 def load_checkpoint_embedding(path, key):
+    if not os.path.exists(path):
+        raise FileNotFoundError(path)
     ckpt = torch.load(path, map_location='cpu', weights_only=False)
     return ckpt[key].detach().numpy()
 
@@ -364,7 +464,7 @@ def build_symbol_to_entrez():
     log("Downloading NCBI Homo_sapiens.gene_info.gz ...")
     url = 'https://ftp.ncbi.nlm.nih.gov/gene/DATA/GENE_INFO/Mammalia/Homo_sapiens.gene_info.gz'
     local_path = os.path.join(OUTPUT_DIR, 'Homo_sapiens.gene_info.gz')
-    urllib.request.urlretrieve(url, local_path)
+    download_file(url, local_path)
 
     symbol_to_entrez = {}
     with gzip.open(local_path, 'rt') as f:
@@ -394,12 +494,279 @@ def build_symbol_to_entrez():
 # =============================================================
 def get_dataset_genes(dataset_name):
     """Read gene list from scGREAT dataset's Target.csv (columns: ,Gene,index)"""
-    target_path = os.path.join(SCGREAT_DIR, dataset_name, 'Target.csv')
-    if not os.path.exists(target_path):
+    target_path = first_existing([
+        os.path.join(SCGREAT_DIR, dataset_name, 'Target.csv'),
+        os.path.join(OUTPUT_DIR, 'generated_datasets', dataset_name, 'Target.csv'),
+    ])
+    if target_path is None or not os.path.exists(target_path):
         return None
     df = pd.read_csv(target_path)
     genes = df['Gene'].tolist()
     return genes
+
+
+def first_existing(paths):
+    for p in paths:
+        if p and os.path.exists(p):
+            return p
+    return None
+
+
+def split_pairs(pairs, labels, seed=42):
+    rng = np.random.RandomState(seed)
+    pairs = np.array(pairs, dtype=np.int32)
+    labels = np.array(labels, dtype=np.int32)
+    pos_idx = np.where(labels == 1)[0]
+    neg_idx = np.where(labels == 0)[0]
+    rng.shuffle(pos_idx)
+    rng.shuffle(neg_idx)
+
+    def _split_indices(indices):
+        n = len(indices)
+        n_train = int(n * 0.7)
+        n_val = int(n * 0.1)
+        n_test = n - n_train - n_val
+        if n >= 10:
+            n_val = max(1, n_val)
+            n_test = max(1, n_test)
+            n_train = n - n_val - n_test
+        return indices[:n_train], indices[n_train:n_train + n_val], indices[n_train + n_val:]
+
+    pos_train, pos_val, pos_test = _split_indices(pos_idx)
+    neg_train, neg_val, neg_test = _split_indices(neg_idx)
+
+    def _build(idx_a, idx_b):
+        idx = np.concatenate([idx_a, idx_b]) if len(idx_a) + len(idx_b) > 0 else np.array([], dtype=np.int32)
+        rng.shuffle(idx)
+        return pairs[idx], labels[idx]
+
+    return _build(pos_train, neg_train), _build(pos_val, neg_val), _build(pos_test, neg_test)
+
+
+def ensure_bl_expression_data(dataset_dir):
+    """
+    Ensure scGREAT-required BL--ExpressionData.csv exists.
+    If missing, create it from ExpressionData.csv when available.
+    """
+    bl_path = os.path.join(dataset_dir, 'BL--ExpressionData.csv')
+    if os.path.exists(bl_path):
+        return True
+
+    expr_path = os.path.join(dataset_dir, 'ExpressionData.csv')
+    if os.path.exists(expr_path):
+        # Prefer symlink to avoid duplicating large matrices
+        try:
+            os.symlink(expr_path, bl_path)
+        except FileExistsError:
+            pass
+        except OSError:
+            shutil.copy2(expr_path, bl_path)
+        return os.path.exists(bl_path)
+    return False
+
+
+def normalize_split_files(dataset_dir):
+    """
+    Ensure Train/Validation/Test split columns are integer typed
+    so scGREAT's np.eye(2)[label] indexing does not crash.
+    """
+    for split_name in ['Train_set.csv', 'Validation_set.csv', 'Test_set.csv']:
+        path = os.path.join(dataset_dir, split_name)
+        if not os.path.exists(path):
+            continue
+        try:
+            df = pd.read_csv(path, index_col=0, header=0)
+            if df.shape[1] < 3:
+                continue
+            for col in df.columns[:3]:
+                df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0).astype(np.int64)
+            df.to_csv(path)
+        except Exception as e:
+            log(f"  WARNING: failed to normalize {path}: {e}")
+
+
+def generate_dataset_from_raw(dataset_name):
+    """
+    Generate scGREAT-style dataset files from raw BEELINE-like inputs.
+    Files generated under: OUTPUT_DIR/generated_datasets/<dataset_name>/
+    """
+    if dataset_name not in RAW_DATASET_CONFIGS:
+        return None
+    cfg = RAW_DATASET_CONFIGS[dataset_name]
+    cell_type = cfg['cell_type']
+    species = cfg['species']
+
+    repo_root = os.path.dirname(os.path.abspath(__file__))
+    project_root = os.path.dirname(OUTPUT_DIR)
+    expr_root = os.environ.get('BEELINE_EXPR_ROOT', '').strip()
+    net_root = os.environ.get('BEELINE_NETWORK_ROOT', '').strip()
+    tf_root = os.environ.get('BEELINE_TF_ROOT', '').strip()
+
+    def _resolve_paths(extra_root=None):
+        expr_candidates = [
+            os.path.join(expr_root, cell_type, 'ExpressionData.csv') if expr_root else None,
+            os.path.join(repo_root, 'scRNA-Seq', cell_type, 'ExpressionData.csv'),
+            os.path.join(project_root, 'scRNA-Seq', cell_type, 'ExpressionData.csv'),
+            os.path.join(project_root, 'BEELINE', 'BEELINE-data', 'inputs', 'scRNA-Seq', cell_type, 'ExpressionData.csv'),
+        ]
+        tf_candidates = [
+            os.path.join(tf_root, f'{species}-tfs.csv') if tf_root else None,
+            os.path.join(tf_root, 'TFs', f'{species}-tfs.csv') if tf_root else None,
+            os.path.join(repo_root, f'{species}-tfs.csv'),
+            os.path.join(repo_root, 'TFs', f'{species}-tfs.csv'),
+            os.path.join(project_root, f'{species}-tfs.csv'),
+            os.path.join(project_root, 'TFs', f'{species}-tfs.csv'),
+            os.path.join(project_root, 'BEELINE', 'BEELINE-data', 'inputs', 'TFs', f'{species}-tfs.csv'),
+        ]
+        net_candidates = [
+            os.path.join(net_root, species, cfg['specific_net']) if net_root else None,
+            os.path.join(repo_root, 'Networks', species, cfg['specific_net']),
+            os.path.join(project_root, 'Networks', species, cfg['specific_net']),
+            os.path.join(project_root, 'BEELINE', 'Networks', species, cfg['specific_net']),
+            os.path.join(project_root, 'BEELINE', 'BEELINE-Networks', species, cfg['specific_net']),
+        ]
+        if extra_root:
+            expr_candidates.extend([
+                os.path.join(extra_root, 'BEELINE-data', 'inputs', 'scRNA-Seq', cell_type, 'ExpressionData.csv'),
+            ])
+            tf_candidates.extend([
+                os.path.join(extra_root, f'{species}-tfs.csv'),
+                os.path.join(extra_root, 'BEELINE-data', 'inputs', 'TFs', f'{species}-tfs.csv'),
+            ])
+            net_candidates.extend([
+                os.path.join(extra_root, 'Networks', species, cfg['specific_net']),
+                os.path.join(extra_root, 'BEELINE-Networks', species, cfg['specific_net']),
+            ])
+
+        return first_existing(expr_candidates), first_existing(tf_candidates), first_existing(net_candidates)
+
+    expr_path, tf_path, net_path = _resolve_paths()
+
+    # If TF/network are missing, try downloading BEELINE support files once.
+    if not tf_path or not net_path:
+        beeline_root = os.environ.get('BEELINE_ASSET_ROOT', '').strip() or os.path.join(project_root, 'BEELINE')
+        ensure_beeline_assets(beeline_root)
+        expr_path, tf_path, net_path = _resolve_paths(extra_root=beeline_root)
+
+    if not expr_path or not tf_path or not net_path:
+        log(f"  Raw source missing for {dataset_name}: expr={expr_path}, tf={tf_path}, net={net_path}")
+        return None
+
+    log(f"  Generating {dataset_name} from raw data...")
+    expr = pd.read_csv(expr_path, index_col=0, header=0)
+    tf_df = pd.read_csv(tf_path)
+    net_df = pd.read_csv(net_path)
+    if net_df.shape[1] < 2:
+        log(f"  Invalid network format for {dataset_name}: {net_path}")
+        return None
+
+    n_hvg = 500
+    gene_var = expr.var(axis=1).sort_values(ascending=False)
+    selected_genes = gene_var.head(n_hvg).index.tolist()
+    selected_set = set(selected_genes)
+    gene_list = sorted(selected_genes)
+    gene_to_idx = {g: i for i, g in enumerate(gene_list)}
+
+    tf_col, tgt_col = net_df.columns[0], net_df.columns[1]
+    known_tfs = set(tf_df.iloc[:, 0].astype(str).tolist())
+    net_filt = net_df[
+        net_df[tf_col].isin(selected_set) &
+        net_df[tgt_col].isin(selected_set) &
+        net_df[tf_col].isin(known_tfs)
+    ]
+    if len(net_filt) < 1:
+        log(f"  Too few edges after filtering for {dataset_name}: {len(net_filt)}")
+        return None
+
+    pos_pairs = set((gene_to_idx[r[tf_col]], gene_to_idx[r[tgt_col]]) for _, r in net_filt.iterrows())
+    tf_indices = sorted(set(tf for tf, _ in pos_pairs))
+    all_gene_indices = list(range(len(gene_list)))
+
+    random.seed(42)
+    neg_pairs = []
+    pos_dict = {}
+    for tf, tgt in pos_pairs:
+        pos_dict.setdefault(tf, set()).add(tgt)
+    for tf in tf_indices:
+        candidates = [g for g in all_gene_indices if g not in pos_dict.get(tf, set())]
+        k = len(pos_dict.get(tf, []))
+        if k == 0 or not candidates:
+            continue
+        sampled = random.sample(candidates, min(k, len(candidates)))
+        neg_pairs.extend((tf, tgt) for tgt in sampled)
+
+    pairs = list(pos_pairs) + neg_pairs
+    labels = [1] * len(pos_pairs) + [0] * len(neg_pairs)
+    if len(pairs) < 2:
+        log(f"  Too few trainable pairs for {dataset_name}: {len(pairs)}")
+        return None
+
+    (train_p, train_l), (val_p, val_l), (test_p, test_l) = split_pairs(pairs, labels, seed=42)
+    out_dir = os.path.join(OUTPUT_DIR, 'generated_datasets', dataset_name)
+    os.makedirs(out_dir, exist_ok=True)
+
+    expr_out = expr.loc[gene_list]
+    expr_out.to_csv(os.path.join(out_dir, 'BL--ExpressionData.csv'))
+    target_df = pd.DataFrame({'Gene': gene_list, 'index': np.arange(len(gene_list), dtype=np.int32)})
+    target_df.to_csv(os.path.join(out_dir, 'Target.csv'))
+
+    def _save_split(path, split_pairs_arr, split_labels_arr):
+        df = pd.DataFrame({
+            'TF': split_pairs_arr[:, 0] if len(split_pairs_arr) else np.array([], dtype=np.int32),
+            'Target': split_pairs_arr[:, 1] if len(split_pairs_arr) else np.array([], dtype=np.int32),
+            'Label': split_labels_arr if len(split_labels_arr) else np.array([], dtype=np.int32),
+        })
+        if len(df) > 0:
+            df = df.astype({'TF': np.int64, 'Target': np.int64, 'Label': np.int64})
+        df.to_csv(path)
+
+    _save_split(os.path.join(out_dir, 'Train_set.csv'), train_p, train_l)
+    _save_split(os.path.join(out_dir, 'Validation_set.csv'), val_p, val_l)
+    _save_split(os.path.join(out_dir, 'Test_set.csv'), test_p, test_l)
+    normalize_split_files(out_dir)
+    ensure_bl_expression_data(out_dir)
+
+    log(f"  Generated {dataset_name}: genes={len(gene_list)}, pairs={len(pairs)} -> {out_dir}")
+    return out_dir
+
+
+def discover_scgreat_datasets():
+    """
+    Discover available scGREAT datasets under SCGREAT_DIR.
+    Priority:
+      1) preferred HUMAN/MOUSE lists (if present)
+      2) additional *_500 datasets with required files
+    """
+    required = ['Target.csv', 'Train_set.csv', 'Validation_set.csv', 'Test_set.csv']
+    if not os.path.isdir(SCGREAT_DIR):
+        available = []
+    else:
+        available = []
+        for name in sorted(os.listdir(SCGREAT_DIR)):
+            ds_dir = os.path.join(SCGREAT_DIR, name)
+            if not os.path.isdir(ds_dir):
+                continue
+            if all(os.path.exists(os.path.join(ds_dir, f)) for f in required):
+                available.append(name)
+
+    generated_root = os.path.join(OUTPUT_DIR, 'generated_datasets')
+    if os.path.isdir(generated_root):
+        for name in sorted(os.listdir(generated_root)):
+            ds_dir = os.path.join(generated_root, name)
+            if not os.path.isdir(ds_dir):
+                continue
+            if all(os.path.exists(os.path.join(ds_dir, f)) for f in required) and name not in available:
+                available.append(name)
+
+    preferred_order = HUMAN_DATASETS + MOUSE_DATASETS
+    ordered = [ds for ds in preferred_order if ds in available]
+    for ds in available:
+        if ds.endswith('500') and ds not in ordered:
+            ordered.append(ds)
+
+    human_avail = [ds for ds in ordered if ds.startswith('h')]
+    mouse_avail = [ds for ds in ordered if ds.startswith('m')]
+    return ordered, human_avail, mouse_avail
 
 
 def create_biovect_from_checkpoint(emb_matrix, vocab, dataset_genes, emb_name, dataset_name):
@@ -478,8 +845,11 @@ def setup_experiment_dir(emb_name, dataset_name, biovect, emb_dim):
     log(f"    Saved {biovect_path} shape={biovect.shape}")
 
     # Symlink all other data files from original scGREAT dataset
-    src_dir = os.path.join(SCGREAT_DIR, dataset_name)
-    if not os.path.exists(src_dir):
+    src_dir = first_existing([
+        os.path.join(SCGREAT_DIR, dataset_name),
+        os.path.join(OUTPUT_DIR, 'generated_datasets', dataset_name),
+    ])
+    if src_dir is None or not os.path.exists(src_dir):
         log(f"    WARNING: source dir {src_dir} not found")
         return exp_dir
 
@@ -493,6 +863,11 @@ def setup_experiment_dir(emb_name, dataset_name, biovect, emb_dim):
         if os.path.isfile(src):
             os.symlink(src, dst)
 
+    # Ensure BL--ExpressionData.csv exists for scGREAT demo.py
+    if not ensure_bl_expression_data(exp_dir):
+        log(f"    WARNING: {emb_name}/{dataset_name} missing BL--ExpressionData.csv and ExpressionData.csv")
+    normalize_split_files(exp_dir)
+
     return exp_dir
 
 
@@ -505,13 +880,15 @@ def generate_run_script(all_datasets):
 
     lines = [
         '#!/bin/bash',
+        'set -uo pipefail',
         f'# scGREAT GRN benchmark - generated {datetime.now()}',
         f'# Experiments: {len(EMBEDDINGS) + 1} embeddings x {len(all_datasets)} datasets',
         '',
         f'SCGREAT_DIR="{SCGREAT_DIR}"',
         f'OUTPUT_DIR="{OUTPUT_DIR}"',
+        'PYTHON_BIN="${PYTHON_BIN:-python}"',
         '',
-        'pip install torch scikit-learn pandas numpy 2>/dev/null',
+        'mkdir -p "$OUTPUT_DIR"',
         '',
         'RESULTS_FILE="$OUTPUT_DIR/results_summary.txt"',
         'echo "scGREAT GRN Benchmark Results" > "$RESULTS_FILE"',
@@ -534,6 +911,8 @@ def generate_run_script(all_datasets):
         for ds in all_datasets:
             exp_dir = os.path.join(OUTPUT_DIR, emb_name, ds)
             log_path = os.path.join(exp_dir, 'train.log')
+            exp_dir_q = shlex.quote(exp_dir)
+            log_path_q = shlex.quote(log_path)
 
             lines.append(f'echo ""')
             lines.append(f'echo "=========================================="')
@@ -547,8 +926,14 @@ def generate_run_script(all_datasets):
             num_head = 4
 
             lines.append(
-                f'cd "$SCGREAT_DIR" && python demo.py '
-                f'--data_dir {exp_dir} '
+                f'if [ ! -f {shlex.quote(os.path.join(exp_dir, "BL--ExpressionData.csv"))} ]; then '
+                f'echo "SKIP {emb_name} x {ds}: missing BL--ExpressionData.csv in {exp_dir_q}" | tee -a "$RESULTS_FILE"; '
+                f'continue; '
+                f'fi'
+            )
+            lines.append(
+                f'if cd "$SCGREAT_DIR" && "$PYTHON_BIN" demo.py '
+                f'--data_dir {exp_dir_q} '
                 f'--embed_size {emb_dim} '
                 f'--num_layers 2 '
                 f'--num_head {num_head} '
@@ -556,10 +941,14 @@ def generate_run_script(all_datasets):
                 f'--batch_size 64 '
                 f'--lr 1e-4 '
                 f'--n_runs 5 '
-                f'2>&1 | tee {log_path}'
+                f'2>&1 | tee {log_path_q}; then'
             )
-            lines.append(f'echo "{emb_name} x {ds}: done" >> "$RESULTS_FILE"')
-            lines.append(f'tail -3 {log_path} >> "$RESULTS_FILE"')
+            lines.append(f'  echo "{emb_name} x {ds}: done" >> "$RESULTS_FILE"')
+            lines.append(f'  if [ -f {log_path_q} ]; then tail -3 {log_path_q} >> "$RESULTS_FILE"; fi')
+            lines.append('else')
+            lines.append(f'  echo "{emb_name} x {ds}: FAILED (continue next)" | tee -a "$RESULTS_FILE"')
+            lines.append('  continue')
+            lines.append('fi')
             lines.append('')
 
     lines.append('echo ""')
@@ -578,8 +967,11 @@ def setup_biobert_baseline(datasets):
     for ds in datasets:
         exp_dir = os.path.join(OUTPUT_DIR, 'BioBERT_original', ds)
         os.makedirs(exp_dir, exist_ok=True)
-        src_dir = os.path.join(SCGREAT_DIR, ds)
-        if not os.path.exists(src_dir):
+        src_dir = first_existing([
+            os.path.join(SCGREAT_DIR, ds),
+            os.path.join(OUTPUT_DIR, 'generated_datasets', ds),
+        ])
+        if src_dir is None or not os.path.exists(src_dir):
             continue
         for fname in os.listdir(src_dir):
             src = os.path.join(src_dir, fname)
@@ -588,6 +980,7 @@ def setup_biobert_baseline(datasets):
                 os.remove(dst)
             if os.path.isfile(src):
                 os.symlink(src, dst)
+        ensure_bl_expression_data(exp_dir)
         log(f"  BioBERT_original x {ds}: using original biovect768.npy")
 
 
@@ -600,23 +993,32 @@ def main():
     log("=" * 60)
 
     # 1. Clone + patch
-    clone_scgreat()
-    patch_scgreat()
+    try:
+        clone_scgreat()
+        patch_scgreat()
+    except Exception as e:
+        log(f"WARNING: clone/patch scGREAT failed, skip setup: {e}")
+        return
 
     # 2. Check available datasets
-    available_datasets = []
-    for ds in HUMAN_DATASETS + MOUSE_DATASETS:
-        ds_path = os.path.join(SCGREAT_DIR, ds)
-        if os.path.exists(ds_path):
-            available_datasets.append(ds)
-            genes = get_dataset_genes(ds)
-            n_genes = len(genes) if genes else 0
-            log(f"  Dataset {ds}: {n_genes} genes")
-        else:
-            log(f"  Dataset {ds}: NOT FOUND")
+    # Try to generate missing target datasets from raw inputs first.
+    available_datasets, human_avail, mouse_avail = discover_scgreat_datasets()
+    for ds in TARGET_DATASETS_7:
+        if ds not in available_datasets:
+            generate_dataset_from_raw(ds)
+    available_datasets, human_avail, mouse_avail = discover_scgreat_datasets()
+    missing_targets = [ds for ds in TARGET_DATASETS_7 if ds not in available_datasets]
+    if missing_targets:
+        log(f"WARNING: target datasets still missing after generation: {missing_targets}")
+    if not available_datasets:
+        log(f"No valid datasets found in {SCGREAT_DIR}.")
+        log("Expected files per dataset: Target.csv, Train_set.csv, Validation_set.csv, Test_set.csv")
+        return
+    for ds in available_datasets:
+        genes = get_dataset_genes(ds)
+        n_genes = len(genes) if genes else 0
+        log(f"  Dataset {ds}: {n_genes} genes")
 
-    human_avail = [ds for ds in HUMAN_DATASETS if ds in available_datasets]
-    mouse_avail = [ds for ds in MOUSE_DATASETS if ds in available_datasets]
     log(f"\nHuman datasets: {human_avail}")
     log(f"Mouse datasets: {mouse_avail}")
     log("Note: Mouse datasets may have low gene coverage with human embeddings\n")
@@ -626,34 +1028,46 @@ def main():
     # 3. Load vocab
     log("Loading vocab...")
     vocab = load_vocab()
-    log(f"  Vocab size: {len(vocab)}")
+    if vocab is not None:
+        log(f"  Vocab size: {len(vocab)}")
 
     # 4. Load embeddings
     log("\nLoading embeddings...")
     loaded_embs = {}
     for emb_name, cfg in EMBEDDINGS.items():
-        if cfg['type'] == 'checkpoint':
-            log(f"  Loading {emb_name} from {cfg['path']}...")
-            emb_matrix = load_checkpoint_embedding(cfg['path'], cfg['key'])
-            loaded_embs[emb_name] = {
-                'matrix': emb_matrix,
-                'dim': emb_matrix.shape[1],
-                'type': 'checkpoint',
-            }
-            log(f"    Shape: {emb_matrix.shape}")
-        else:
-            log(f"  Loading {emb_name} from {cfg['dir']}...")
-            gf_emb, gf_genelist = load_gf_embedding(cfg['dir'])
-            loaded_embs[emb_name] = {
-                'matrix': gf_emb,
-                'genelist': gf_genelist,
-                'dim': gf_emb.shape[1],
-                'type': 'geneformer',
-            }
-            log(f"    Shape: {gf_emb.shape}, genes: {len(gf_genelist)}")
+        try:
+            if cfg['type'] == 'checkpoint':
+                if vocab is None:
+                    log(f"  SKIP {emb_name}: vocab missing")
+                    continue
+                log(f"  Loading {emb_name} from {cfg['path']}...")
+                emb_matrix = load_checkpoint_embedding(cfg['path'], cfg['key'])
+                loaded_embs[emb_name] = {
+                    'matrix': emb_matrix,
+                    'dim': emb_matrix.shape[1],
+                    'type': 'checkpoint',
+                }
+                log(f"    Shape: {emb_matrix.shape}")
+            else:
+                log(f"  Loading {emb_name} from {cfg['dir']}...")
+                gf_emb, gf_genelist = load_gf_embedding(cfg['dir'])
+                loaded_embs[emb_name] = {
+                    'matrix': gf_emb,
+                    'genelist': gf_genelist,
+                    'dim': gf_emb.shape[1],
+                    'type': 'geneformer',
+                }
+                log(f"    Shape: {gf_emb.shape}, genes: {len(gf_genelist)}")
+        except Exception as e:
+            log(f"  SKIP {emb_name}: {e}")
+
+    if not loaded_embs:
+        log("No usable embeddings found. Skip.")
+        return
 
     # 5. Build symbol->entrez for Geneformer
-    symbol_to_entrez = build_symbol_to_entrez()
+    has_geneformer = any(v['type'] == 'geneformer' for v in loaded_embs.values())
+    symbol_to_entrez = build_symbol_to_entrez() if has_geneformer else {}
 
     # 6. Generate biovect files
     log("\n" + "=" * 60)
@@ -669,26 +1083,29 @@ def main():
 
         log(f"\nDataset: {ds} ({len(dataset_genes)} genes)")
         for emb_name, emb_data in loaded_embs.items():
-            if emb_data['type'] == 'checkpoint':
-                biovect, mapped, total = create_biovect_from_checkpoint(
-                    emb_data['matrix'], vocab, dataset_genes, emb_name, ds
-                )
-            else:
-                biovect, mapped, total = create_biovect_from_geneformer(
-                    emb_data['matrix'], emb_data['genelist'],
-                    symbol_to_entrez, dataset_genes, ds
-                )
+            try:
+                if emb_data['type'] == 'checkpoint':
+                    biovect, mapped, total = create_biovect_from_checkpoint(
+                        emb_data['matrix'], vocab, dataset_genes, emb_name, ds
+                    )
+                else:
+                    biovect, mapped, total = create_biovect_from_geneformer(
+                        emb_data['matrix'], emb_data['genelist'],
+                        symbol_to_entrez, dataset_genes, ds
+                    )
 
-            emb_dim = emb_data['dim']
-            setup_experiment_dir(emb_name, ds, biovect, emb_dim)
-            coverage_report.append({
-                'embedding': emb_name,
-                'dataset': ds,
-                'mapped': mapped,
-                'total': total,
-                'coverage': mapped / total * 100,
-                'dim': emb_dim,
-            })
+                emb_dim = emb_data['dim']
+                setup_experiment_dir(emb_name, ds, biovect, emb_dim)
+                coverage_report.append({
+                    'embedding': emb_name,
+                    'dataset': ds,
+                    'mapped': mapped,
+                    'total': total,
+                    'coverage': mapped / total * 100,
+                    'dim': emb_dim,
+                })
+            except Exception as e:
+                log(f"  SKIP {emb_name} x {ds}: {e}")
 
     # 7. BioBERT baseline
     log("\nSetting up BioBERT original baseline...")
