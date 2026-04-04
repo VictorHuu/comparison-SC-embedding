@@ -11,7 +11,7 @@ Usage: python setup_scgreat.py [--run]
   With --run: generates embeddings + patches + runs all experiments
 """
 
-import os, sys, json, gzip, subprocess, shutil, random
+import os, sys, json, gzip, subprocess, shutil, random, re
 import shlex
 import numpy as np
 import pandas as pd
@@ -28,8 +28,10 @@ BASE_DIR = '/bigdata2/hyt/projects/scbenchmark'
 SCGREAT_DIR = '/bigdata2/hyt/projects/scGREAT'
 OUTPUT_DIR = '/bigdata2/hyt/projects/scbenchmark_xjq/comparison-SC-embedding/grn_benchmark'
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+RESULTS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'results', 'grn_benchmark')
+os.makedirs(RESULTS_DIR, exist_ok=True)
 
-LOG_FILE = os.path.join(OUTPUT_DIR, 'setup.log')
+LOG_FILE = os.path.join(RESULTS_DIR, 'setup.log')
 
 VOCAB_PATH = f'{BASE_DIR}/vocab.json'
 
@@ -80,6 +82,7 @@ EMBEDDINGS = {
 HUMAN_DATASETS = ['hESC500', 'hHep500', 'hHEP500']
 MOUSE_DATASETS = ['mDC500', 'mESC500', 'mHSC-E500', 'mHSC-GM500', 'mHSC-L500']
 TARGET_DATASETS_7 = ['hESC500', 'hHep500', 'mDC500', 'mESC500', 'mHSC-E500', 'mHSC-GM500', 'mHSC-L500']
+EMBED_ORDER = ['minus', 'baseline', 'scGPT_human', 'v4_bias_rec_best', 'v4_plain_best', 'v4_type_pe_best', 'difference_v3', 'GF-12L95M', 'random_256', 'BioBERT_original']
 
 RAW_DATASET_CONFIGS = {
     'hESC500': {'cell_type': 'hESC', 'species': 'human', 'specific_net': 'hESC-ChIP-seq-network.csv'},
@@ -99,6 +102,103 @@ def log(msg):
     print(line, flush=True)
     with open(LOG_FILE, 'a') as f:
         f.write(line + '\n')
+
+
+def _style_metric_row(row):
+    vals = row.dropna()
+    if vals.empty:
+        return {k: '-' for k in row.index}
+    best = vals.max()
+    baseline = row.get('baseline', np.nan)
+    out = {}
+    for emb in row.index:
+        v = row.get(emb, np.nan)
+        if pd.isna(v):
+            out[emb] = '-'
+        else:
+            txt = f'{v:.4f}'
+            if v == best:
+                out[emb] = f"<span style='color:red'><strong>{txt}</strong></span>"
+            elif pd.notna(baseline) and emb != 'baseline' and v > baseline:
+                out[emb] = f'**{txt}**'
+            else:
+                out[emb] = txt
+    return out
+
+
+def export_run_all_conference_table():
+    summary_path = os.path.join(RESULTS_DIR, 'results_summary.txt')
+    if not os.path.exists(summary_path):
+        log(f"Skip conference table export: missing {summary_path}")
+        return
+
+    rows, cur = [], None
+    pat = re.compile(r'^([^\s]+) x ([^:]+): (done|FAILED.*)$')
+    auroc_pat = re.compile(r'^\s*AUROC:\s*([0-9.]+)\s*\+/-\s*([0-9.]+)')
+    auprc_pat = re.compile(r'^\s*AUPRC:\s*([0-9.]+)\s*\+/-\s*([0-9.]+)')
+    with open(summary_path) as f:
+        for line in f:
+            m = pat.match(line.strip())
+            if m:
+                emb, ds, status = m.groups()
+                cur = {
+                    'embedding': emb, 'dataset': ds, 'status': 'done' if status == 'done' else 'failed',
+                    'auroc': np.nan, 'auroc_std': np.nan, 'auprc': np.nan, 'auprc_std': np.nan
+                }
+                rows.append(cur)
+                continue
+            if cur is None:
+                continue
+            m = auroc_pat.match(line)
+            if m:
+                cur['auroc'], cur['auroc_std'] = float(m.group(1)), float(m.group(2))
+                continue
+            m = auprc_pat.match(line)
+            if m:
+                cur['auprc'], cur['auprc_std'] = float(m.group(1)), float(m.group(2))
+
+    if not rows:
+        return
+    df = pd.DataFrame(rows)
+    df.to_csv(os.path.join(RESULTS_DIR, 'run_all_summary_parsed.csv'), index=False)
+
+    embeddings = [e for e in EMBED_ORDER if e in df['embedding'].unique()] + [e for e in sorted(df['embedding'].unique()) if e not in EMBED_ORDER]
+    lines = [
+        '# GRN Benchmark from run_all.sh (Conference-style Table)',
+        '',
+        '说明：数值格式为`mean±std`；`-`表示缺失/失败；**加粗**表示优于同一行 baseline；<span style="color:red"><strong>红色加粗</strong></span>表示该行最优。',
+        ''
+    ]
+    for metric in ['auroc', 'auprc']:
+        lines += [f'## {metric.upper()}', '']
+        pivot = df.pivot_table(index='dataset', columns='embedding', values=metric, aggfunc='mean')
+        std_pivot = df.pivot_table(index='dataset', columns='embedding', values=f'{metric}_std', aggfunc='mean')
+        pivot = pivot.reindex(columns=embeddings)
+        std_pivot = std_pivot.reindex(columns=embeddings)
+        lines.append('| Dataset | ' + ' | '.join(embeddings) + ' |')
+        lines.append('|---|' + '|'.join(['---:'] * len(embeddings)) + '|')
+        for ds in pivot.index:
+            styled = _style_metric_row(pivot.loc[ds])
+            vals = []
+            for emb in embeddings:
+                val = pivot.loc[ds, emb]
+                if pd.isna(val):
+                    vals.append('-')
+                    continue
+                std = std_pivot.loc[ds, emb]
+                txt = f'{val:.4f}±{std:.4f}' if pd.notna(std) else f'{val:.4f}'
+                if styled[emb].startswith('<span'):
+                    vals.append(f"<span style='color:red'><strong>{txt}</strong></span>")
+                elif styled[emb].startswith('**'):
+                    vals.append(f'**{txt}**')
+                else:
+                    vals.append(txt)
+            lines.append('| ' + ds + ' | ' + ' | '.join(vals) + ' |')
+        lines.append('')
+    out_md = os.path.join(RESULTS_DIR, 'conference_table.md')
+    with open(out_md, 'w') as f:
+        f.write('\n'.join(lines) + '\n')
+    log(f'Conference table saved to {out_md}')
 
 
 def download_file(url, dst_path):
@@ -886,11 +986,13 @@ def generate_run_script(all_datasets):
         '',
         f'SCGREAT_DIR="{SCGREAT_DIR}"',
         f'OUTPUT_DIR="{OUTPUT_DIR}"',
+        f'RESULTS_DIR="{RESULTS_DIR}"',
         'PYTHON_BIN="${PYTHON_BIN:-python}"',
         '',
         'mkdir -p "$OUTPUT_DIR"',
+        'mkdir -p "$RESULTS_DIR"',
         '',
-        'RESULTS_FILE="$OUTPUT_DIR/results_summary.txt"',
+        'RESULTS_FILE="$RESULTS_DIR/results_summary.txt"',
         'echo "scGREAT GRN Benchmark Results" > "$RESULTS_FILE"',
         'echo "==============================" >> "$RESULTS_FILE"',
         'echo "" >> "$RESULTS_FILE"',
@@ -1136,6 +1238,9 @@ def main():
     if '--run' in sys.argv:
         log("\nStarting experiments...")
         subprocess.run(['bash', run_script])
+        export_run_all_conference_table()
+    else:
+        export_run_all_conference_table()
 
 
 if __name__ == '__main__':
