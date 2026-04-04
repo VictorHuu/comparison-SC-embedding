@@ -83,6 +83,7 @@ HUMAN_DATASETS = ['hESC500', 'hHep500', 'hHEP500']
 MOUSE_DATASETS = ['mDC500', 'mESC500', 'mHSC-E500', 'mHSC-GM500', 'mHSC-L500']
 TARGET_DATASETS_7 = ['hESC500', 'hHep500', 'mDC500', 'mESC500', 'mHSC-E500', 'mHSC-GM500', 'mHSC-L500']
 EMBED_ORDER = ['minus', 'baseline', 'scGPT_human', 'v4_bias_rec_best', 'v4_plain_best', 'v4_type_pe_best', 'difference_v3', 'GF-12L95M', 'random_256', 'BioBERT_original']
+TABLE_DATASET_CHUNK_SIZE = 6
 
 RAW_DATASET_CONFIGS = {
     'hESC500': {'cell_type': 'hESC', 'species': 'human', 'specific_net': 'hESC-ChIP-seq-network.csv'},
@@ -104,26 +105,34 @@ def log(msg):
         f.write(line + '\n')
 
 
-def _style_metric_row(row):
-    vals = row.dropna()
-    if vals.empty:
-        return {k: '-' for k in row.index}
-    best = vals.max()
-    baseline = row.get('baseline', np.nan)
-    out = {}
-    for emb in row.index:
-        v = row.get(emb, np.nan)
-        if pd.isna(v):
-            out[emb] = '-'
-        else:
+def _style_metric_matrix(pivot):
+    """Style matrix where rows=embedding, cols=dataset."""
+    styled = {}
+    for emb in pivot.index:
+        styled[emb] = {}
+        for ds in pivot.columns:
+            v = pivot.at[emb, ds]
+            if pd.isna(v):
+                styled[emb][ds] = '-'
+                continue
             txt = f'{v:.4f}'
-            if v == best:
-                out[emb] = f"<span style='color:red'><strong>{txt}</strong></span>"
-            elif pd.notna(baseline) and emb != 'baseline' and v > baseline:
-                out[emb] = f'**{txt}**'
+            col = pivot[ds].dropna()
+            best = col.max() if not col.empty else np.nan
+            baseline = pivot.at['baseline', ds] if 'baseline' in pivot.index else np.nan
+            if pd.notna(best) and v == best:
+                styled[emb][ds] = f"<span style='color:red'><strong>{txt}</strong></span>"
+            elif emb != 'baseline' and pd.notna(baseline) and v > baseline:
+                styled[emb][ds] = f'**{txt}**'
             else:
-                out[emb] = txt
-    return out
+                styled[emb][ds] = txt
+    return styled
+
+
+def _collapse_dataset_label(name):
+    """Collapse transfer datasets like A->B, A->C into A for table display."""
+    if not isinstance(name, str):
+        return name
+    return name.split('->', 1)[0].strip()
 
 
 def export_run_all_conference_table():
@@ -161,40 +170,50 @@ def export_run_all_conference_table():
         return
     df = pd.DataFrame(rows)
     df.to_csv(os.path.join(RESULTS_DIR, 'run_all_summary_parsed.csv'), index=False)
+    df['dataset_display'] = df['dataset'].map(_collapse_dataset_label)
 
     embeddings = [e for e in EMBED_ORDER if e in df['embedding'].unique()] + [e for e in sorted(df['embedding'].unique()) if e not in EMBED_ORDER]
     lines = [
         '# GRN Benchmark from run_all.sh (Conference-style Table)',
         '',
-        '说明：数值格式为`mean±std`；`-`表示缺失/失败；**加粗**表示优于同一行 baseline；<span style="color:red"><strong>红色加粗</strong></span>表示该行最优。',
+        '说明：数值格式为`mean±std`；`-`表示缺失/失败；按列（同一dataset）比较：**加粗**表示优于baseline；<span style="color:red"><strong>红色加粗</strong></span>表示该列最优。',
+        '仅将`dataset`与`embedding`作为显式变量；其余设置作为表上方 latent variables 展示；`A->B`/`A->C`会汇总为`A`。',
         ''
     ]
     for metric in ['auroc', 'auprc']:
+        pivot = df.pivot_table(index='embedding', columns='dataset_display', values=metric, aggfunc='mean')
+        std_pivot = df.pivot_table(index='embedding', columns='dataset_display', values=f'{metric}_std', aggfunc='mean')
+        pivot = pivot.reindex(index=embeddings)
+        std_pivot = std_pivot.reindex(index=embeddings)
+        datasets = list(pivot.columns)
+        chunks = [datasets[i:i + TABLE_DATASET_CHUNK_SIZE] for i in range(0, len(datasets), TABLE_DATASET_CHUNK_SIZE)]
         lines += [f'## {metric.upper()}', '']
-        pivot = df.pivot_table(index='dataset', columns='embedding', values=metric, aggfunc='mean')
-        std_pivot = df.pivot_table(index='dataset', columns='embedding', values=f'{metric}_std', aggfunc='mean')
-        pivot = pivot.reindex(columns=embeddings)
-        std_pivot = std_pivot.reindex(columns=embeddings)
-        lines.append('| Dataset | ' + ' | '.join(embeddings) + ' |')
-        lines.append('|---|' + '|'.join(['---:'] * len(embeddings)) + '|')
-        for ds in pivot.index:
-            styled = _style_metric_row(pivot.loc[ds])
-            vals = []
-            for emb in embeddings:
-                val = pivot.loc[ds, emb]
-                if pd.isna(val):
-                    vals.append('-')
-                    continue
-                std = std_pivot.loc[ds, emb]
-                txt = f'{val:.4f}±{std:.4f}' if pd.notna(std) else f'{val:.4f}'
-                if styled[emb].startswith('<span'):
-                    vals.append(f"<span style='color:red'><strong>{txt}</strong></span>")
-                elif styled[emb].startswith('**'):
-                    vals.append(f'**{txt}**')
-                else:
-                    vals.append(txt)
-            lines.append('| ' + ds + ' | ' + ' | '.join(vals) + ' |')
-        lines.append('')
+        for i, ds_chunk in enumerate(chunks, start=1):
+            sub_pivot = pivot[ds_chunk]
+            sub_std_pivot = std_pivot[ds_chunk]
+            styled = _style_metric_matrix(sub_pivot)
+            lines.append(f'Latent variables: metric={metric.upper()}, aggregation=mean, dataset_split={i}/{len(chunks)}')
+            lines.append('')
+            lines.append('| Embedding | ' + ' | '.join(ds_chunk) + ' |')
+            lines.append('|---|' + '|'.join(['---:'] * len(ds_chunk)) + '|')
+            for emb in sub_pivot.index:
+                vals = []
+                for ds in ds_chunk:
+                    val = sub_pivot.loc[emb, ds]
+                    if pd.isna(val):
+                        vals.append('-')
+                        continue
+                    std = sub_std_pivot.loc[emb, ds]
+                    txt = f'{val:.4f}±{std:.4f}' if pd.notna(std) else f'{val:.4f}'
+                    style = styled[emb][ds]
+                    if style.startswith('<span'):
+                        vals.append(f"<span style='color:red'><strong>{txt}</strong></span>")
+                    elif style.startswith('**'):
+                        vals.append(f'**{txt}**')
+                    else:
+                        vals.append(txt)
+                lines.append('| ' + emb + ' | ' + ' | '.join(vals) + ' |')
+            lines.append('')
     out_md = os.path.join(RESULTS_DIR, 'conference_table.md')
     with open(out_md, 'w') as f:
         f.write('\n'.join(lines) + '\n')
