@@ -134,9 +134,6 @@ NETWORK_TYPES = {
 
 N_HVGS = [500, 1000]
 EMBED_ORDER = ['minus', 'baseline', 'scGPT_human', 'v4_bias_rec_best', 'v4_plain_best', 'v4_type_pe_best', 'difference_v3', 'GF-12L95M', 'random_256', 'BioBERT_original']
-TABLE_DATASET_CHUNK_SIZE = 10
-
-
 def log(msg):
     ts = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     line = f'[{ts}] {msg}'
@@ -188,30 +185,24 @@ def write_conference_md(df):
         '# GRN BEELINE Full (Conference-style Tables)',
         '',
         '说明：`-`表示该组合无结果；按列（同一dataset）比较：**加粗**表示优于baseline；<span style="color:red"><strong>红色加粗</strong></span>表示该列最优。',
-        '仅将`dataset`与`embedding`作为显式变量；其余设置作为表上方 latent variables 展示。',
+        '仅将`dataset`与`embedding`作为显式变量；其余设置作为表上方 latent variables 展示；`dataset_split`与`classifier`已聚合，不再展示拆分明细。',
         ''
     ]
     for metric in ['auroc', 'auprc']:
-        for clf in sorted(df['clf'].dropna().unique()):
-            sub = df[df['clf'] == clf]
-            sub = sub.copy()
-            sub['dataset_display'] = sub['dataset'].map(_collapse_dataset_label)
-            pivot = sub.pivot_table(index='embedding', columns='dataset_display', values=metric, aggfunc='mean')
-            pivot = pivot.reindex(index=embeddings)
-            datasets = list(pivot.columns)
-            chunks = [datasets[i:i + TABLE_DATASET_CHUNK_SIZE] for i in range(0, len(datasets), TABLE_DATASET_CHUNK_SIZE)]
-
-            lines += [f'## {metric.upper()} | Classifier={clf}', '']
-            for i, ds_chunk in enumerate(chunks, start=1):
-                sub_pivot = pivot[ds_chunk]
-                styled = _style_metric_matrix(sub_pivot)
-                lines.append(f'Latent variables: metric={metric.upper()}, classifier={clf}, aggregation=mean, dataset_split={i}/{len(chunks)}')
-                lines.append('')
-                lines.append('| Embedding | ' + ' | '.join(ds_chunk) + ' |')
-                lines.append('|---|' + '|'.join(['---:'] * len(ds_chunk)) + '|')
-                for emb in sub_pivot.index:
-                    lines.append('| ' + emb + ' | ' + ' | '.join(styled[emb][ds] for ds in ds_chunk) + ' |')
-                lines.append('')
+        sub = df.copy()
+        sub['dataset_display'] = sub['dataset'].map(_collapse_dataset_label)
+        pivot = sub.pivot_table(index='embedding', columns='dataset_display', values=metric, aggfunc='mean')
+        pivot = pivot.reindex(index=embeddings)
+        lines += [f'## {metric.upper()}', '']
+        styled = _style_metric_matrix(pivot)
+        datasets = list(pivot.columns)
+        lines.append(f'Latent variables: metric={metric.upper()}, classifier=aggregated(lr,mlp), aggregation=mean')
+        lines.append('')
+        lines.append('| Embedding | ' + ' | '.join(datasets) + ' |')
+        lines.append('|---|' + '|'.join(['---:'] * len(datasets)) + '|')
+        for emb in pivot.index:
+            lines.append('| ' + emb + ' | ' + ' | '.join(styled[emb][ds] for ds in datasets) + ' |')
+        lines.append('')
     with open(out_md, 'w') as f:
         f.write('\n'.join(lines) + '\n')
     log(f'Conference table saved to {out_md}')
