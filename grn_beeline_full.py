@@ -174,6 +174,20 @@ def _collapse_dataset_label(name):
     return name.split('->', 1)[0].strip()
 
 
+def _infer_network_group(dataset_name):
+    """Infer network group from dataset label for conference table split."""
+    if not isinstance(dataset_name, str):
+        return None
+    name_u = dataset_name.upper()
+    if '_STRING_' in name_u:
+        return 'STRING'
+    if '_NON-SPECIFIC_' in name_u:
+        return 'Non-Specific'
+    if '_SPECIFIC_' in name_u:
+        return 'Specific'
+    return None
+
+
 def write_conference_md(df):
     out_md = os.path.join(RESULTS_DIR, 'conference_table.md')
     out_csv = os.path.join(RESULTS_DIR, 'grn_beeline_full_results.csv')
@@ -188,21 +202,33 @@ def write_conference_md(df):
         '仅将`dataset`与`embedding`作为显式变量；其余设置作为表上方 latent variables 展示；`dataset_split`与`classifier`已聚合，不再展示拆分明细。',
         ''
     ]
+    network_groups = ['Specific', 'Non-Specific', 'STRING']
     for metric in ['auroc', 'auprc']:
         sub = df.copy()
         sub['dataset_display'] = sub['dataset'].map(_collapse_dataset_label)
-        pivot = sub.pivot_table(index='embedding', columns='dataset_display', values=metric, aggfunc='mean')
-        pivot = pivot.reindex(index=embeddings)
         lines += [f'## {metric.upper()}', '']
-        styled = _style_metric_matrix(pivot)
-        datasets = list(pivot.columns)
         lines.append(f'Latent variables: metric={metric.upper()}, classifier=aggregated(lr,mlp), aggregation=mean')
         lines.append('')
-        lines.append('| Embedding | ' + ' | '.join(datasets) + ' |')
-        lines.append('|---|' + '|'.join(['---:'] * len(datasets)) + '|')
-        for emb in pivot.index:
-            lines.append('| ' + emb + ' | ' + ' | '.join(styled[emb][ds] for ds in datasets) + ' |')
-        lines.append('')
+
+        for group in network_groups:
+            sub_group = sub[sub['dataset_display'].map(_infer_network_group) == group]
+            lines.append(f'### {group}')
+            lines.append('')
+            if sub_group.empty:
+                lines.append('无可用结果。')
+                lines.append('')
+                continue
+
+            pivot = sub_group.pivot_table(index='embedding', columns='dataset_display', values=metric, aggfunc='mean')
+            pivot = pivot.reindex(index=embeddings)
+            styled = _style_metric_matrix(pivot)
+            datasets = list(pivot.columns)
+
+            lines.append('| Embedding | ' + ' | '.join(datasets) + ' |')
+            lines.append('|---|' + '|'.join(['---:'] * len(datasets)) + '|')
+            for emb in pivot.index:
+                lines.append('| ' + emb + ' | ' + ' | '.join(styled[emb][ds] for ds in datasets) + ' |')
+            lines.append('')
     with open(out_md, 'w') as f:
         f.write('\n'.join(lines) + '\n')
     log(f'Conference table saved to {out_md}')
