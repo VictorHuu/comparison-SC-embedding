@@ -19,7 +19,7 @@ from datetime import datetime
 from sklearn.linear_model import LogisticRegression
 from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import roc_auc_score, average_precision_score
+from sklearn.metrics import roc_auc_score, average_precision_score, f1_score, confusion_matrix
 
 warnings.filterwarnings("ignore")
 
@@ -188,6 +188,10 @@ def _infer_network_group(dataset_name):
     return None
 
 
+PRIMARY_METRICS = ['auroc', 'auprc']
+SUPPLEMENTARY_METRICS = ['precision_at_k', 'recall_at_k', 'f1', 'specificity']
+
+
 def write_conference_md(df):
     out_md = os.path.join(RESULTS_DIR, 'conference_table.md')
     out_csv = os.path.join(RESULTS_DIR, 'grn_beeline_full_results.csv')
@@ -203,10 +207,12 @@ def write_conference_md(df):
         ''
     ]
     network_groups = ['Specific', 'Non-Specific', 'STRING']
-    for metric in ['auroc', 'auprc']:
+    all_metrics = PRIMARY_METRICS + [m for m in SUPPLEMENTARY_METRICS if m in df.columns]
+    for metric in all_metrics:
         sub = df.copy()
         sub['dataset_display'] = sub['dataset'].map(_collapse_dataset_label)
-        lines += [f'## {metric.upper()}', '']
+        section = "Supplementary" if metric in SUPPLEMENTARY_METRICS else "Main"
+        lines += [f'## {metric.upper()} ({section})', '']
         lines.append(f'Latent variables: metric={metric.upper()}, classifier=aggregated(lr,mlp), aggregation=mean')
         lines.append('')
 
@@ -512,9 +518,23 @@ def build_pair_features(lookup, pairs):
     return np.concatenate([tf_emb, tgt_emb, hadamard, cosine, l2], axis=1)
 
 
+def _precision_recall_at_k(y_true, y_score, k):
+    """Precision@k and Recall@k on ranked prediction scores."""
+    if len(y_true) == 0:
+        return np.nan, np.nan
+    k = int(max(1, min(k, len(y_true))))
+    order = np.argsort(-y_score)
+    topk_true = y_true[order[:k]]
+    tp_at_k = int(np.sum(topk_true))
+    precision_at_k = tp_at_k / k
+    total_pos = int(np.sum(y_true))
+    recall_at_k = tp_at_k / total_pos if total_pos > 0 else np.nan
+    return precision_at_k, recall_at_k
+
+
 def evaluate(train_X, train_y, test_X, test_y, clf_name='lr'):
     if len(test_X) == 0 or len(train_X) == 0:
-        return None, None
+        return None
     scaler = StandardScaler()
     train_X = scaler.fit_transform(train_X)
     test_X = scaler.transform(test_X)
@@ -526,9 +546,24 @@ def evaluate(train_X, train_y, test_X, test_y, clf_name='lr'):
                             early_stopping=True, random_state=42)
     clf.fit(train_X, train_y)
     probs = clf.predict_proba(test_X)[:, 1]
-    auroc = roc_auc_score(test_y, probs)
-    auprc = average_precision_score(test_y, probs)
-    return auroc, auprc
+    preds = (probs >= 0.5).astype(int)
+
+    metrics = {}
+    metrics['auroc'] = roc_auc_score(test_y, probs)
+    metrics['auprc'] = average_precision_score(test_y, probs)
+
+    pos_cnt = int(np.sum(test_y))
+    k = pos_cnt if pos_cnt > 0 else len(test_y)
+    precision_at_k, recall_at_k = _precision_recall_at_k(test_y, probs, k)
+    metrics['precision_at_k'] = precision_at_k
+    metrics['recall_at_k'] = recall_at_k
+
+    metrics['f1'] = f1_score(test_y, preds, zero_division=0)
+
+    cm = confusion_matrix(test_y, preds, labels=[0, 1])
+    tn, fp, fn, tp = cm.ravel()
+    metrics['specificity'] = tn / (tn + fp) if (tn + fp) > 0 else np.nan
+    return metrics
 
 
 # =============================================================
@@ -589,13 +624,15 @@ def run_one_dataset(ds_name, gene_list, train_pairs, train_labels,
 
         for clf_name in ['lr', 'mlp']:
             try:
-                auroc, auprc = evaluate(train_X, train_labels, test_X, test_labels, clf_name)
-                if auroc is not None:
+                metrics = evaluate(train_X, train_labels, test_X, test_labels, clf_name)
+                if metrics is not None:
+                    auroc = metrics['auroc']
+                    auprc = metrics['auprc']
                     log(f"{emb_name:<20} {clf_name:<5} {cov:>12} {auroc:>7.4f} {auprc:>7.4f}")
                     results.append({
                         'dataset': ds_name, 'embedding': emb_name,
                         'clf': clf_name, 'coverage': cov,
-                        'auroc': auroc, 'auprc': auprc,
+                        **metrics,
                     })
             except Exception as e:
                 log(f"{emb_name:<20} {clf_name:<5} ERROR: {e}")
