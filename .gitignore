@@ -31,6 +31,8 @@ transfer_v2
 !scripts/transfer_v2
 !results/transfer_v2
 processed
+**__to__**
+**strict_global.txt
 
 # Exclude model weights and large json in result dirs
 grn_benchmark/gene_symbol_to_entrez.json

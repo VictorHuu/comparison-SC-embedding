@@ -12,7 +12,7 @@
 - 测试集：目标数据集的 `Test_set` 边；
 - 特征构造：由基因 embedding 生成
   - `a`, `b`, `a*b`, `cosine(a,b)`, `||a-b||_2`；
-- 指标：`AUROC`、`AUPRC`；
+- 指标：`AUROC`、`AUPRC`、`F1`、`balanced accuracy`、`precision@k`、`recall@k`、`Brier(calibration)`；
 - 分类器：`LR`、`MLP`；
 - 随机种子：`0..4`（每组 5 次重复）。
 
@@ -28,16 +28,17 @@
 
 ### 1.3 协议（protocol）
 
-transfer-v2 同时评估 3 种协议：
+transfer-v2 同时评估 4 种协议：
 
 - `native`：不做基因集约束，使用任务中原始可用基因；
 - `strict`：只使用 train/test 共享基因（可全局或 pairwise）；
-- `coverage_matched`：在共享基因中按检测率排序，取与 strict 相同规模（或指定 `coverage_k`）的基因集。
+- `coverage_matched`：在共享基因中按检测率排序，取与 strict 相同规模（或指定 `coverage_k`）的基因集；
+- `topology_matched`：在共享基因候选中按 degree / train-node-freq / test-node-freq / TF proxy / 正边比例做分布匹配后再抽样，控制拓扑与频率偏移。
 
 `transfer_v2_prepare.py` 会输出：
 
-- `transfer_v2/pair_manifest.csv`
-- `transfer_v2/pair_diagnostics.csv`
+- `results/transfer_v2/pair_manifest.csv`
+- `results/transfer_v2/pair_diagnostics.csv`
 - 各协议用到的 gene set 文件。
 
 #### 协议细化说明（与脚本一致）
@@ -48,7 +49,7 @@ transfer-v2 同时评估 3 种协议：
 
 ### 1.4 统计口径（当前结果）
 
-基于当前 `transfer/embedding_transfer_summary_v2.csv`：
+基于当前 `results/transfer_v2/embedding_transfer_summary_v2.csv`：
 
 - 数据集：`hESC, hHep, mDC, mHSC-E, mHSC-GM, mHSC-L`（共 6 个）；
 - 有向迁移对数量：`N*(N-1)=6*5=30`；
@@ -64,7 +65,7 @@ transfer-v2 同时评估 3 种协议：
 ```bash
 python scripts/transfer_v2/transfer_v2_prepare.py \
   --h5ad-root processed/native \
-  --out-dir transfer_v2 \
+  --out-dir results/transfer_v2 \
   --strict-mode auto \
   --case-mode upper
 ```
@@ -74,46 +75,53 @@ python scripts/transfer_v2/transfer_v2_prepare.py \
 ```bash
 python scripts/transfer_v2/analyze_grn_transferability_v2.py \
   --h5ad-root processed/native \
-  --pair-manifest transfer_v2/pair_manifest.csv \
-  --out-dir transfer
+  --pair-manifest results/transfer_v2/pair_manifest.csv \
+  --out-dir results/transfer_v2 \
+  --split-mode gene_disjoint
 ```
+
+> 默认输出仅保留核心主表：`embedding_transfer_seed_results_v2.csv` 与 `embedding_transfer_summary_v2.csv`。
 
 默认输出：
 
-- `transfer/embedding_transfer_seed_results_v2.csv`
-- `transfer/embedding_transfer_summary_v2.csv`
+- `results/transfer_v2/embedding_transfer_seed_results_v2.csv`
+- `results/transfer_v2/embedding_transfer_summary_v2.csv`
 
 ### 2.3 控制诊断 + 汇总表
 
 ```bash
 python scripts/transfer_v2/run_transfer_control_v2.py
 python scripts/transfer_v2/build_native_lr_train_embedding_tables.py \
-  --seed-results transfer/embedding_transfer_seed_results_v2.csv \
-  --out-dir transfer
+  --seed-results results/transfer_v2/embedding_transfer_seed_results_v2.csv \
+  --out-dir results/transfer_v2
 ```
+
+> `run_transfer_control_v2.py` 默认读取 `results/transfer_v2/pair_manifest.csv` 与 `results/transfer_v2/pair_diagnostics.csv`。
 
 ## 3. 实验结果（当前仓库结果）
 
 ### 3.1 按 setting 的 AUROC/AUPRC 汇总矩阵
 
-- `transfer/auroc_embedding_x_train_all_settings.md`
-- `transfer/auprc_embedding_x_train_all_settings.md`
+- `results/transfer_v2/auroc_embedding_x_train_all_settings.md`
+- `results/transfer_v2/auprc_embedding_x_train_all_settings.md`
 
 以上两个文件分别汇总所有 `protocol × clf` setting 的 `embedding × train_dataset` 矩阵，单元格格式为 `mean ± std`。
 
 ## 4. 关键输出文件
 
 - 主结果：
-  - `transfer/embedding_transfer_seed_results_v2.csv`
-  - `transfer/embedding_transfer_summary_v2.csv`
+  - `results/transfer_v2/embedding_transfer_seed_results_v2.csv`
+  - `results/transfer_v2/embedding_transfer_summary_v2.csv`
 - 汇总结果：
-  - `transfer/auroc_embedding_x_train_all_settings.md`
-  - `transfer/auprc_embedding_x_train_all_settings.md`
-  - `transfer/embedding_transfer_seed_results_v2.csv`（seed-level 主表）
+  - `results/transfer_v2/auroc_embedding_x_train_all_settings.md`
+  - `results/transfer_v2/auprc_embedding_x_train_all_settings.md`
+  - `results/transfer_v2/embedding_transfer_seed_results_v2.csv`（seed-level 主表）
 - 诊断：
-  - `transfer_v2/pair_manifest.csv`
-  - `transfer_v2/pair_diagnostics.csv`
-  - `transfer/report_transfer_control_v2.md`
+  - `results/transfer_v2/pair_manifest.csv`
+  - `results/transfer_v2/pair_diagnostics.csv`
+  - `results/transfer_v2/transfer_control_v2_diagnostics.csv`
+  - `results/transfer_v2/transfer_control_v2_protocol_deltas.csv`
+  - （可选）`results/transfer_v2/report_transfer_control_v2.md`
 
 ## 5. 术语与缩写（避免歧义）
 

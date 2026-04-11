@@ -183,6 +183,7 @@ def main() -> None:
         manifest.append({"train_dataset": tr, "test_dataset": te, "protocol": "native", "strict_scope": strict_mode_used, "case_mode": args.case_mode, "gene_set_file": "", "n_genes": ""})
         manifest.append({"train_dataset": tr, "test_dataset": te, "protocol": "strict", "strict_scope": strict_mode_used, "case_mode": args.case_mode, "gene_set_file": str(strict_file), "n_genes": len(strict_genes)})
         manifest.append({"train_dataset": tr, "test_dataset": te, "protocol": "coverage_matched", "strict_scope": strict_mode_used, "case_mode": args.case_mode, "gene_set_file": str(cov_file), "n_genes": len(cov_genes)})
+        manifest.append({"train_dataset": tr, "test_dataset": te, "protocol": "topology_matched", "strict_scope": strict_mode_used, "case_mode": args.case_mode, "gene_set_file": str(cov_file), "n_genes": len(cov_genes)})
 
     pd.DataFrame(manifest).to_csv(out / "pair_manifest.csv", index=False)
     pd.DataFrame(diagnostics).to_csv(out / "pair_diagnostics.csv", index=False)
