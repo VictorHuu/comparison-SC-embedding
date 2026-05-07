@@ -40,10 +40,15 @@ perturbation_benchmark/gene_symbol_to_entrez.json
 grn_benchmark/*/
 embedding_benchmark/gene_symbol_to_entrez.json
 embedding_benchmark/Homo_sapiens.gene_info.gz
-
+data
 # Loggings
 nohup.out
 *.patch
 scgreat.log
 grn_beeline.log
 grn_embedding_only.log
+**/sampled_edges
+gene_prompt_completion.log
+gene_prompt_completion*.log
+tmp/
+scripts/grn_inference

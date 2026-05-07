@@ -1,0 +1,3 @@
+dataset_name,adata_path,batch_key,label_key,status,notes
+PBMC_10K,data/batch-correction/PBMC_10K_scvi_like.h5ad,batch,celltype,OK,"n_batches=2,n_labels=9"
+Immune_Human,data/batch-correction/Immune_Human_openproblems.h5ad,batch,cell_type,OK,"n_batches=10,n_labels=16"

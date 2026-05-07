@@ -1,0 +1,7 @@
+embedding_name,embedding_path,embedding_key,gene_list_path
+minus,/bigdata2/hyt/projects/scbenchmark/save_pretrain/minus/best_model.pt,module.embedding.weight,/bigdata2/hyt/projects/scbenchmark/vocab.json
+baseline,/bigdata2/hyt/projects/scbenchmark/save_pretrain/baseline/best_model.pt,module.embedding.weight,/bigdata2/hyt/projects/scbenchmark/vocab.json
+scGPT_human,/bigdata2/hyt/projects/scbenchmark/save_pretrain/scGPT_human/best_model.pt,encoder.embedding.weight,/bigdata2/hyt/projects/scbenchmark/vocab.json
+v4_bias_rec_best,/bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_bias_rec_best/best_model.pt,embedding.weight,/bigdata2/hyt/projects/scbenchmark/vocab.json
+v4_plain_best,/bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_plain_best/best_model.pt,encoder.embedding.weight,/bigdata2/hyt/projects/scbenchmark/vocab.json
+v4_type_pe_best,/bigdata2/hyt/projects/scbenchmark/save_pretrain/v4_type_pe_best/best_model.pt,embedding.weight,/bigdata2/hyt/projects/scbenchmark/vocab.json

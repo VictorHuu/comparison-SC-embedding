@@ -1,0 +1,2 @@
+dataset_name,adata_path
+test_data,/bigdata2/hyt/projects/scbenchmark/data/cellxgene/test_data.parquet
