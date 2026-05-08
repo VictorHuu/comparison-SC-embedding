@@ -51,4 +51,3 @@ grn_embedding_only.log
 gene_prompt_completion.log
 gene_prompt_completion*.log
 tmp/
-scripts/grn_inference
