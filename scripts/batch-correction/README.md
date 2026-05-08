@@ -16,11 +16,17 @@ python scripts/batch-correction/run_batch_correction_all.py --base-dir . --out-d
 Use `--datasets` / `--embeddings` to restrict scope.
 If `Immune_Human_openproblems` is present, it is prioritized first by default (`--priority-datasets`).
 
+Convert an existing all-results CSV into the conference-style markdown tables without rerunning embeddings:
+```bash
+python scripts/batch-correction/run_batch_correction_all.py --csv-to-md results/batch-correction/batch_correction_all_results.csv --out-dir results/batch-correction
+```
+
 ## Outputs
 - `batch_correction_all_results.csv`
 - `batch_correction_per_dataset_summary.csv`
 - `batch_correction_rankings.csv`
 - `batch_correction_report.md`
+- `batch_correction_conference_tables.md`: compact paper-style tables comparing embeddings by dataset/correction method, with best values highlighted.
 - `plots/*`
 
 ## Caveats
